@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文章阅读 - Conscient</title>
+    <link rel="icon" type="image/png" href="../tx.png">
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+        body {
+            min-height: 100vh;
+            margin: 0;
+            color: #101014;
+            background:
+                radial-gradient(circle at 18% 18%, rgba(114, 14, 236, 0.14), transparent 34%),
+                radial-gradient(circle at 82% 16%, rgba(79, 141, 255, 0.16), transparent 32%),
+                linear-gradient(180deg, #ffffff 0%, var(--clean-surface) 54%, #f4f0ff 100%);
+            font-family: Arial, "Microsoft YaHei", sans-serif;
+        }
+
+        html,
+        body {
+            -ms-overflow-style: auto;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(114, 14, 236, 0.42) rgba(255, 255, 255, 0.72);
+        }
+
+        html::-webkit-scrollbar,
+        body::-webkit-scrollbar {
+            display: block;
+            width: 10px;
+        }
+
+        html::-webkit-scrollbar-thumb,
+        body::-webkit-scrollbar-thumb {
+            border-radius: 999px;
+            background: rgba(114, 14, 236, 0.36);
+        }
+
+        html::-webkit-scrollbar-track,
+        body::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.72);
+        }
+
+        .top-nav {
+            background: rgba(255, 255, 255, 0.86);
+            border-bottom: 1px solid rgba(20, 20, 28, 0.08);
+            box-shadow: 0 12px 36px rgba(24, 18, 48, 0.08);
+        }
+
+        .nav-logo .letter-red { color: #720eec; }
+        .nav-logo .letter-yellow { color: #4f8dff; }
+        .nav-logo .letter-blue { color: #5ab8ff; }
+        .nav-logo .letter-black { color: #121218; }
+
+        .nav-item {
+            color: rgba(18, 18, 24, 0.62);
+        }
+
+        .nav-item:hover {
+            color: #121218;
+            background: rgba(114, 14, 236, 0.08);
+        }
+
+        .nav-toggle {
+            color: #720eec;
+        }
+
+        .reader-page {
+            width: min(980px, calc(100% - 32px));
+            margin: 0 auto;
+            padding: 112px 0 72px;
+        }
+
+        .reader-header {
+            margin-bottom: 24px;
+        }
+
+        .reader-back {
+            display: inline-flex;
+            margin-bottom: 24px;
+            color: #720eec;
+            text-decoration: none;
+            font-weight: 800;
+        }
+
+        .reader-title {
+            font-size: clamp(2.2rem, 6vw, 4.8rem);
+            line-height: 1.05;
+            margin: 0 0 14px;
+            color: #121218;
+            text-shadow: 0 14px 42px rgba(114, 14, 236, 0.1);
+        }
+
+        .reader-meta,
+        .reader-summary,
+        .reader-status,
+        .interaction-placeholder {
+            color: rgba(18, 18, 24, 0.62);
+            line-height: 1.8;
+        }
+
+        .article-frame-shell {
+            margin-top: 30px;
+            border-radius: 24px;
+            overflow: hidden;
+            background: #fff;
+            border: 1px solid rgba(20, 20, 28, 0.08);
+            box-shadow: 0 24px 70px rgba(24, 18, 48, 0.08);
+        }
+
+        .article-frame {
+            display: block;
+            width: 100%;
+            height: min(76vh, 820px);
+            min-height: 560px;
+            border: 0;
+            background: #fff;
+        }
+
+        .interaction-placeholder {
+            margin-top: 28px;
+            padding: 22px;
+            border: 1px solid rgba(20, 20, 28, 0.08);
+            border-radius: 18px;
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(255, 255, 255, 0.76)),
+                radial-gradient(circle at 90% 0, rgba(79, 141, 255, 0.12), transparent 54%);
+            box-shadow: 0 20px 60px rgba(24, 18, 48, 0.06);
+        }
+    </style>
+</head>
+<body>
+    <div class="nav-hover-zone" id="navHoverZone"></div>
+    <nav class="top-nav collapsed" id="globalNav">
+        <div class="nav-left">
+            <span class="nav-logo">
+                <span class="letter-red">C</span><span class="letter-yellow">o</span><span class="letter-blue">n</span><span class="letter-black">s</span><span class="letter-red">c</span><span class="letter-yellow">i</span><span class="letter-blue">e</span><span class="letter-black">n</span><span class="letter-red">t</span>
+            </span>
+        </div>
+        <div class="nav-center">
+            <div class="nav-item" onclick="window.location.href='../index.html#section2'">
+                <span class="nav-icon">
+                    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                </span>
+                <span class="nav-text">主页</span>
+            </div>
+            <div class="nav-item" onclick="window.location.href='../friends/'">
+                <span class="nav-icon">
+                    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                </span>
+                <span class="nav-text">友链</span>
+            </div>
+            <div class="nav-item" onclick="window.location.href='../about/'">
+                <span class="nav-icon">
+                    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                </span>
+                <span class="nav-text">关于</span>
+            </div>
+        </div>
+        <button class="nav-toggle" id="navToggle" aria-label="折叠导航" style="display: none;">﹀</button>
+    </nav>
+
+    <main class="reader-page">
+        <a class="reader-back" href="../wechat/">← 返回文章列表</a>
+        <header class="reader-header">
+            <p class="reader-status" id="readerStatus">正在加载文章...</p>
+            <h1 class="reader-title" id="readerTitle"></h1>
+            <div class="reader-meta" id="readerMeta"></div>
+            <p class="reader-summary" id="readerSummary"></p>
+        </header>
+        <section class="article-frame-shell" id="frameShell" hidden>
+            <iframe
+                class="article-frame"
+                id="articleFrame"
+                scrolling="auto"
+                sandbox="allow-same-origin"
+                title="文章正文"
+            ></iframe>
+        </section>
+        <section class="interaction-placeholder">
+            评论、点赞和 GitHub 登录会在下一阶段接入。当前 MVP 先验证文章上传、保存、列表和阅读。
+        </section>
+    </main>
+
+    <script src="../script.js"></script>
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const slug = params.get('slug');
+        const statusEl = document.getElementById('readerStatus');
+        const titleEl = document.getElementById('readerTitle');
+        const metaEl = document.getElementById('readerMeta');
+        const summaryEl = document.getElementById('readerSummary');
+        const frameShell = document.getElementById('frameShell');
+        const frame = document.getElementById('articleFrame');
+
+        function formatDate(value) {
+            if (!value) return '';
+            return new Date(value).toLocaleString('zh-CN', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        async function loadArticle() {
+            if (!slug) {
+                statusEl.textContent = '缺少文章 slug。';
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/articles/${encodeURIComponent(slug)}`);
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.error || '文章加载失败');
+
+                const article = data.article;
+                document.title = `${article.title} - Conscient`;
+                statusEl.textContent = 'Conscient Article';
+                titleEl.textContent = article.title;
+                metaEl.textContent = `发布：${formatDate(article.createdAt)} · 更新：${formatDate(article.updatedAt)}`;
+                summaryEl.textContent = article.summary || '';
+                frame.src = article.htmlPath;
+                frameShell.hidden = false;
+            } catch (error) {
+                statusEl.textContent = `加载失败：${error.message}`;
+            }
+        }
+
+        loadArticle();
+    </script>
+</body>
+</html>

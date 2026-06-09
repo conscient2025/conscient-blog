@@ -4,3 +4,13 @@ desktop.ini
 
 .vscode/
 .idea/
+
+node_modules/
+.env
+.env.*
+!.env.example
+
+backend/uploads/articles/*
+!backend/uploads/articles/.gitkeep
+backend/data/articles.json
+frontend/public/wechat/workzone/

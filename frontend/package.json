@@ -1,0 +1,6 @@
+{
+  "name": "conscient-blog-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Static frontend served by the local backend during the MVP phase."
+}

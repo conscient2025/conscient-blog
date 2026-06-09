@@ -1,0 +1,14 @@
+{
+  "name": "conscient-blog-backend",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Local API server for the Conscient blog article reader MVP.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
