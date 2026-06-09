@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conscient-主页</title>
+    <link rel="icon" type="image/png" href="tx.png">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="home-body">
+    <!-- 全局导航栏 -->
+    <div class="nav-hover-zone" id="navHoverZone"></div>
+    <nav class="top-nav collapsed" id="globalNav">
+        <div class="nav-left">
+            <span class="nav-logo">
+                <span class="letter-red">C</span><span class="letter-yellow">o</span><span class="letter-blue">n</span><span class="letter-black">s</span><span class="letter-red">c</span><span class="letter-yellow">i</span><span class="letter-blue">e</span><span class="letter-black">n</span><span class="letter-red">t</span>
+            </span>
+        </div>
+        <div class="nav-center">
+            <div class="nav-item" onclick="scrollToSection(2)">
+                <span class="nav-icon">
+                    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                </span>
+                <span class="nav-text">主页</span>
+            </div>
+            <div class="nav-item" onclick="window.location.href='friends/'">
+                <span class="nav-icon">
+                    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                </span>
+                <span class="nav-text">友链</span>
+            </div>
+            <div class="nav-item" onclick="window.location.href='about/'">
+                <span class="nav-icon">
+                    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                </span>
+                <span class="nav-text">关于</span>
+            </div>
+        </div>
+        <button class="nav-toggle" id="navToggle" aria-label="折叠导航" style="display: none;">﹀</button>
+    </nav>
+
+    <!-- 第一部分：首页 -->
+    <section class="section section-1" id="section1">
+        <div class="hero-background"></div>
+        <div class="hero-content">
+            <h1 class="main-title">新的心跳</h1>
+            <div class="typing-text" id="typingText"></div>
+        </div>
+        <div class="scroll-indicator">
+            <div class="arrow-down"></div>
+        </div>
+    </section>
+
+    <!-- 第二部分：极简紫色导航 -->
+    <section class="section section-2" id="section2">
+        <div class="feature-shell">
+            <div class="section-kicker">Conscient Space</div>
+            <h2 class="section-title">博客里有啥</h2>
+            <div class="feature-grid">
+                <button class="feature-card" data-block="wechat" type="button">
+                    <span class="feature-index">01</span>
+                    <span class="feature-name">公众号</span>
+                    <span class="feature-note">文字、观察与长期表达</span>
+                </button>
+                <button class="feature-card" data-block="bilibili" type="button">
+                    <span class="feature-index">02</span>
+                    <span class="feature-name">B站</span>
+                    <span class="feature-note">视频、记录与灵感切片</span>
+                </button>
+                <button class="feature-card" data-block="projects" type="button">
+                    <span class="feature-index">03</span>
+                    <span class="feature-name">项目</span>
+                    <span class="feature-note">作品、实验与阶段成果</span>
+                </button>
+                <button class="feature-card" data-block="gem" type="button">
+                    <span class="feature-index">04</span>
+                    <span class="feature-name">G.E.M.</span>
+                    <span class="feature-note">旋律、能量与精神坐标</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- 卡片翻转效果容器 -->
+        <div class="card-flip-container" id="cardFlipContainer">
+            <div class="flip-card" id="flipCard">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front"></div>
+                    <div class="flip-card-back">
+                        <button class="close-btn" id="closeCardBtn">&times;</button>
+                        <div class="card-detail-text" id="cardDetailText"></div>
+                        <a href="#" class="card-detail-link" id="cardDetailLink">
+                            <span>进入</span>
+                            <span class="arrow">→</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- 宝石风格页面切换动画 -->
+    <div class="page-transition" id="pageTransition"></div>
+
+    <!-- 页面切换加载动画 -->
+    <div class="page-loader" id="pageLoader">
+        <div class="loader-square">
+            <div class="loader-inner-square red"></div>
+            <div class="loader-inner-square yellow"></div>
+            <div class="loader-inner-square blue"></div>
+            <div class="loader-inner-square white"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

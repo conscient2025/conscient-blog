@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>G.E.M. - Conscient</title>
+    <link rel="icon" type="image/png" href="../tx.png">
+    <!-- 引入 Tailwind CSS 进行现代样式重置和排版 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入 Lucide 图标库 -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- 自定义配置 Tailwind 以契合 G.E.M. 的风格 -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        gem: {
+                            dark: '#0a0a0f',
+                            pink: '#8b5cf6',   /* 偏蓝紫：紫罗兰色 */
+                            purple: '#4f46e5', /* 偏蓝紫：靛蓝 */
+                            neon: '#60a5fa',   /* 偏蓝紫：亮蓝色 */
+                            blue: '#3b82f6'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Noto Sans SC"', 'system-ui', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- 引入 Google 字体 -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: #0a0a0f; /* 深邃宇宙黑 */
+            color: #f1f5f9;
+        }
+        
+        /* 自定义滚动条 */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0a0f; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, #60a5fa, #8b5cf6); 
+            border-radius: 4px;
+        }
+
+        /* 渐变文字动画 */
+        .text-gradient {
+            background: linear-gradient(to right, #60a5fa, #8b5cf6, #60a5fa);
+            background-size: 200% auto;
+            color: #000;
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shine 3s linear infinite;
+        }
+
+        @keyframes shine {
+            to {
+                background-position: 200% center;
+            }
+        }
+
+        /* 宝石悬浮动画 */
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(10deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .conscient-hover-zone {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 15px;
+            z-index: 60;
+        }
+
+        .conscient-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 64px;
+            z-index: 59;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            background: rgba(10, 18, 43, 0.74);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(12px);
+            transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), opacity 0.4s ease;
+        }
+
+        .conscient-nav.collapsed {
+            transform: translateY(-100%);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .conscient-hover-zone:hover + .conscient-nav,
+        .conscient-nav:hover {
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .conscient-logo {
+            font-size: 1.3rem;
+            font-weight: 900;
+            letter-spacing: 3px;
+            display: flex;
+            gap: 2px;
+        }
+
+        .conscient-logo span:nth-child(4n + 1) { color: #f5d0fe; }
+        .conscient-logo span:nth-child(4n + 2) { color: #93c5fd; }
+        .conscient-logo span:nth-child(4n + 3) { color: #67e8f9; }
+        .conscient-logo span:nth-child(4n) { color: #fff; }
+
+        .conscient-nav-links {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .conscient-nav-link {
+            color: rgba(255, 255, 255, 0.66);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 900;
+            padding: 8px 12px;
+            border-radius: 6px;
+            transition: color 0.25s ease, background 0.25s ease;
+        }
+
+        .conscient-nav-link:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        @media (max-width: 768px) {
+            .conscient-nav {
+                height: 52px;
+                padding: 0 12px;
+            }
+
+            .conscient-logo {
+                font-size: 1.05rem;
+            }
+
+            .conscient-nav-links {
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-gem-pink selection:text-white overflow-x-hidden">
+
+    <!-- Conscient 风格顶部导航 -->
+    <div class="conscient-hover-zone"></div>
+    <nav class="conscient-nav collapsed">
+        <a href="../index.html#section2" class="conscient-logo" aria-label="Conscient Home">
+            <span>C</span><span>o</span><span>n</span><span>s</span><span>c</span><span>i</span><span>e</span><span>n</span><span>t</span>
+        </a>
+        <div class="conscient-nav-links">
+            <a href="../index.html#section2" class="conscient-nav-link">主页</a>
+            <a href="#albums" class="conscient-nav-link">专辑宇宙</a>
+            <a href="#concerts" class="conscient-nav-link">现场直击</a>
+        </div>
+    </nav>
+
+    <!-- 首屏 Hero 区域 -->
+    <header class="relative h-screen flex items-center justify-center overflow-hidden">
+        <!-- 背景图片 -->
+        <div class="absolute inset-0 z-0">
+            <!-- ⬇️ 替换图片：这里是网页最上方的大背景图，建议用横屏的演唱会高清大图 ⬇️ -->
+            <img src="images/bg.jpg?w=2000&auto=format&fit=crop" alt="Hero Background" class="w-full h-full object-cover opacity-30">
+            <div class="absolute inset-0 bg-gradient-to-b from-transparent via-gem-dark/80 to-gem-dark"></div>
+            <!-- 新增宝石与光芒元素 -->
+            <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-gem-neon/20 rounded-full blur-[120px] mix-blend-screen pointer-events-none"></div>
+            <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gem-purple/20 rounded-full blur-[120px] mix-blend-screen pointer-events-none"></div>
+            <i data-lucide="gem" class="absolute top-1/3 left-[15%] text-gem-neon/60 w-10 h-10 animate-float pointer-events-none"></i>
+            <i data-lucide="sparkles" class="absolute top-[60%] right-[20%] text-gem-pink/60 w-8 h-8 animate-pulse pointer-events-none"></i>
+            <i data-lucide="gem" class="absolute bottom-1/4 left-[30%] text-gem-purple/40 w-6 h-6 animate-float" style="animation-delay: -2s; pointer-events-none;"></i>
+        </div>
+
+        <div class="relative z-10 text-center px-4 max-w-5xl mx-auto mt-20">
+            <h1 class="text-5xl md:text-7xl lg:text-9xl font-black mb-6 tracking-tighter">
+                <span class="text-transparent text-outline" style="-webkit-text-stroke: 1px rgba(255,255,255,0.2);">GLORIA</span><br>
+                <span class="text-gradient drop-shadow-[0_0_15px_rgba(236,72,153,0.5)]">TANG</span>
+            </h1>
+            <p class="text-xl md:text-3xl font-light text-gray-300 tracking-widest mb-10">
+                见过光，就应该把光反射出去
+            </p>
+        </div>
+    </header>
+
+    <!-- 专辑展示区 -->
+    <section id="albums" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 relative">
+                <i data-lucide="sparkles" class="absolute -top-6 left-1/2 -translate-x-1/2 text-gem-neon/50 w-8 h-8 animate-pulse"></i>
+                <h2 class="text-3xl md:text-5xl font-black mb-4"><span class="text-gem-neon">/</span> 历年经典专辑</h2>
+                <p class="text-gray-400">从《G.E.M.》到《I Am Gloria》的启示路</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                
+                <!-- 专辑 1 G.E.M. -->
+                <div class="group relative rounded-2xl overflow-hidden shadow-lg shadow-black/50 hover:shadow-[0_0_30px_rgba(96,165,250,0.4)] hover:ring-2 hover:ring-gem-neon/50 transition-all duration-500 transform hover:-translate-y-2">
+                    <div class="aspect-square bg-gray-800 relative">
+                        <img src="https://i.scdn.co/image/ab67616d0000b273690dd8239c2c74ebaaa3be2e?w=600&auto=format&fit=crop" alt="G.E.M." class="w-full h-full object-cover group-hover:scale-110 group-hover:brightness-110 transition-all duration-700">
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex flex-col justify-end p-6 group-hover:from-black/70 transition-colors duration-300">
+                        <p class="text-gem-neon font-bold text-sm mb-1">2009 (EP)</p>
+                        <h3 class="text-2xl font-bold text-white mb-2 group-hover:text-gem-neon transition-colors">G.E.M.</h3>
+                    </div>
+                </div>
+
+                <!-- 专辑 2 18... -->
+                <div class="group relative rounded-2xl overflow-hidden shadow-lg shadow-black/50 hover:shadow-[0_0_30px_rgba(139,92,246,0.4)] hover:ring-2 hover:ring-gem-pink/50 transition-all duration-500 transform hover:-translate-y-2">
+                    <div class="aspect-square bg-gray-800 relative">
+                        <img src="https://i.scdn.co/image/ab67616d0000b2730eff9585ca865baf816e3895?w=600&auto=format&fit=crop" alt="18..." class="w-full h-full object-cover group-hover:scale-110 group-hover:brightness-110 transition-all duration-700">
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex flex-col justify-end p-6 group-hover:from-black/70 transition-colors duration-300">
+                        <p class="text-gem-pink font-bold text-sm mb-1">2009</p>
+                        <h3 class="text-2xl font-bold text-white mb-2 group-hover:text-gem-pink transition-colors">18...</h3>
+                    </div>
+                </div>
+
+                <!-- 专辑 3 MySecret -->
+                <div class="group relative rounded-2xl overflow-hidden shadow-lg shadow-black/50 hover:shadow-[0_0_30px_rgba(79,70,229,0.4)] hover:ring-2 hover:ring-gem-purple/50 transition-all duration-500 transform hover:-translate-y-2">
+                    <div class="aspect-square bg-gray-800 relative">
+                        <img src="https://i.scdn.co/image/ab67616d0000b273174d79e050cade8122ce2e54?w=600&auto=format&fit=crop" alt="MySecret" class="w-full h-full object-cover group-hover:scale-110 group-hover:brightness-110 transition-all duration-700">
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex flex-col justify-end p-6 group-hover:from-black/70 transition-colors duration-300">
+                        <p class="text-gem-purple font-bold text-sm mb-1">2010</p>
+                        <h3 class="text-2xl font-bold text-white mb-2 group-hover:text-gem-purple transition-colors">MySecret</h3>
+                    </div>
+                </div>
+
+                <!-- 专辑 4 Xposed -->
+                <div class="group relative rounded-2xl overflow-hidden shadow-lg shadow-black/50 hover:shadow-[0_0_30px_rgba(96,165,250,0.4)] hover:ring-2 hover:ring-gem-neon/50 transition-all duration-500 transform hover:-translate-y-2">
+                    <div class="aspect-square bg-gray-800 relative">
+                        <img src="https://i.scdn.co/image/ab67616d0000b2739f6a38e4bb9c2f824c215e58?w=600&auto=format&fit=crop" alt="Xposed" class="w-full h-full object-cover group-hover:scale-110 group-hover:brightness-110 transition-all duration-700">
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex flex-col justify-end p-6 group-hover:from-black/70 transition-colors duration-300">
+                        <p class="text-gem-neon font-bold text-sm mb-1">2012</p>
+                        <h3 class="text-2xl font-bold text-white mb-2 group-hover:text-gem-neon transition-colors">Xposed</h3>
+                    </div>
+                </div>
+
+                <!-- 专辑 5 The Best of 2008–2012 -->
+                <div class="group relative rounded-2xl overflow-hidden shadow-lg shadow-black/50 hover:shadow-[0_0_30px_rgba(139,92,246,0.4)] hover:ring-2 hover:ring-gem-pink/50 transition-all duration-500 transform hover:-translate-y-2">
+                    <div class="aspect-square bg-gray-800 relative">
+                        <img src="https://i.scdn.co/image/ab67616d0000b273d39a1b507aa8ad0ed13baaa6?w=600&auto=format&fit=crop" alt="The Best of 2008–2012" class="w-full h-full object-cover group-hover:scale-110 group-hover:brightness-110 transition-all duration-700">
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex flex-col justify-end p-6 group-hover:from-black/70 transition-colors duration-300">
+                        <p class="text-gem-pink font-bold text-sm mb-1">2013</p>
+                        <h3 class="text-2xl font-bold text-white mb-2 group-hover:text-gem-pink transition-colors">The Best of 2008–2012</h3>
+                    </div>
+                </div>
+
+                <!-- 专辑 6 G.E.M. X.X.X. Live -->
+                <div class="group relative rounded-2xl overflow-hidden shadow-lg shadow-black/50 hover:shadow-[0_0_30px_rgba(79,70,229,0.4)] hover:ring-2 hover:ring-gem-purple/50 transition-all duration-500 transform hover:-translate-y-2">
+                    <div class="aspect-square bg-gray-800 relative">
+                        <img src="https://i.scdn.co/image/ab67616d0000b273ab3a5a3d9739f231c60eefb4?w=600&auto=format&fit=crop" alt="G.E.M. X.X.X. Live" class="w-full h-full object-cover group-hover:scale-110 group-hover:brightness-110 transition-all duration-700">
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex flex-col justify-end p-6 group-hover:from-black/70 transition-colors duration-300">
+                        <p class="text-gem-purple font-bold text-sm mb-1">2013</p>
+                        <h3 class="text-2xl font-bold text-white mb-2 group-hover:text-gem-purple transition-colors">G.E.M. X.X.X. Live</h3>
+                    </div>
+                </div>
+
+                <!-- 专辑 7 G.E.M. Live Piano Session -->
+                <div class="group relative rounded-2xl overflow-hidden shadow-lg shadow-black/50 hover:shadow-[0_0_30px_rgba(96,165,250,0.4)] hover:ring-2 hover:ring-gem-neon/50 transition-all duration-500 transform hover:-translate-y-2">
+                    <div class="aspect-square bg-gray-800 relative">
+                        <img src="https://i.scdn.co/image/ab67616d0000b2737b2dd90d86618c02f9fa0f54?w=600&auto=format&fit=crop" alt="G.E.M. Live Piano Session" class="w-full h-full object-cover group-hover:scale-110 group-hover:brightness-110 transition-all duration-700">
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex flex-col justify-end p-6 group-hover:from-black/70 transition-colors duration-300">
+                        <p class="text-gem-neon font-bold text-sm mb-1">2014</p>
+                        <h3 class="text-2xl font-bold text-white mb-2 group-hover:text-gem-neon transition-colors">G.E.M. Live Piano Session</h3>
+                    </div>
+                </div>
+
+                <!-- 专辑 8 新的心跳 -->
+                <div class="group relative rounded-2xl overflow-hidden shadow-lg shadow-black/50 hover:shadow-[0_0_30px_rgba(139,92,246,0.4)] hover:ring-2 hover:ring-gem-pink/50 transition-all duration-500 transform hover:-translate-y-2">
+                    <div class="aspect-square bg-gray-800 relative">
+                        <img src="https://i.scdn.co/image/ab67616d0000b273a40897c721bbc3afded61669?w=600&auto=format&fit=crop" alt="新的心跳" class="w-full h-full object-cover group-hover:scale-110 group-hover:brightness-110 transition-all duration-700">
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex flex-col justify-end p-6 group-hover:from-black/70 transition-colors duration-300">
+                        <p class="text-gem-pink font-bold text-sm mb-1">2015</p>
+                        <h3 class="text-2xl font-bold text-white mb-2 group-hover:text-gem-pink transition-colors">新的心跳</h3>
+                    </div>
+                </div>
+
+                <!-- 专辑 9 25 LOOKS -->
+                <div class="group relative rounded-2xl overflow-hidden shadow-lg shadow-black/50 hover:shadow-[0_0_30px_rgba(79,70,229,0.4)] hover:ring-2 hover:ring-gem-purple/50 transition-all duration-500 transform hover:-translate-y-2">
+                    <div class="aspect-square bg-gray-800 relative">
+                        <img src="https://i.scdn.co/image/ab67616d0000b273499d34ca37a5d21c5eb22d79?w=600&auto=format&fit=crop" alt="25 LOOKS" class="w-full h-full object-cover group-hover:scale-110 group-hover:brightness-110 transition-all duration-700">
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex flex-col justify-end p-6 group-hover:from-black/70 transition-colors duration-300">
+                        <p class="text-gem-purple font-bold text-sm mb-1">2016 (EP)</p>
+                        <h3 class="text-2xl font-bold text-white mb-2 group-hover:text-gem-purple transition-colors">25 LOOKS</h3>
+                    </div>
+                </div>
+
+                <!-- 专辑 10 另一个童话 -->
+                <div class="group relative rounded-2xl overflow-hidden shadow-lg shadow-black/50 hover:shadow-[0_0_30px_rgba(96,165,250,0.4)] hover:ring-2 hover:ring-gem-neon/50 transition-all duration-500 transform hover:-translate-y-2">
+                    <div class="aspect-square bg-gray-800 relative">
+                        <img src="https://i.scdn.co/image/ab67616d0000b2739ec311b1c23c4347c220f9bd?w=600&auto=format&fit=crop" alt="另一个童话" class="w-full h-full object-cover group-hover:scale-110 group-hover:brightness-110 transition-all duration-700">
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex flex-col justify-end p-6 group-hover:from-black/70 transition-colors duration-300">
+                        <p class="text-gem-neon font-bold text-sm mb-1">2018 (EP)</p>
+                        <h3 class="text-2xl font-bold text-white mb-2 group-hover:text-gem-neon transition-colors">另一个童话</h3>
+                    </div>
+                </div>
+
+                <!-- 专辑 11 毒苹果 -->
+                <div class="group relative rounded-2xl overflow-hidden shadow-lg shadow-black/50 hover:shadow-[0_0_30px_rgba(139,92,246,0.4)] hover:ring-2 hover:ring-gem-pink/50 transition-all duration-500 transform hover:-translate-y-2">
+                    <div class="aspect-square bg-gray-800 relative">
+                        <img src="https://i.scdn.co/image/ab67616d0000b27309b9fc64f3f26153a77b338c?w=600&auto=format&fit=crop" alt="毒苹果" class="w-full h-full object-cover group-hover:scale-110 group-hover:brightness-110 transition-all duration-700">
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex flex-col justify-end p-6 group-hover:from-black/70 transition-colors duration-300">
+                        <p class="text-gem-pink font-bold text-sm mb-1">2018 (EP)</p>
+                        <h3 class="text-2xl font-bold text-white mb-2 group-hover:text-gem-pink transition-colors">毒苹果</h3>
+                    </div>
+                </div>
+
+                <!-- 专辑 12 睡皇后 -->
+                <div class="group relative rounded-2xl overflow-hidden shadow-lg shadow-black/50 hover:shadow-[0_0_30px_rgba(79,70,229,0.4)] hover:ring-2 hover:ring-gem-purple/50 transition-all duration-500 transform hover:-translate-y-2">
+                    <div class="aspect-square bg-gray-800 relative">
+                        <img src="https://i.scdn.co/image/ab67616d0000b273148974e4c342a640f9f7e6e5?w=600&auto=format&fit=crop" alt="睡皇后" class="w-full h-full object-cover group-hover:scale-110 group-hover:brightness-110 transition-all duration-700">
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex flex-col justify-end p-6 group-hover:from-black/70 transition-colors duration-300">
+                        <p class="text-gem-purple font-bold text-sm mb-1">2018 (EP)</p>
+                        <h3 class="text-2xl font-bold text-white mb-2 group-hover:text-gem-purple transition-colors">睡皇后</h3>
+                    </div>
+                </div>
+
+                <!-- 专辑 13 摩天动物园 -->
+                <div class="group relative rounded-2xl overflow-hidden shadow-lg shadow-black/50 hover:shadow-[0_0_30px_rgba(96,165,250,0.4)] hover:ring-2 hover:ring-gem-neon/50 transition-all duration-500 transform hover:-translate-y-2">
+                    <div class="aspect-square bg-gray-800 relative">
+                        <img src="https://i.scdn.co/image/ab67616d0000b273a86c7932c5072d2221907af1?w=600&auto=format&fit=crop" alt="摩天动物园" class="w-full h-full object-cover group-hover:scale-110 group-hover:brightness-110 transition-all duration-700">
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex flex-col justify-end p-6 group-hover:from-black/70 transition-colors duration-300">
+                        <p class="text-gem-neon font-bold text-sm mb-1">2019</p>
+                        <h3 class="text-2xl font-bold text-white mb-2 group-hover:text-gem-neon transition-colors">摩天动物园</h3>
+                    </div>
+                </div>
+
+                <!-- 专辑 14 两个你 -->
+                <div class="group relative rounded-2xl overflow-hidden shadow-lg shadow-black/50 hover:shadow-[0_0_30px_rgba(139,92,246,0.4)] hover:ring-2 hover:ring-gem-pink/50 transition-all duration-500 transform hover:-translate-y-2">
+                    <div class="aspect-square bg-gray-800 relative">
+                        <img src="https://i.scdn.co/image/ab67616d0000b2734b4d78f35b8bbb90683468ec?w=600&auto=format&fit=crop" alt="两个你" class="w-full h-full object-cover group-hover:scale-110 group-hover:brightness-110 transition-all duration-700">
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex flex-col justify-end p-6 group-hover:from-black/70 transition-colors duration-300">
+                        <p class="text-gem-pink font-bold text-sm mb-1">2021 (EP)</p>
+                        <h3 class="text-2xl font-bold text-white mb-2 group-hover:text-gem-pink transition-colors">两个你</h3>
+                    </div>
+                </div>
+
+                <!-- 专辑 15 启示录 -->
+                <div class="group relative rounded-2xl overflow-hidden shadow-lg shadow-black/50 hover:shadow-[0_0_30px_rgba(79,70,229,0.4)] hover:ring-2 hover:ring-gem-purple/50 transition-all duration-500 transform hover:-translate-y-2">
+                    <div class="aspect-square bg-gray-800 relative">
+                        <img src="https://i.scdn.co/image/ab67616d0000b27315d9f5476654a45b1437bd41?w=600&auto=format&fit=crop" alt="启示录" class="w-full h-full object-cover group-hover:scale-110 group-hover:brightness-110 transition-all duration-700">
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex flex-col justify-end p-6 group-hover:from-black/70 transition-colors duration-300">
+                        <p class="text-gem-purple font-bold text-sm mb-1">2022</p>
+                        <h3 class="text-2xl font-bold text-white mb-2 group-hover:text-gem-purple transition-colors">启示录</h3>
+                    </div>
+                </div>
+
+                <!-- 专辑 16 Revelación -->
+                <div class="group relative rounded-2xl overflow-hidden shadow-lg shadow-black/50 hover:shadow-[0_0_30px_rgba(96,165,250,0.4)] hover:ring-2 hover:ring-gem-neon/50 transition-all duration-500 transform hover:-translate-y-2">
+                    <div class="aspect-square bg-gray-800 relative">
+                        <img src="https://i.scdn.co/image/ab67616d0000b273d2d2ff5feb058644c9cd50d5?w=600&auto=format&fit=crop" alt="Revelación" class="w-full h-full object-cover group-hover:scale-110 group-hover:brightness-110 transition-all duration-700">
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex flex-col justify-end p-6 group-hover:from-black/70 transition-colors duration-300">
+                        <p class="text-gem-neon font-bold text-sm mb-1">2023</p>
+                        <h3 class="text-2xl font-bold text-white mb-2 group-hover:text-gem-neon transition-colors">Revelación</h3>
+                    </div>
+                </div>
+
+                <!-- 专辑 17 T.I.M.E. -->
+                <div class="group relative rounded-2xl overflow-hidden shadow-lg shadow-black/50 hover:shadow-[0_0_30px_rgba(139,92,246,0.4)] hover:ring-2 hover:ring-gem-pink/50 transition-all duration-500 transform hover:-translate-y-2">
+                    <div class="aspect-square bg-gray-800 relative">
+                        <img src="https://i.scdn.co/image/ab67616d0000b273114e5d125f8d55dde31dd10f?w=600&auto=format&fit=crop" alt="T.I.M.E." class="w-full h-full object-cover group-hover:scale-110 group-hover:brightness-110 transition-all duration-700">
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex flex-col justify-end p-6 group-hover:from-black/70 transition-colors duration-300">
+                        <p class="text-gem-pink font-bold text-sm mb-1">2023 (EP)</p>
+                        <h3 class="text-2xl font-bold text-white mb-2 group-hover:text-gem-pink transition-colors">T.I.M.E.</h3>
+                    </div>
+                </div>
+
+                <!-- 专辑 18 I Am Gloria -->
+                <div class="group relative rounded-2xl overflow-hidden shadow-lg shadow-black/50 hover:shadow-[0_0_30px_rgba(79,70,229,0.4)] hover:ring-2 hover:ring-gem-purple/50 transition-all duration-500 transform hover:-translate-y-2">
+                    <div class="aspect-square bg-gray-800 relative">
+                        <img src="https://i.scdn.co/image/ab67616d0000b27322801140a531d76dde7739fd?w=600&auto=format&fit=crop" alt="I Am Gloria" class="w-full h-full object-cover group-hover:scale-110 group-hover:brightness-110 transition-all duration-700">
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex flex-col justify-end p-6 group-hover:from-black/70 transition-colors duration-300">
+                        <p class="text-gem-purple font-bold text-sm mb-1">2025</p>
+                        <h3 class="text-2xl font-bold text-white mb-2 group-hover:text-gem-purple transition-colors">I Am Gloria</h3>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 演唱会现场记录区 -->
+    <section id="concerts" class="py-24 relative bg-[#0a0a0f] overflow-hidden">
+        <!-- 装饰光晕与宝石 -->
+        <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-gem-purple/10 rounded-full blur-[100px] pointer-events-none"></div>
+        <div class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-gem-neon/10 rounded-full blur-[100px] pointer-events-none"></div>
+        <i data-lucide="gem" class="absolute top-10 right-20 text-gem-purple/30 w-8 h-8 animate-float pointer-events-none"></i>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-16 relative">
+                <i data-lucide="sparkles" class="absolute -top-6 left-1/2 -translate-x-1/2 text-gem-purple/50 w-8 h-8 animate-pulse"></i>
+                <h2 class="text-3xl md:text-5xl font-black mb-4"><span class="text-gem-purple">/</span> 回到那个夏天</h2>
+                <p class="text-gray-400">唯有忍耐到底的，必然得救</p>
+            </div>
+
+            <!-- 沉浸式大图画廊 -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+                
+                <!-- 大图 1 (全宽电影感) -->
+                <div class="md:col-span-2 group relative rounded-3xl overflow-hidden aspect-[16/9] md:aspect-[21/9] bg-gray-900 shadow-2xl hover:shadow-gem-purple/20 transition-all duration-500 border border-white/5">
+                    <img src="images/pre.jpg?w=2000&auto=format&fit=crop" alt="演唱会现场大图" class="w-full h-full object-cover group-hover:scale-105 group-hover:brightness-110 transition-all duration-1000">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8 md:p-12">
+                        <h3 class="text-3xl md:text-5xl font-black text-white mb-3 transform translate-y-8 group-hover:translate-y-0 transition-transform duration-500">I AM GLORIA 世界巡回演唱会</h3>
+                        <p class="text-gem-pink flex items-center gap-2 text-lg transform translate-y-8 group-hover:translate-y-0 transition-transform duration-500 delay-75 font-light tracking-wide">
+                            <i data-lucide="map-pin" class="w-5 h-5"></i> 洛阳市奥林匹克中心体育场 - 2025/07/26
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 大图 2 (半宽) -->
+                <div class="group relative rounded-3xl overflow-hidden aspect-[4/3] bg-gray-900 shadow-xl hover:shadow-gem-pink/20 transition-all duration-500 border border-white/5">
+                    <img src="images/ych1.JPG?w=1000&auto=format&fit=crop" alt="演唱会现场大图" class="w-full h-full object-cover group-hover:scale-105 group-hover:brightness-110 transition-all duration-1000">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8">
+                        <h3 class="text-2xl font-bold text-white mb-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">再见</h3>
+                        <p class="text-gem-pink flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-75 font-light tracking-wide">
+                            <i data-lucide="guitar" class="w-4 h-4"></i> 不说再见
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 大图 3 (半宽) -->
+                <div class="group relative rounded-3xl overflow-hidden aspect-[4/3] bg-gray-900 shadow-xl hover:shadow-gem-neon/20 transition-all duration-500 border border-white/5">
+                    <img src="images/ych2.JPG?w=1000&auto=format&fit=crop" alt="演唱会现场大图" class="w-full h-full object-cover group-hover:scale-105 group-hover:brightness-110 transition-all duration-1000">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8">
+                        <h3 class="text-2xl font-bold text-white mb-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">你不是真正的快乐</h3>
+                        <p class="text-gem-neon flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-75 font-light tracking-wide">
+                            <i data-lucide="music" class="w-4 h-4"></i> 我要你快乐
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 大图 4 (半宽) -->
+                <div class="group relative rounded-3xl overflow-hidden aspect-[4/3] bg-gray-900 shadow-xl hover:shadow-gem-neon/20 transition-all duration-500 border border-white/5">
+                    <img src="images/ych3.JPG?w=1000&auto=format&fit=crop" alt="演唱会现场大图" class="w-full h-full object-cover group-hover:scale-105 group-hover:brightness-110 transition-all duration-1000">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8">
+                        <h3 class="text-2xl font-bold text-white mb-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">让世界暂停一分钟</h3>
+                        <p class="text-gem-neon flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-75 font-light tracking-wide">
+                            <i data-lucide="Piano" class="w-4 h-4"></i> 来到我的怀中
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 大图 6 (半宽) -->
+                <div class="group relative rounded-3xl overflow-hidden aspect-[4/3] bg-gray-900 shadow-xl hover:shadow-gem-pink/20 transition-all duration-500 border border-white/5">
+                    <img src="images/ych4.JPG?w=1000&auto=format&fit=crop" alt="演唱会现场大图" class="w-full h-full object-cover group-hover:scale-105 group-hover:brightness-110 transition-all duration-1000">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8">
+                        <h3 class="text-2xl font-bold text-white mb-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">倒数</h3>
+                        <p class="text-gem-neon flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-75 font-light tracking-wide">
+                            <i data-lucide="mic-2" class="w-4 h-4"></i> One more time!
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 大图 7 (半宽) -->
+                <div class="group relative rounded-3xl overflow-hidden aspect-[4/3] bg-gray-900 shadow-xl hover:shadow-gem-neon/20 transition-all duration-500 border border-white/5">
+                    <img src="images/ych5.JPG?w=1000&auto=format&fit=crop" alt="演唱会现场大图" class="w-full h-full object-cover group-hover:scale-105 group-hover:brightness-110 transition-all duration-1000">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8">
+                        <h3 class="text-2xl font-bold text-white mb-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">新的心跳</h3>
+                        <p class="text-gem-pink flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-75 font-light tracking-wide">
+                            <i data-lucide="heart" class="w-4 h-4"></i> 旧事已过 都变成新的
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 大图 8 (半宽) -->
+                <div class="group relative rounded-3xl overflow-hidden aspect-[4/3] bg-gray-900 shadow-xl hover:shadow-gem-pink/20 transition-all duration-500 border border-white/5">
+                    <img src="images/ych6.JPG?w=1000&auto=format&fit=crop" alt="演唱会现场大图" class="w-full h-full object-cover group-hover:scale-105 group-hover:brightness-110 transition-all duration-1000">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8">
+                        <h3 class="text-2xl font-bold text-white mb-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">泡沫</h3>
+                        <p class="text-gem-pink flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-75 font-light tracking-wide">
+                            <i data-lucide="music-2" class="w-4 h-4"></i> 全都是泡馍
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 大图 6 (全宽电影感) -->
+                <div class="md:col-span-2 group relative rounded-3xl overflow-hidden aspect-[16/9] md:aspect-[21/9] bg-gray-900 shadow-2xl hover:shadow-gem-purple/20 transition-all duration-500 border border-white/5">
+                    <img src="images/tk.jpg?w=2000&auto=format&fit=crop" alt="演唱会现场大图" class="w-full h-full object-cover group-hover:scale-105 group-hover:brightness-110 transition-all duration-1000">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8 md:p-12">
+                        <h3 class="text-3xl md:text-5xl font-black text-white mb-3 transform translate-y-8 group-hover:translate-y-0 transition-transform duration-500">天空没有极限</h3>
+                        <p class="text-gem-neon flex items-center gap-2 text-lg transform translate-y-8 group-hover:translate-y-0 transition-transform duration-500 delay-75 font-light tracking-wide">
+                            <i data-lucide="sparkles" class="w-5 h-5"></i> 你的眼光决定一切
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="py-12 border-t border-white/5 bg-black">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <h3 class="text-2xl font-bold mb-4 text-gradient">I AM GLORIA</h3>
+            <p class="text-gray-500 mb-6 font-light">"你走下的每一步，都是启示路"</p>
+            <div class="flex justify-center space-x-4 mb-8">
+                <i data-lucide="gem" class="text-gem-pink w-6 h-6 animate-pulse"></i>
+            </div>
+            <p class="text-sm text-gray-600">
+                © 2026 Conscient 🖤
+            </p>
+        </div>
+    </footer>
+
+    <!-- 初始化图标与脚本 -->
+    <script>
+        // 初始化 Lucide 图标
+        lucide.createIcons();
+    </script>
+</body>
+</html>
