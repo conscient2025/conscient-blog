@@ -12,9 +12,8 @@
             margin: 0;
             color: #101014;
             background:
-                radial-gradient(circle at 18% 18%, rgba(114, 14, 236, 0.14), transparent 34%),
-                radial-gradient(circle at 82% 16%, rgba(79, 141, 255, 0.16), transparent 32%),
-                linear-gradient(180deg, #ffffff 0%, var(--clean-surface) 54%, #f4f0ff 100%);
+                linear-gradient(135deg, rgba(40, 88, 255, 0.08), transparent 30%),
+                linear-gradient(180deg, #fbfcff 0%, #f4f7fb 52%, #ffffff 100%);
             font-family: Arial, "Microsoft YaHei", sans-serif;
         }
 
@@ -43,90 +42,259 @@
         }
 
         .wechat-page {
-            width: min(1120px, calc(100% - 40px));
+            width: min(1160px, calc(100% - 40px));
             margin: 0 auto;
-            padding: 120px 0 72px;
+            padding: 92px 0 72px;
         }
 
         .wechat-hero {
             display: grid;
-            grid-template-columns: minmax(0, 1.1fr) minmax(300px, 0.9fr);
-            gap: 42px;
-            align-items: end;
-            min-height: 42vh;
+            grid-template-columns: minmax(0, 1.08fr) minmax(340px, 0.92fr);
+            gap: 44px;
+            align-items: center;
+            min-height: 470px;
+        }
+
+        .hero-copy {
+            max-width: 720px;
         }
 
         .wechat-kicker {
-            color: #720eec;
+            width: fit-content;
+            border: 1px solid rgba(28, 63, 170, 0.16);
+            border-radius: 999px;
+            padding: 7px 11px;
+            color: #2858ff;
+            background: rgba(255, 255, 255, 0.72);
             font-size: 0.78rem;
             font-weight: 800;
-            letter-spacing: 0.24rem;
+            letter-spacing: 0.18rem;
             text-transform: uppercase;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
 
         .wechat-title {
-            font-size: clamp(3rem, 8vw, 6.5rem);
-            line-height: 0.95;
+            font-size: clamp(3.2rem, 7vw, 6.2rem);
+            line-height: 0.98;
             letter-spacing: 0;
-            margin: 0 0 26px;
+            margin: 0 0 20px;
             color: #121218;
-            text-shadow: 0 14px 42px rgba(114, 14, 236, 0.1);
         }
 
         .wechat-intro {
-            max-width: 700px;
-            color: rgba(18, 18, 24, 0.62);
-            font-size: 1.08rem;
-            line-height: 1.9;
+            max-width: 620px;
+            color: rgba(18, 18, 24, 0.66);
+            font-size: 1rem;
+            line-height: 1.85;
             margin: 0;
         }
 
-        .admin-panel {
-            border: 1px solid rgba(20, 20, 28, 0.08);
-            border-radius: 24px;
-            padding: 24px;
-            background:
-                linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.78)),
-                radial-gradient(circle at 82% 0, rgba(79, 141, 255, 0.14), transparent 54%);
-            box-shadow: 0 24px 70px rgba(24, 18, 48, 0.08);
+        .reader-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 28px;
         }
 
-        .admin-panel h2 {
-            font-size: 1.3rem;
-            margin: 0 0 16px;
+        .reader-pill {
+            border: 1px solid rgba(20, 20, 28, 0.08);
+            border-radius: 999px;
+            padding: 9px 13px;
+            color: rgba(18, 18, 24, 0.68);
+            background: rgba(255, 255, 255, 0.74);
+            font-size: 0.9rem;
+        }
+
+        .side-stack {
+            display: grid;
+            gap: 14px;
+        }
+
+        .admin-console {
+            display: grid;
+            gap: 14px;
+            border: 1px solid rgba(20, 20, 28, 0.08);
+            border-radius: 8px;
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.82);
+            box-shadow: 0 18px 48px rgba(25, 35, 70, 0.1);
+            backdrop-filter: blur(16px);
+        }
+
+        .admin-panel,
+        .account-panel {
+            border: 1px solid rgba(20, 20, 28, 0.08);
+            border-radius: 8px;
+            padding: 18px;
+            background: #fff;
+        }
+
+        .panel-label {
+            margin: 0 0 7px;
+            color: #2858ff;
+            font-size: 0.72rem;
+            font-weight: 900;
+            letter-spacing: 0.14rem;
+            text-transform: uppercase;
+        }
+
+        .admin-panel h2,
+        .account-panel h2 {
+            font-size: 1.15rem;
+            margin: 0;
+        }
+
+        .account-panel {
+            display: grid;
+            gap: 14px;
+        }
+
+        .account-status {
+            color: rgba(18, 18, 24, 0.64);
+            font-size: 0.94rem;
+            line-height: 1.7;
+            margin: 0;
+        }
+
+        .account-actions {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .account-card {
+            display: grid;
+            grid-template-columns: 44px minmax(0, 1fr);
+            gap: 12px;
+            align-items: center;
+            border: 1px solid rgba(20, 20, 28, 0.08);
+            border-radius: 8px;
+            padding: 12px;
+            background: #f7f9fc;
+        }
+
+        .account-avatar,
+        .account-avatar-fallback {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: #121218;
+            color: #fff;
+            object-fit: cover;
+            display: grid;
+            place-items: center;
+            font-weight: 900;
+        }
+
+        .account-name {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 4px;
+            font-weight: 900;
+            color: #121218;
+        }
+
+        .role-badge {
+            border-radius: 999px;
+            padding: 3px 8px;
+            color: #fff;
+            background: #2858ff;
+            font-size: 0.72rem;
+            font-weight: 900;
+        }
+
+        .role-badge.user {
+            color: rgba(18, 18, 24, 0.72);
+            background: rgba(20, 20, 28, 0.08);
+        }
+
+        .account-note {
+            color: rgba(18, 18, 24, 0.58);
+            font-size: 0.88rem;
+            line-height: 1.55;
+        }
+
+        .github-login-btn,
+        .logout-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: 0;
+            border-radius: 10px;
+            padding: 10px 15px;
+            color: #fff;
+            background: #121218;
+            font: inherit;
+            font-weight: 800;
+            text-decoration: none;
+            cursor: pointer;
+            transition: transform 0.2s ease, background 0.2s ease;
+        }
+
+        .github-login-btn:hover,
+        .logout-btn:hover,
+        .upload-form button:hover {
+            transform: translateY(-1px);
+        }
+
+        .logout-btn {
+            color: #121218;
+            background: rgba(20, 20, 28, 0.08);
         }
 
         .upload-form {
             display: grid;
-            gap: 12px;
+            gap: 11px;
+            margin-top: 14px;
+        }
+
+        .form-row {
+            display: grid;
+            gap: 6px;
+        }
+
+        .form-row span {
+            color: rgba(18, 18, 24, 0.66);
+            font-size: 0.82rem;
+            font-weight: 800;
         }
 
         .upload-form input,
         .upload-form textarea {
             width: 100%;
             border: 1px solid rgba(20, 20, 28, 0.1);
-            border-radius: 12px;
-            padding: 11px 12px;
+            border-radius: 8px;
+            padding: 10px 11px;
             color: #121218;
-            background: rgba(255, 255, 255, 0.82);
+            background: #fbfcff;
             font: inherit;
             outline: none;
+            box-sizing: border-box;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .upload-form input:focus,
+        .upload-form textarea:focus {
+            border-color: rgba(40, 88, 255, 0.42);
+            box-shadow: 0 0 0 3px rgba(40, 88, 255, 0.12);
         }
 
         .upload-form textarea {
-            min-height: 76px;
+            min-height: 72px;
             resize: vertical;
         }
 
         .upload-form input::file-selector-button,
         .upload-form button {
             border: 0;
-            border-radius: 10px;
+            border-radius: 8px;
             padding: 10px 14px;
             font-weight: 800;
             color: #fff;
-            background: #720eec;
+            background: #2858ff;
             cursor: pointer;
         }
 
@@ -142,7 +310,7 @@
         }
 
         .article-section {
-            margin-top: 72px;
+            margin-top: 36px;
         }
 
         .section-heading {
@@ -159,7 +327,7 @@
         }
 
         .section-heading span {
-            color: #720eec;
+            color: #2858ff;
             font-size: 0.92rem;
             letter-spacing: 0.12rem;
             text-transform: uppercase;
@@ -176,25 +344,21 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            padding: 24px;
-            border-radius: 24px;
+            padding: 22px;
+            border-radius: 8px;
             border: 1px solid rgba(20, 20, 28, 0.08);
-            background:
-                linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(255, 255, 255, 0.74)),
-                radial-gradient(circle at 74% 0, rgba(114, 14, 236, 0.13), transparent 56%);
+            background: rgba(255, 255, 255, 0.86);
             text-decoration: none;
             color: #121218;
-            box-shadow: 0 24px 70px rgba(24, 18, 48, 0.08);
+            box-shadow: 0 18px 44px rgba(25, 35, 70, 0.07);
             transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
         }
 
         .article-card:hover {
-            transform: translateY(-8px);
-            border-color: rgba(114, 14, 236, 0.18);
-            background:
-                linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(255, 255, 255, 0.84)),
-                radial-gradient(circle at 74% 0, rgba(114, 14, 236, 0.18), transparent 58%);
-            box-shadow: 0 30px 80px rgba(36, 20, 84, 0.12);
+            transform: translateY(-5px);
+            border-color: rgba(40, 88, 255, 0.2);
+            background: #fff;
+            box-shadow: 0 22px 52px rgba(25, 35, 70, 0.11);
         }
 
         .article-card-link {
@@ -203,7 +367,7 @@
         }
 
         .article-meta {
-            color: #720eec;
+            color: #2858ff;
             font-size: 0.82rem;
             font-weight: 800;
             letter-spacing: 0.08rem;
@@ -224,7 +388,7 @@
 
         .article-arrow {
             margin-top: 32px;
-            color: #720eec;
+            color: #2858ff;
             font-weight: 800;
         }
 
@@ -237,18 +401,20 @@
         }
 
         .delete-article-btn {
-            border: 1px solid rgba(248, 113, 113, 0.52);
+            border: 1px solid rgba(185, 28, 28, 0.24);
             border-radius: 999px;
-            padding: 8px 12px;
-            color: #fecaca;
-            background: rgba(127, 29, 29, 0.22);
+            padding: 9px 15px;
+            color: #fff;
+            background: #dc2626;
+            box-shadow: 0 10px 24px rgba(220, 38, 38, 0.22);
             font-weight: 800;
             cursor: pointer;
         }
 
         .delete-article-btn:hover {
             color: #fff;
-            background: rgba(220, 38, 38, 0.38);
+            background: #b91c1c;
+            transform: translateY(-1px);
         }
 
         @media (max-width: 900px) {
@@ -257,8 +423,12 @@
                 grid-template-columns: 1fr;
             }
 
+            .wechat-hero {
+                min-height: auto;
+            }
+
             .wechat-page {
-                padding-top: 96px;
+                padding-top: 88px;
             }
         }
     </style>
@@ -296,23 +466,49 @@
 
     <main class="wechat-page">
         <section class="wechat-hero">
-            <div>
+            <div class="hero-copy">
                 <div class="wechat-kicker">WeChat Reader MVP</div>
                 <h1 class="wechat-title">公众号</h1>
                 <p class="wechat-intro">
                     这里现在是一个本地文章阅读器。上传一篇不包含评论点赞区的 HTML，后端会保存正文和文章元数据，读者可以从下方列表进入阅读页。
                 </p>
+                <div class="reader-pills" aria-label="阅读器状态">
+                    <span class="reader-pill">公开阅读</span>
+                    <span class="reader-pill">GitHub 管理员发布</span>
+                    <span class="reader-pill">微信图片本地化</span>
+                </div>
             </div>
-            <aside class="admin-panel">
-                <h2>上传文章 HTML</h2>
-                <form class="upload-form" id="uploadForm">
-                    <input id="articleTitle" name="title" type="text" placeholder="文章标题" required>
-                    <input id="articleSlug" name="slug" type="text" placeholder="英文 slug，可留空自动生成">
-                    <textarea id="articleSummary" name="summary" placeholder="摘要，可留空自动从正文生成"></textarea>
-                    <input id="articleFile" name="file" type="file" accept=".html,text/html" required>
-                    <button type="submit">上传并发布</button>
-                    <div class="upload-status" id="uploadStatus"></div>
-                </form>
+            <aside class="admin-console">
+                <div class="account-panel" id="accountPanel">
+                    <p class="panel-label">Access</p>
+                    <h2>GitHub 账号</h2>
+                    <div class="account-status" id="accountStatus">正在检查登录状态...</div>
+                    <div class="account-actions" id="accountActions"></div>
+                </div>
+                <aside class="admin-panel" id="adminPanel" hidden>
+                    <p class="panel-label">Publish</p>
+                    <h2>上传文章 HTML</h2>
+                    <form class="upload-form" id="uploadForm">
+                        <label class="form-row">
+                            <span>标题</span>
+                            <input id="articleTitle" name="title" type="text" placeholder="文章标题" required>
+                        </label>
+                        <label class="form-row">
+                            <span>Slug</span>
+                            <input id="articleSlug" name="slug" type="text" placeholder="英文 slug，可留空自动生成">
+                        </label>
+                        <label class="form-row">
+                            <span>摘要</span>
+                            <textarea id="articleSummary" name="summary" placeholder="可留空，后端会从正文生成"></textarea>
+                        </label>
+                        <label class="form-row">
+                            <span>HTML 文件</span>
+                            <input id="articleFile" name="file" type="file" accept=".html,text/html" required>
+                        </label>
+                        <button type="submit">上传并发布</button>
+                        <div class="upload-status" id="uploadStatus"></div>
+                    </form>
+                </aside>
             </aside>
         </section>
 
@@ -332,6 +528,20 @@
         const emptyState = document.getElementById('emptyState');
         const statusEl = document.getElementById('uploadStatus');
         const form = document.getElementById('uploadForm');
+        const adminPanel = document.getElementById('adminPanel');
+        const accountStatus = document.getElementById('accountStatus');
+        const accountActions = document.getElementById('accountActions');
+        let currentUser = null;
+        let isAdmin = false;
+
+        function escapeHtml(value) {
+            return String(value || '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
 
         function formatDate(value) {
             if (!value) return '未注明日期';
@@ -350,26 +560,102 @@
                 const card = document.createElement('article');
                 card.className = 'article-card';
                 const articleUrl = `../article/?slug=${encodeURIComponent(article.slug)}`;
+                const safeTitle = escapeHtml(article.title);
+                const safeSummary = escapeHtml(article.summary || '暂无摘要');
+                const deleteButton = isAdmin
+                    ? `<button class="delete-article-btn" type="button" data-slug="${escapeHtml(article.slug)}" data-title="${safeTitle}">删除</button>`
+                    : '';
                 card.innerHTML = `
                     <a class="article-card-link" href="${articleUrl}">
                         <div>
                             <div class="article-meta">${formatDate(article.createdAt)} · ${article.localImageCount || 0} 张本地图片</div>
-                            <h3>${article.title}</h3>
-                            <p>${article.summary || '暂无摘要'}</p>
+                            <h3>${safeTitle}</h3>
+                            <p>${safeSummary}</p>
                         </div>
                     </a>
                     <div class="article-actions">
                         <a class="article-arrow" href="${articleUrl}">阅读 →</a>
-                        <button class="delete-article-btn" type="button" data-slug="${article.slug}" data-title="${article.title}">删除</button>
+                        ${deleteButton}
                     </div>
                 `;
                 grid.appendChild(card);
             });
         }
 
+        function renderAccount(adminLogin) {
+            adminPanel.hidden = !isAdmin;
+
+            if (!currentUser) {
+                accountStatus.innerHTML = `
+                    <div class="account-card">
+                        <span class="account-avatar-fallback">GH</span>
+                        <div>
+                            <div class="account-name">未登录</div>
+                            <div class="account-note">所有人都可以阅读；只有 ${escapeHtml(adminLogin)} 登录后能上传和删除文章。</div>
+                        </div>
+                    </div>
+                `;
+                accountActions.innerHTML = '<a class="github-login-btn no-loader" href="/auth/github">使用 GitHub 登录</a>';
+                return;
+            }
+
+            const roleText = isAdmin ? '管理员' : '普通用户';
+            const roleClass = isAdmin ? 'admin' : 'user';
+            const safeLogin = escapeHtml(currentUser.login);
+            const avatar = currentUser.avatarUrl
+                ? `<img class="account-avatar" src="${escapeHtml(currentUser.avatarUrl)}" alt="${safeLogin} 的 GitHub 头像">`
+                : `<span class="account-avatar-fallback">${safeLogin.slice(0, 2).toUpperCase()}</span>`;
+            accountStatus.innerHTML = `
+                <div class="account-card">
+                    ${avatar}
+                    <div>
+                        <div class="account-name">
+                            ${safeLogin}
+                            <span class="role-badge ${roleClass}">${roleText}</span>
+                        </div>
+                        <div class="account-note">${isAdmin ? '你可以上传、发布和删除文章。' : '你可以阅读文章，不能上传或删除。'}</div>
+                    </div>
+                </div>
+            `;
+            accountActions.innerHTML = '<button class="logout-btn" type="button" id="logoutBtn">退出登录</button>';
+            document.getElementById('logoutBtn').addEventListener('click', async () => {
+                await fetch('/auth/logout', { method: 'POST' });
+                currentUser = null;
+                isAdmin = false;
+                renderAccount(adminLogin);
+                await loadArticles();
+            });
+        }
+
+        async function loadMe() {
+            const loginResult = new URLSearchParams(window.location.search).get('login');
+            try {
+                const response = await fetch('/api/me');
+                const data = await response.json();
+                currentUser = data.user || null;
+                isAdmin = Boolean(currentUser && currentUser.role === 'admin');
+                renderAccount(data.adminLogin || '管理员账号');
+                if (loginResult === 'failed') {
+                    accountStatus.insertAdjacentHTML('beforeend', '<div class="account-note">GitHub 登录失败，请稍后重试。</div>');
+                }
+                if (loginResult) {
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                }
+            } catch (error) {
+                currentUser = null;
+                isAdmin = false;
+                accountStatus.innerHTML = `<div class="account-note">登录状态加载失败：${escapeHtml(error.message)}</div>`;
+                accountActions.innerHTML = '<a class="github-login-btn no-loader" href="/auth/github">重新登录 GitHub</a>';
+            }
+        }
+
         grid.addEventListener('click', async event => {
             const button = event.target.closest('.delete-article-btn');
             if (!button) return;
+            if (!isAdmin) {
+                statusEl.textContent = '只有管理员可以删除文章。';
+                return;
+            }
 
             const slug = button.dataset.slug;
             const title = button.dataset.title || slug;
@@ -413,6 +699,10 @@
 
         form.addEventListener('submit', async event => {
             event.preventDefault();
+            if (!isAdmin) {
+                statusEl.textContent = '只有管理员可以上传文章。';
+                return;
+            }
             const file = document.getElementById('articleFile').files[0];
             if (!file) return;
 
@@ -445,7 +735,12 @@
             }
         });
 
-        loadArticles();
+        async function initPage() {
+            await loadMe();
+            await loadArticles();
+        }
+
+        initPage();
     </script>
 </body>
 </html>

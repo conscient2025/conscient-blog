@@ -5,6 +5,35 @@ const http = require('node:http');
 const path = require('node:path');
 const { URL } = require('node:url');
 
+function loadEnvFile(filePath) {
+  if (!fs.existsSync(filePath)) return;
+
+  const lines = fs.readFileSync(filePath, 'utf8').split(/\r?\n/);
+  for (const line of lines) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith('#')) continue;
+
+    const index = trimmed.indexOf('=');
+    if (index === -1) continue;
+
+    const key = trimmed.slice(0, index).trim();
+    let value = trimmed.slice(index + 1).trim();
+    if (!key || process.env[key] !== undefined) continue;
+
+    if (
+      (value.startsWith('"') && value.endsWith('"')) ||
+      (value.startsWith("'") && value.endsWith("'"))
+    ) {
+      value = value.slice(1, -1);
+    }
+
+    process.env[key] = value;
+  }
+}
+
+loadEnvFile(path.join(__dirname, '.env'));
+loadEnvFile(path.join(path.resolve(__dirname, '..'), '.env'));
+
 const PORT = Number(process.env.PORT || 3000);
 const ROOT_DIR = path.resolve(__dirname, '..');
 const PUBLIC_DIR = path.join(ROOT_DIR, 'frontend', 'public');
@@ -13,6 +42,31 @@ const UPLOAD_DIR = path.join(__dirname, 'uploads', 'articles');
 const ARTICLES_FILE = path.join(DATA_DIR, 'articles.json');
 const MAX_BODY_BYTES = 15 * 1024 * 1024;
 const IMAGE_HOSTS = new Set(['mmbiz.qpic.cn', 'mmbiz.qlogo.cn']);
+const GITHUB_AUTH_URL = 'https://github.com/login/oauth/authorize';
+const GITHUB_TOKEN_URL = 'https://github.com/login/oauth/access_token';
+const GITHUB_USER_URL = 'https://api.github.com/user';
+const GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID || '';
+const GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET || '';
+function normalizeGithubLogin(value) {
+  return String(value || '')
+    .trim()
+    .replace(/^https?:\/\/github\.com\//i, '')
+    .replace(/^@+/, '')
+    .split(/[/?#]/)[0]
+    .trim()
+    .toLowerCase();
+}
+
+const ADMIN_GITHUB_LOGIN = normalizeGithubLogin(process.env.ADMIN_GITHUB_LOGIN || 'conscient2025');
+const SESSION_COOKIE = 'conscient_session';
+const OAUTH_STATE_COOKIE = 'conscient_oauth_state';
+const SESSION_TTL_SECONDS = 7 * 24 * 60 * 60;
+const OAUTH_STATE_TTL_SECONDS = 10 * 60;
+const SESSION_SECRET = process.env.SESSION_SECRET || crypto.randomBytes(32).toString('hex');
+
+if (!process.env.SESSION_SECRET) {
+  console.warn('SESSION_SECRET is not set; generated sessions will be invalid after server restart.');
+}
 
 const MIME_TYPES = {
   '.css': 'text/css; charset=utf-8',
@@ -58,6 +112,179 @@ function sendJson(res, statusCode, payload) {
 
 function sendError(res, statusCode, message) {
   sendJson(res, statusCode, { error: message });
+}
+
+function sendRedirect(res, location, headers = {}) {
+  res.writeHead(302, {
+    Location: location,
+    'Cache-Control': 'no-store',
+    ...headers
+  });
+  res.end();
+}
+
+function parseCookies(req) {
+  const header = req.headers.cookie || '';
+  return Object.fromEntries(
+    header
+      .split(';')
+      .map(part => part.trim())
+      .filter(Boolean)
+      .map(part => {
+        const index = part.indexOf('=');
+        if (index === -1) return [part, ''];
+        return [part.slice(0, index), decodeURIComponent(part.slice(index + 1))];
+      })
+  );
+}
+
+function base64url(input) {
+  return Buffer.from(input)
+    .toString('base64url');
+}
+
+function sign(value) {
+  return crypto
+    .createHmac('sha256', SESSION_SECRET)
+    .update(value)
+    .digest('base64url');
+}
+
+function timingSafeEqualString(left, right) {
+  const leftBuffer = Buffer.from(String(left));
+  const rightBuffer = Buffer.from(String(right));
+  if (leftBuffer.length !== rightBuffer.length) return false;
+  return crypto.timingSafeEqual(leftBuffer, rightBuffer);
+}
+
+function packSignedJson(payload) {
+  const encoded = base64url(JSON.stringify(payload));
+  return `${encoded}.${sign(encoded)}`;
+}
+
+function unpackSignedJson(value) {
+  if (!value || !value.includes('.')) return null;
+  const [encoded, signature] = value.split('.', 2);
+  if (!timingSafeEqualString(signature, sign(encoded))) return null;
+
+  try {
+    return JSON.parse(Buffer.from(encoded, 'base64url').toString('utf8'));
+  } catch {
+    return null;
+  }
+}
+
+function getOrigin(req) {
+  if (process.env.APP_ORIGIN) return process.env.APP_ORIGIN.replace(/\/+$/, '');
+  const protocol = req.headers['x-forwarded-proto'] || 'http';
+  return `${protocol}://${req.headers.host || `127.0.0.1:${PORT}`}`;
+}
+
+function cookieHeader(req, name, value, options = {}) {
+  const attributes = [
+    `${name}=${encodeURIComponent(value)}`,
+    'Path=/',
+    'HttpOnly',
+    'SameSite=Lax'
+  ];
+  if (options.maxAge !== undefined) attributes.push(`Max-Age=${options.maxAge}`);
+  if (getOrigin(req).startsWith('https://')) attributes.push('Secure');
+  return attributes.join('; ');
+}
+
+function clearCookieHeader(req, name) {
+  return cookieHeader(req, name, '', { maxAge: 0 });
+}
+
+function publicUser(session) {
+  if (!session || !session.user) return null;
+  const login = String(session.user.login || '');
+  return {
+    id: session.user.id,
+    login,
+    name: session.user.name || '',
+    avatarUrl: session.user.avatarUrl || '',
+    htmlUrl: session.user.htmlUrl || '',
+    role: normalizeGithubLogin(login) === ADMIN_GITHUB_LOGIN ? 'admin' : 'user'
+  };
+}
+
+function getSession(req) {
+  const cookies = parseCookies(req);
+  const session = unpackSignedJson(cookies[SESSION_COOKIE]);
+  if (!session || !session.user || Number(session.expiresAt || 0) < Date.now()) {
+    return null;
+  }
+  return session;
+}
+
+function getCurrentUser(req) {
+  return publicUser(getSession(req));
+}
+
+function requireAdmin(req, res) {
+  const user = getCurrentUser(req);
+  if (!user) {
+    sendError(res, 401, 'Please sign in with GitHub first.');
+    return null;
+  }
+  if (user.role !== 'admin') {
+    sendError(res, 403, 'Only the site administrator can change articles.');
+    return null;
+  }
+  return user;
+}
+
+async function exchangeGithubCode(code, redirectUri) {
+  const response = await fetch(GITHUB_TOKEN_URL, {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      'User-Agent': 'ConscientBlog/0.1'
+    },
+    body: JSON.stringify({
+      client_id: GITHUB_CLIENT_ID,
+      client_secret: GITHUB_CLIENT_SECRET,
+      code,
+      redirect_uri: redirectUri
+    })
+  });
+  const data = await response.json();
+  if (!response.ok || data.error || !data.access_token) {
+    throw new Error(data.error_description || data.error || 'GitHub token exchange failed');
+  }
+  return data.access_token;
+}
+
+async function fetchGithubUser(accessToken) {
+  const response = await fetch(GITHUB_USER_URL, {
+    headers: {
+      Accept: 'application/vnd.github+json',
+      Authorization: `Bearer ${accessToken}`,
+      'User-Agent': 'ConscientBlog/0.1',
+      'X-GitHub-Api-Version': '2022-11-28'
+    }
+  });
+  const user = await response.json();
+  if (!response.ok || !user.login) {
+    throw new Error(user.message || 'GitHub user fetch failed');
+  }
+  return {
+    id: user.id,
+    login: user.login,
+    name: user.name || '',
+    avatarUrl: user.avatar_url || '',
+    htmlUrl: user.html_url || ''
+  };
+}
+
+function createSessionCookie(req, githubUser) {
+  const session = {
+    user: githubUser,
+    expiresAt: Date.now() + SESSION_TTL_SECONDS * 1000
+  };
+  return cookieHeader(req, SESSION_COOKIE, packSignedJson(session), { maxAge: SESSION_TTL_SECONDS });
 }
 
 function normalizeSlug(value, fallback) {
@@ -256,7 +483,81 @@ async function serveFile(res, filePath, extraHeaders = {}) {
   }
 }
 
+async function handleAuth(req, res, pathname, searchParams) {
+  if (req.method === 'GET' && pathname === '/auth/github') {
+    if (!GITHUB_CLIENT_ID || !GITHUB_CLIENT_SECRET) {
+      return sendError(res, 500, 'GitHub OAuth is not configured. Set GITHUB_CLIENT_ID and GITHUB_CLIENT_SECRET.');
+    }
+
+    const state = crypto.randomBytes(24).toString('base64url');
+    const redirectUri = `${getOrigin(req)}/auth/github/callback`;
+    const authUrl = new URL(GITHUB_AUTH_URL);
+    authUrl.searchParams.set('client_id', GITHUB_CLIENT_ID);
+    authUrl.searchParams.set('redirect_uri', redirectUri);
+    authUrl.searchParams.set('scope', 'read:user');
+    authUrl.searchParams.set('state', state);
+
+    return sendRedirect(res, authUrl.toString(), {
+      'Set-Cookie': cookieHeader(req, OAUTH_STATE_COOKIE, packSignedJson({
+        state,
+        expiresAt: Date.now() + OAUTH_STATE_TTL_SECONDS * 1000
+      }), { maxAge: OAUTH_STATE_TTL_SECONDS })
+    });
+  }
+
+  if (req.method === 'GET' && pathname === '/auth/github/callback') {
+    const code = searchParams.get('code');
+    const state = searchParams.get('state');
+    const cookies = parseCookies(req);
+    const storedState = unpackSignedJson(cookies[OAUTH_STATE_COOKIE]);
+    const clearState = clearCookieHeader(req, OAUTH_STATE_COOKIE);
+
+    if (!code || !state || !storedState || storedState.expiresAt < Date.now() || storedState.state !== state) {
+      return sendRedirect(res, '/wechat/?login=failed', { 'Set-Cookie': clearState });
+    }
+
+    try {
+      const redirectUri = `${getOrigin(req)}/auth/github/callback`;
+      const accessToken = await exchangeGithubCode(code, redirectUri);
+      const githubUser = await fetchGithubUser(accessToken);
+      return sendRedirect(res, '/wechat/?login=success', {
+        'Set-Cookie': [
+          clearState,
+          createSessionCookie(req, githubUser)
+        ]
+      });
+    } catch (error) {
+      console.error(error);
+      return sendRedirect(res, '/wechat/?login=failed', { 'Set-Cookie': clearState });
+    }
+  }
+
+  if (req.method === 'POST' && pathname === '/auth/logout') {
+    return sendJsonWithHeaders(res, 200, { ok: true }, {
+      'Set-Cookie': clearCookieHeader(req, SESSION_COOKIE)
+    });
+  }
+
+  return false;
+}
+
+function sendJsonWithHeaders(res, statusCode, payload, headers = {}) {
+  res.writeHead(statusCode, {
+    'Content-Type': 'application/json; charset=utf-8',
+    'Cache-Control': 'no-store',
+    ...headers
+  });
+  res.end(JSON.stringify(payload));
+}
+
 async function handleApi(req, res, pathname) {
+  if (req.method === 'GET' && pathname === '/api/me') {
+    return sendJson(res, 200, {
+      user: getCurrentUser(req),
+      adminLogin: ADMIN_GITHUB_LOGIN
+    });
+  }
+
   if (req.method === 'GET' && pathname === '/api/articles') {
     const articles = await readArticles();
     const published = articles
@@ -274,6 +575,8 @@ async function handleApi(req, res, pathname) {
   }
 
   if (req.method === 'POST' && pathname === '/api/admin/articles') {
+    if (!requireAdmin(req, res)) return;
+
     let payload;
     try {
       payload = JSON.parse(await readBody(req));
@@ -319,6 +622,8 @@ async function handleApi(req, res, pathname) {
 
   const adminArticleMatch = pathname.match(/^\/api\/admin\/articles\/([a-z0-9-]+)$/);
   if (req.method === 'DELETE' && adminArticleMatch) {
+    if (!requireAdmin(req, res)) return;
+
     const slug = adminArticleMatch[1];
     const articles = await readArticles();
     const index = articles.findIndex(item => item.slug === slug);
@@ -373,6 +678,11 @@ async function handleRequest(req, res) {
   try {
     const url = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
     const pathname = url.pathname;
+
+    if (pathname.startsWith('/auth/')) {
+      const handled = await handleAuth(req, res, pathname, url.searchParams);
+      if (handled !== false) return;
+    }
 
     if (pathname.startsWith('/api/')) {
       await handleApi(req, res, pathname);

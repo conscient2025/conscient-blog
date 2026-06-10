@@ -18,6 +18,38 @@ npm start
 
 Open `http://127.0.0.1:3000/wechat/`.
 
+## GitHub OAuth setup
+
+Create a GitHub OAuth App:
+
+```txt
+Homepage URL: http://127.0.0.1:3000/
+Authorization callback URL: http://127.0.0.1:3000/auth/github/callback
+```
+
+Copy `backend/.env.example` to `backend/.env`, then fill in the values:
+
+```txt
+GITHUB_CLIENT_ID=your_client_id
+GITHUB_CLIENT_SECRET=your_client_secret
+SESSION_SECRET=replace_with_a_long_random_secret
+ADMIN_GITHUB_LOGIN=conscient2025
+APP_ORIGIN=http://127.0.0.1:3000
+```
+
+Or set the same values in PowerShell before running:
+
+```powershell
+$env:GITHUB_CLIENT_ID="your_client_id"
+$env:GITHUB_CLIENT_SECRET="your_client_secret"
+$env:SESSION_SECRET="replace_with_a_long_random_secret"
+$env:ADMIN_GITHUB_LOGIN="conscient2025"
+$env:APP_ORIGIN="http://127.0.0.1:3000"
+npm start
+```
+
+The default admin login is `conscient2025`. Override `ADMIN_GITHUB_LOGIN` if the admin GitHub username changes.
+
 ## MVP article flow
 
 1. Open the WeChat page.
@@ -52,7 +84,9 @@ If an image fails to download, the article is still published and the failure is
 
 ## Delete articles
 
-The WeChat page has a delete button on each article card. Deleting removes:
+The WeChat page shows upload and delete controls only when the signed-in GitHub user matches `ADMIN_GITHUB_LOGIN`. The backend also enforces this on `/api/admin/articles`.
+
+Deleting removes:
 
 ```txt
 backend/data/articles.json metadata entry

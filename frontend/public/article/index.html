@@ -12,34 +12,21 @@
             margin: 0;
             color: #101014;
             background:
-                radial-gradient(circle at 18% 18%, rgba(114, 14, 236, 0.14), transparent 34%),
-                radial-gradient(circle at 82% 16%, rgba(79, 141, 255, 0.16), transparent 32%),
-                linear-gradient(180deg, #ffffff 0%, var(--clean-surface) 54%, #f4f0ff 100%);
+                linear-gradient(135deg, rgba(40, 88, 255, 0.08), transparent 30%),
+                linear-gradient(180deg, #fbfcff 0%, #f4f7fb 52%, #ffffff 100%);
             font-family: Arial, "Microsoft YaHei", sans-serif;
+            overflow-y: auto;
         }
 
         html,
         body {
-            -ms-overflow-style: auto;
-            scrollbar-width: thin;
-            scrollbar-color: rgba(114, 14, 236, 0.42) rgba(255, 255, 255, 0.72);
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
 
         html::-webkit-scrollbar,
         body::-webkit-scrollbar {
-            display: block;
-            width: 10px;
-        }
-
-        html::-webkit-scrollbar-thumb,
-        body::-webkit-scrollbar-thumb {
-            border-radius: 999px;
-            background: rgba(114, 14, 236, 0.36);
-        }
-
-        html::-webkit-scrollbar-track,
-        body::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.72);
+            display: none;
         }
 
         .top-nav {
@@ -69,25 +56,26 @@
         .reader-page {
             width: min(980px, calc(100% - 32px));
             margin: 0 auto;
-            padding: 112px 0 72px;
+            min-height: 100vh;
+            padding: 72px 0 48px;
         }
 
         .reader-header {
-            margin-bottom: 24px;
+            margin-bottom: 22px;
         }
 
         .reader-back {
             display: inline-flex;
-            margin-bottom: 24px;
+            margin-bottom: 14px;
             color: #720eec;
             text-decoration: none;
             font-weight: 800;
         }
 
         .reader-title {
-            font-size: clamp(2.2rem, 6vw, 4.8rem);
+            font-size: clamp(2rem, 5vw, 4.2rem);
             line-height: 1.05;
-            margin: 0 0 14px;
+            margin: 0 0 10px;
             color: #121218;
             text-shadow: 0 14px 42px rgba(114, 14, 236, 0.1);
         }
@@ -100,8 +88,17 @@
             line-height: 1.8;
         }
 
+        .reader-summary {
+            display: -webkit-box;
+            margin: 6px 0 0;
+            overflow: hidden;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+        }
+
         .article-frame-shell {
-            margin-top: 30px;
+            height: clamp(760px, 88vh, 1120px);
+            margin-top: 28px;
             border-radius: 24px;
             overflow: hidden;
             background: #fff;
@@ -112,14 +109,13 @@
         .article-frame {
             display: block;
             width: 100%;
-            height: min(76vh, 820px);
-            min-height: 560px;
+            height: 100%;
             border: 0;
             background: #fff;
         }
 
         .interaction-placeholder {
-            margin-top: 28px;
+            margin-top: 16px;
             padding: 22px;
             border: 1px solid rgba(20, 20, 28, 0.08);
             border-radius: 18px;
@@ -127,6 +123,29 @@
                 linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(255, 255, 255, 0.76)),
                 radial-gradient(circle at 90% 0, rgba(79, 141, 255, 0.12), transparent 54%);
             box-shadow: 0 20px 60px rgba(24, 18, 48, 0.06);
+        }
+
+        @media (max-width: 700px) {
+            .reader-page {
+                padding-top: 64px;
+            }
+
+            .reader-title {
+                font-size: 2.2rem;
+            }
+
+            .reader-summary {
+                -webkit-line-clamp: 1;
+            }
+
+            .interaction-placeholder {
+                display: none;
+            }
+
+            .article-frame-shell {
+                height: 82vh;
+                min-height: 620px;
+            }
         }
     </style>
 </head>
