@@ -18,8 +18,8 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            padding: 60px 20px 40px;
+            justify-content: flex-start;
+            padding: 118px 20px 40px;
             position: relative;
         }
         
@@ -45,7 +45,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 30px;
+            gap: 18px;
         }
         
         .avatar-circle {
@@ -71,8 +71,10 @@
         .contact-card {
             background: #fff;
             border: 4px solid #000;
-            padding: 30px;
-            min-width: 320px;
+            padding: 22px 24px;
+            width: min(430px, calc(100vw - 48px));
+            box-sizing: border-box;
+            margin-top: 0;
             box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.3);
         }
         
@@ -83,32 +85,54 @@
             text-align: center;
         }
         
-        .contact-info p {
-            margin: 10px 0;
+        .contact-info {
+            display: grid;
+            gap: 9px;
+            width: fit-content;
+            margin: 0 auto;
+        }
+        
+        .contact-row {
+            display: grid;
+            grid-template-columns: 92px max-content;
+            align-items: baseline;
+            gap: 42px;
+            padding: 5px 0;
+        }
+        
+        .contact-label {
+            font-weight: bold;
+            color: #4a4a4a;
+            text-align: right;
+        }
+        
+        .contact-value,
+        .contact-value a {
             font-size: 1rem;
             color: #333;
         }
         
-        .social-links {
-            display: flex;
-            gap: 15px;
-            margin-top: 20px;
-            justify-content: center;
-        }
-        
-        .social-link {
-            padding: 10px 20px;
-            background: #fff;
-            color: #000;
+        .contact-value a {
+            color: #214e63;
             text-decoration: none;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            border: 2px solid #000;
+            font-weight: normal;
+            word-break: break-word;
         }
         
-        .social-link:hover {
-            background: #000;
-            color: #fff;
+        .contact-value a:hover {
+            color: #123847;
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 520px) {
+            .contact-info {
+                width: 100%;
+            }
+            
+            .contact-row {
+                grid-template-columns: minmax(78px, 0.8fr) minmax(0, 1.2fr);
+                gap: 20px;
+            }
         }
         
         .bubbles-container {
@@ -189,12 +213,25 @@
 
                     <h3>Contact Conscient</h3>
                     <div class="contact-info">
-
-                        <p><strong>Email:</strong> conscient@qq.com</p>
-                        <p><strong>Instagram:</strong> conscient_yang</p>
-                        <div class="social-links">
-                            <a href="https://github.com/conscient2025" class="social-link">GitHub</a>
-                            <a href="https://space.bilibili.com/1334620851" class="social-link">bilibili</a>
+                        <div class="contact-row">
+                            <span class="contact-label">Email</span>
+                            <span class="contact-value">conscient@qq.com</span>
+                        </div>
+                        <div class="contact-row">
+                            <span class="contact-label">Instagram</span>
+                            <span class="contact-value"><a href="https://www.instagram.com/conscientjoe/">conscientjoe</a></span>
+                        </div>
+                        <div class="contact-row">
+                            <span class="contact-label">GitHub</span>
+                            <span class="contact-value"><a href="https://github.com/conscient2025">conscient2025</a></span>
+                        </div>
+                        <div class="contact-row">
+                            <span class="contact-label">bilibili</span>
+                            <span class="contact-value"><a href="https://space.bilibili.com/1334620851">扬柿长</a></span>
+                        </div>
+                        <div class="contact-row">
+                            <span class="contact-label">公众号</span>
+                            <span class="contact-value">扬柿长</span>
                         </div>
                     </div>
                 </div>
