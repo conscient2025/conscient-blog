@@ -59,6 +59,12 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // ========== 页面切换逻辑 ==========
+function hidePageLoader() {
+    const loader = document.getElementById('pageLoader');
+    if (!loader) return;
+    loader.classList.remove('active');
+}
+
 function initPageTransitions() {
     const loader = document.getElementById('pageLoader');
     
@@ -87,6 +93,8 @@ function initPageTransitions() {
         }
     });
 }
+
+window.addEventListener('pageshow', hidePageLoader);
 
 function initMouseTracker() {
     window.addEventListener('mousemove', (e) => {

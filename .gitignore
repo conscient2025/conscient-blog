@@ -13,4 +13,6 @@ node_modules/
 backend/uploads/articles/*
 !backend/uploads/articles/.gitkeep
 backend/data/articles.json
+backend/data/*.sqlite
+backend/data/*.sqlite-*
 frontend/public/wechat/workzone/

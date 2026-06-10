@@ -4,6 +4,7 @@ const fsp = require('node:fs/promises');
 const http = require('node:http');
 const path = require('node:path');
 const { URL } = require('node:url');
+const Database = require('better-sqlite3');
 
 function loadEnvFile(filePath) {
   if (!fs.existsSync(filePath)) return;
@@ -40,7 +41,9 @@ const PUBLIC_DIR = path.join(ROOT_DIR, 'frontend', 'public');
 const DATA_DIR = path.join(__dirname, 'data');
 const UPLOAD_DIR = path.join(__dirname, 'uploads', 'articles');
 const ARTICLES_FILE = path.join(DATA_DIR, 'articles.json');
+const DATABASE_FILE = path.join(DATA_DIR, 'blog.sqlite');
 const MAX_BODY_BYTES = 15 * 1024 * 1024;
+const MAX_COMMENT_CHARS = 1000;
 const IMAGE_HOSTS = new Set(['mmbiz.qpic.cn', 'mmbiz.qlogo.cn']);
 const GITHUB_AUTH_URL = 'https://github.com/login/oauth/authorize';
 const GITHUB_TOKEN_URL = 'https://github.com/login/oauth/access_token';
@@ -82,6 +85,42 @@ const MIME_TYPES = {
   '.webp': 'image/webp'
 };
 
+fs.mkdirSync(DATA_DIR, { recursive: true });
+const db = new Database(DATABASE_FILE);
+db.pragma('journal_mode = WAL');
+db.pragma('foreign_keys = ON');
+db.exec(`
+  CREATE TABLE IF NOT EXISTS comments (
+    id TEXT PRIMARY KEY,
+    article_slug TEXT NOT NULL,
+    github_id INTEGER NOT NULL,
+    github_login TEXT NOT NULL,
+    github_avatar_url TEXT,
+    body TEXT NOT NULL,
+    created_at TEXT NOT NULL
+  );
+
+  CREATE INDEX IF NOT EXISTS idx_comments_article_created
+    ON comments (article_slug, created_at DESC);
+
+  CREATE TABLE IF NOT EXISTS article_likes (
+    article_slug TEXT NOT NULL,
+    github_id INTEGER NOT NULL,
+    github_login TEXT NOT NULL,
+    created_at TEXT NOT NULL,
+    PRIMARY KEY (article_slug, github_id)
+  );
+
+  CREATE TABLE IF NOT EXISTS comment_likes (
+    comment_id TEXT NOT NULL,
+    github_id INTEGER NOT NULL,
+    github_login TEXT NOT NULL,
+    created_at TEXT NOT NULL,
+    PRIMARY KEY (comment_id, github_id),
+    FOREIGN KEY (comment_id) REFERENCES comments(id) ON DELETE CASCADE
+  );
+`);
+
 async function ensureStorage() {
   await fsp.mkdir(DATA_DIR, { recursive: true });
   await fsp.mkdir(UPLOAD_DIR, { recursive: true });
@@ -100,6 +139,37 @@ async function readArticles() {
 async function writeArticles(articles) {
   await ensureStorage();
   await fsp.writeFile(ARTICLES_FILE, `${JSON.stringify(articles, null, 2)}\n`, 'utf8');
+}
+
+function compareArticles(a, b) {
+  const aOrder = Number(a.sortOrder);
+  const bOrder = Number(b.sortOrder);
+  const hasAOrder = Number.isFinite(aOrder);
+  const hasBOrder = Number.isFinite(bOrder);
+
+  if (hasAOrder && hasBOrder && aOrder !== bOrder) return aOrder - bOrder;
+  if (hasAOrder !== hasBOrder) return hasAOrder ? -1 : 1;
+  return String(b.createdAt).localeCompare(String(a.createdAt));
+}
+
+function normalizePublishDate(value) {
+  const raw = String(value || '').trim();
+  const match = raw.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (!match) return null;
+
+  const year = Number(match[1]);
+  const month = Number(match[2]);
+  const day = Number(match[3]);
+  const date = new Date(Date.UTC(year, month - 1, day));
+  if (
+    date.getUTCFullYear() !== year ||
+    date.getUTCMonth() !== month - 1 ||
+    date.getUTCDate() !== day
+  ) {
+    return null;
+  }
+
+  return `${match[1]}-${match[2]}-${match[3]}`;
 }
 
 function sendJson(res, statusCode, payload) {
@@ -235,6 +305,47 @@ function requireAdmin(req, res) {
   return user;
 }
 
+function requireUser(req, res) {
+  const user = getCurrentUser(req);
+  if (!user) {
+    sendError(res, 401, 'Please sign in with GitHub first.');
+    return null;
+  }
+  return user;
+}
+
+async function findPublishedArticle(slug) {
+  const articles = await readArticles();
+  return articles.find(item => item.slug === slug && item.status === 'published') || null;
+}
+
+function serializeComment(row) {
+  return {
+    id: row.id,
+    articleSlug: row.article_slug,
+    body: row.body,
+    createdAt: row.created_at,
+    author: {
+      githubId: row.github_id,
+      login: row.github_login,
+      avatarUrl: row.github_avatar_url || ''
+    },
+    likeCount: Number(row.like_count || 0),
+    likedByMe: Boolean(row.liked_by_me)
+  };
+}
+
+function getArticleReaction(slug, user) {
+  const likeCount = db.prepare('SELECT COUNT(*) AS count FROM article_likes WHERE article_slug = ?').get(slug).count;
+  const likedByMe = user
+    ? Boolean(db.prepare('SELECT 1 FROM article_likes WHERE article_slug = ? AND github_id = ?').get(slug, user.id))
+    : false;
+  return {
+    likeCount: Number(likeCount || 0),
+    likedByMe
+  };
+}
+
 async function exchangeGithubCode(code, redirectUri) {
   const response = await fetch(GITHUB_TOKEN_URL, {
     method: 'POST',
@@ -362,24 +473,94 @@ function extensionFromImage(url, contentType) {
   return '.jpg';
 }
 
-async function downloadImage(url, fileBasePath) {
-  const response = await fetch(url, {
-    headers: {
-      'User-Agent': 'Mozilla/5.0 ConscientBlog/0.1',
-      Referer: 'https://mp.weixin.qq.com/'
-    }
-  });
+function imageDownloadCandidates(url) {
+  const candidates = [];
+  const addCandidate = value => {
+    if (value && !candidates.includes(value)) candidates.push(value);
+  };
 
-  if (!response.ok) {
-    throw new Error(`图片下载失败 ${response.status}: ${url}`);
+  addCandidate(url);
+
+  try {
+    const parsed = new URL(url);
+    if (parsed.protocol === 'https:') {
+      const httpUrl = new URL(parsed);
+      httpUrl.protocol = 'http:';
+      addCandidate(httpUrl.toString());
+    }
+
+    for (const value of [...candidates]) {
+      const cleaned = new URL(value);
+      ['tp', 'wxfrom', 'wx_lazy', 'wx_co', 'retryload', 'scene'].forEach(param => {
+        cleaned.searchParams.delete(param);
+      });
+      addCandidate(cleaned.toString());
+
+      if (cleaned.protocol === 'https:') {
+        const httpCleaned = new URL(cleaned);
+        httpCleaned.protocol = 'http:';
+        addCandidate(httpCleaned.toString());
+      }
+    }
+  } catch {
+    return candidates;
   }
 
-  const contentType = response.headers.get('content-type') || '';
-  const ext = extensionFromImage(url, contentType);
-  const filePath = `${fileBasePath}${ext}`;
-  const buffer = Buffer.from(await response.arrayBuffer());
-  await fsp.writeFile(filePath, buffer);
-  return { filePath, ext };
+  return candidates;
+}
+
+function wait(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function fetchImage(url) {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 15000);
+
+  try {
+    return await fetch(url, {
+      signal: controller.signal,
+      headers: {
+        Accept: 'image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8',
+        'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125 Safari/537.36',
+        Referer: 'https://mp.weixin.qq.com/'
+      }
+    });
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
+async function downloadImage(url, fileBasePath) {
+  let lastError = null;
+
+  for (const candidate of imageDownloadCandidates(url)) {
+    for (let attempt = 1; attempt <= 2; attempt += 1) {
+      try {
+        const response = await fetchImage(candidate);
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`);
+        }
+
+        const buffer = Buffer.from(await response.arrayBuffer());
+        if (!buffer.length) {
+          throw new Error('empty image response');
+        }
+
+        const contentType = response.headers.get('content-type') || '';
+        const ext = extensionFromImage(candidate, contentType);
+        const filePath = `${fileBasePath}${ext}`;
+        await fsp.writeFile(filePath, buffer);
+        return { filePath, ext };
+      } catch (error) {
+        lastError = error;
+        if (attempt === 1) await wait(250);
+      }
+    }
+  }
+
+  throw new Error(`图片下载失败：${url}（${lastError ? lastError.message : 'unknown error'}）`);
 }
 
 async function localizeWechatImages(html, slug) {
@@ -562,7 +743,7 @@ async function handleApi(req, res, pathname) {
     const articles = await readArticles();
     const published = articles
       .filter(article => article.status === 'published')
-      .sort((a, b) => String(b.createdAt).localeCompare(String(a.createdAt)));
+      .sort(compareArticles);
     return sendJson(res, 200, { articles: published });
   }
 
@@ -572,6 +753,215 @@ async function handleApi(req, res, pathname) {
     const article = articles.find(item => item.slug === articleMatch[1] && item.status === 'published');
     if (!article) return sendError(res, 404, '文章不存在');
     return sendJson(res, 200, { article });
+  }
+
+  const articleCommentsMatch = pathname.match(/^\/api\/articles\/([a-z0-9-]+)\/comments$/);
+  if (req.method === 'GET' && articleCommentsMatch) {
+    const slug = articleCommentsMatch[1];
+    const article = await findPublishedArticle(slug);
+    if (!article) return sendError(res, 404, '文章不存在');
+
+    const user = getCurrentUser(req);
+    const rows = db.prepare(`
+      SELECT
+        comments.*,
+        COUNT(comment_likes.github_id) AS like_count,
+        EXISTS(
+          SELECT 1
+          FROM comment_likes mine
+          WHERE mine.comment_id = comments.id AND mine.github_id = ?
+        ) AS liked_by_me
+      FROM comments
+      LEFT JOIN comment_likes ON comment_likes.comment_id = comments.id
+      WHERE comments.article_slug = ?
+      GROUP BY comments.id
+      ORDER BY comments.created_at DESC
+    `).all(user ? user.id : null, slug);
+
+    return sendJson(res, 200, { comments: rows.map(serializeComment) });
+  }
+
+  if (req.method === 'POST' && articleCommentsMatch) {
+    const user = requireUser(req, res);
+    if (!user) return;
+
+    const slug = articleCommentsMatch[1];
+    const article = await findPublishedArticle(slug);
+    if (!article) return sendError(res, 404, '文章不存在');
+
+    let payload;
+    try {
+      payload = JSON.parse(await readBody(req));
+    } catch (error) {
+      return sendError(res, 400, error.message || '请求体不是有效 JSON');
+    }
+
+    const body = String(payload.body || '').trim();
+    if (!body) return sendError(res, 400, '请填写评论内容');
+    if (body.length > MAX_COMMENT_CHARS) {
+      return sendError(res, 400, `评论不能超过 ${MAX_COMMENT_CHARS} 个字符`);
+    }
+
+    const now = new Date().toISOString();
+    const comment = {
+      id: crypto.randomUUID(),
+      article_slug: slug,
+      github_id: user.id,
+      github_login: user.login,
+      github_avatar_url: user.avatarUrl || '',
+      body,
+      created_at: now
+    };
+    db.prepare(`
+      INSERT INTO comments (id, article_slug, github_id, github_login, github_avatar_url, body, created_at)
+      VALUES (@id, @article_slug, @github_id, @github_login, @github_avatar_url, @body, @created_at)
+    `).run(comment);
+
+    return sendJson(res, 201, {
+      comment: serializeComment({ ...comment, like_count: 0, liked_by_me: 0 })
+    });
+  }
+
+  const articleReactionsMatch = pathname.match(/^\/api\/articles\/([a-z0-9-]+)\/reactions$/);
+  if (req.method === 'GET' && articleReactionsMatch) {
+    const slug = articleReactionsMatch[1];
+    const article = await findPublishedArticle(slug);
+    if (!article) return sendError(res, 404, '文章不存在');
+
+    return sendJson(res, 200, {
+      reactions: getArticleReaction(slug, getCurrentUser(req))
+    });
+  }
+
+  const articleLikeMatch = pathname.match(/^\/api\/articles\/([a-z0-9-]+)\/like$/);
+  if ((req.method === 'POST' || req.method === 'DELETE') && articleLikeMatch) {
+    const user = requireUser(req, res);
+    if (!user) return;
+
+    const slug = articleLikeMatch[1];
+    const article = await findPublishedArticle(slug);
+    if (!article) return sendError(res, 404, '文章不存在');
+
+    if (req.method === 'POST') {
+      db.prepare(`
+        INSERT OR IGNORE INTO article_likes (article_slug, github_id, github_login, created_at)
+        VALUES (?, ?, ?, ?)
+      `).run(slug, user.id, user.login, new Date().toISOString());
+    } else {
+      db.prepare('DELETE FROM article_likes WHERE article_slug = ? AND github_id = ?').run(slug, user.id);
+    }
+
+    return sendJson(res, 200, {
+      reactions: getArticleReaction(slug, user)
+    });
+  }
+
+  const commentLikeMatch = pathname.match(/^\/api\/comments\/([a-f0-9-]+)\/like$/);
+  if ((req.method === 'POST' || req.method === 'DELETE') && commentLikeMatch) {
+    const user = requireUser(req, res);
+    if (!user) return;
+
+    const commentId = commentLikeMatch[1];
+    const comment = db.prepare('SELECT id FROM comments WHERE id = ?').get(commentId);
+    if (!comment) return sendError(res, 404, '评论不存在');
+
+    if (req.method === 'POST') {
+      db.prepare(`
+        INSERT OR IGNORE INTO comment_likes (comment_id, github_id, github_login, created_at)
+        VALUES (?, ?, ?, ?)
+      `).run(commentId, user.id, user.login, new Date().toISOString());
+    } else {
+      db.prepare('DELETE FROM comment_likes WHERE comment_id = ? AND github_id = ?').run(commentId, user.id);
+    }
+
+    const stats = db.prepare(`
+      SELECT
+        COUNT(comment_likes.github_id) AS like_count,
+        EXISTS(
+          SELECT 1
+          FROM comment_likes mine
+          WHERE mine.comment_id = ? AND mine.github_id = ?
+        ) AS liked_by_me
+      FROM comment_likes
+      WHERE comment_likes.comment_id = ?
+    `).get(commentId, user.id, commentId);
+
+    return sendJson(res, 200, {
+      commentId,
+      likeCount: Number(stats.like_count || 0),
+      likedByMe: Boolean(stats.liked_by_me)
+    });
+  }
+
+  if (req.method === 'GET' && pathname === '/api/admin/comments') {
+    if (!requireAdmin(req, res)) return;
+
+    const rows = db.prepare(`
+      SELECT
+        comments.*,
+        COUNT(comment_likes.github_id) AS like_count,
+        0 AS liked_by_me
+      FROM comments
+      LEFT JOIN comment_likes ON comment_likes.comment_id = comments.id
+      GROUP BY comments.id
+      ORDER BY comments.created_at DESC
+      LIMIT 200
+    `).all();
+    const articles = await readArticles();
+    const articleTitles = new Map(articles.map(article => [article.slug, article.title]));
+
+    return sendJson(res, 200, {
+      comments: rows.map(row => ({
+        ...serializeComment(row),
+        articleTitle: articleTitles.get(row.article_slug) || row.article_slug
+      }))
+    });
+  }
+
+  const adminCommentMatch = pathname.match(/^\/api\/admin\/comments\/([a-f0-9-]+)$/);
+  if (req.method === 'DELETE' && adminCommentMatch) {
+    if (!requireAdmin(req, res)) return;
+
+    const result = db.prepare('DELETE FROM comments WHERE id = ?').run(adminCommentMatch[1]);
+    if (!result.changes) return sendError(res, 404, '评论不存在');
+    return sendJson(res, 200, { ok: true });
+  }
+
+  if (req.method === 'PATCH' && pathname === '/api/admin/articles/order') {
+    if (!requireAdmin(req, res)) return;
+
+    let payload;
+    try {
+      payload = JSON.parse(await readBody(req));
+    } catch (error) {
+      return sendError(res, 400, error.message || '请求体不是有效 JSON');
+    }
+
+    const slugs = Array.isArray(payload.slugs) ? payload.slugs.map(slug => String(slug || '').trim()) : [];
+    if (!slugs.length) return sendError(res, 400, '请提供文章排序');
+
+    const uniqueSlugs = new Set(slugs);
+    if (uniqueSlugs.size !== slugs.length) return sendError(res, 400, '文章排序中有重复项');
+
+    const articles = await readArticles();
+    const published = articles.filter(article => article.status === 'published');
+    const publishedSlugs = new Set(published.map(article => article.slug));
+    if (published.length !== slugs.length || slugs.some(slug => !publishedSlugs.has(slug))) {
+      return sendError(res, 400, '排序列表必须包含全部已发表文章');
+    }
+
+    const orderBySlug = new Map(slugs.map((slug, index) => [slug, index]));
+    articles.forEach(article => {
+      if (orderBySlug.has(article.slug)) {
+        article.sortOrder = orderBySlug.get(article.slug);
+      }
+    });
+    await writeArticles(articles);
+
+    const sorted = articles
+      .filter(article => article.status === 'published')
+      .sort(compareArticles);
+    return sendJson(res, 200, { articles: sorted });
   }
 
   if (req.method === 'POST' && pathname === '/api/admin/articles') {
@@ -586,8 +976,10 @@ async function handleApi(req, res, pathname) {
 
     const title = String(payload.title || '').trim();
     const html = String(payload.html || '').trim();
+    const publishDate = normalizePublishDate(payload.publishDate);
     if (!title) return sendError(res, 400, '请填写文章标题');
     if (!html) return sendError(res, 400, '请上传 HTML 文件内容');
+    if (!publishDate) return sendError(res, 400, '请填写有效日期，格式为 YYYY-MM-DD');
 
     const now = new Date().toISOString();
     const slug = normalizeSlug(payload.slug, title);
@@ -602,8 +994,10 @@ async function handleApi(req, res, pathname) {
       title,
       summary: String(payload.summary || '').trim() || articleSummary(localized.html),
       htmlPath: `/articles/${slug}/content`,
+      publishDate,
       localImageCount: localized.imageCount,
       imageFailures: localized.imageFailures,
+      sortOrder: existing ? existing.sortOrder : -Date.now(),
       status: 'published',
       createdAt: existing ? existing.createdAt : now,
       updatedAt: now
@@ -631,6 +1025,8 @@ async function handleApi(req, res, pathname) {
 
     const [removed] = articles.splice(index, 1);
     await writeArticles(articles);
+    db.prepare('DELETE FROM comments WHERE article_slug = ?').run(slug);
+    db.prepare('DELETE FROM article_likes WHERE article_slug = ?').run(slug);
     await fsp.rm(path.join(UPLOAD_DIR, slug), { recursive: true, force: true });
     await fsp.rm(path.join(UPLOAD_DIR, `${slug}.html`), { force: true });
     return sendJson(res, 200, { article: removed });

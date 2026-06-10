@@ -262,6 +262,12 @@
             font-weight: 800;
         }
 
+        .date-inputs {
+            display: grid;
+            grid-template-columns: 1fr 0.72fr 0.72fr;
+            gap: 8px;
+        }
+
         .upload-form input,
         .upload-form textarea {
             width: 100%;
@@ -309,6 +315,84 @@
             line-height: 1.6;
         }
 
+        .admin-comment-status {
+            color: rgba(18, 18, 24, 0.58);
+            font-size: 0.9rem;
+            line-height: 1.7;
+            margin: 10px 0 0;
+        }
+
+        .admin-comment-list {
+            display: grid;
+            gap: 10px;
+            margin-top: 14px;
+            max-height: 340px;
+            overflow: auto;
+            padding-right: 4px;
+        }
+
+        .admin-comment-item {
+            display: grid;
+            grid-template-columns: 36px minmax(0, 1fr);
+            gap: 10px;
+            border: 1px solid rgba(20, 20, 28, 0.08);
+            border-radius: 8px;
+            padding: 12px;
+            background: #f7f9fc;
+        }
+
+        .admin-comment-avatar,
+        .admin-comment-avatar-fallback {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            color: #fff;
+            background: #121218;
+            object-fit: cover;
+            font-size: 0.78rem;
+            font-weight: 900;
+        }
+
+        .admin-comment-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            color: rgba(18, 18, 24, 0.58);
+            font-size: 0.82rem;
+            line-height: 1.5;
+        }
+
+        .admin-comment-author {
+            color: #121218;
+            font-weight: 900;
+        }
+
+        .admin-comment-body {
+            margin: 7px 0 10px;
+            color: rgba(18, 18, 24, 0.74);
+            font-size: 0.92rem;
+            line-height: 1.7;
+            white-space: pre-wrap;
+        }
+
+        .admin-comment-delete {
+            border: 1px solid rgba(185, 28, 28, 0.18);
+            border-radius: 999px;
+            padding: 7px 11px;
+            color: #b91c1c;
+            background: rgba(220, 38, 38, 0.08);
+            font: inherit;
+            font-size: 0.82rem;
+            font-weight: 900;
+            cursor: pointer;
+        }
+
+        .admin-comment-delete:hover {
+            background: rgba(220, 38, 38, 0.14);
+        }
+
         .article-section {
             margin-top: 36px;
         }
@@ -319,6 +403,12 @@
             justify-content: space-between;
             gap: 24px;
             margin-bottom: 26px;
+        }
+
+        .section-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
         .section-heading h2 {
@@ -333,6 +423,118 @@
             text-transform: uppercase;
         }
 
+        .order-open-btn,
+        .order-save-btn,
+        .order-cancel-btn {
+            border: 0;
+            border-radius: 999px;
+            padding: 10px 14px;
+            font: inherit;
+            font-weight: 900;
+            cursor: pointer;
+        }
+
+        .order-open-btn,
+        .order-save-btn {
+            color: #fff;
+            background: #2858ff;
+        }
+
+        .order-cancel-btn {
+            color: #121218;
+            background: rgba(20, 20, 28, 0.08);
+        }
+
+        .order-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 30;
+            display: grid;
+            place-items: center;
+            padding: 24px;
+            background: rgba(12, 16, 28, 0.34);
+            backdrop-filter: blur(10px);
+        }
+
+        .order-modal[hidden] {
+            display: none;
+        }
+
+        .order-dialog {
+            width: min(560px, 100%);
+            border: 1px solid rgba(20, 20, 28, 0.1);
+            border-radius: 8px;
+            padding: 20px;
+            background: #fff;
+            box-shadow: 0 30px 80px rgba(12, 16, 28, 0.22);
+        }
+
+        .order-dialog h2 {
+            margin: 0 0 8px;
+            font-size: 1.35rem;
+        }
+
+        .order-hint,
+        .order-status {
+            color: rgba(18, 18, 24, 0.58);
+            line-height: 1.7;
+            margin: 0;
+        }
+
+        .order-list {
+            display: grid;
+            gap: 10px;
+            max-height: 50vh;
+            overflow: auto;
+            margin: 18px 0;
+            padding: 2px;
+        }
+
+        .order-item {
+            display: grid;
+            grid-template-columns: 34px minmax(0, 1fr);
+            gap: 10px;
+            align-items: center;
+            border: 1px solid rgba(20, 20, 28, 0.08);
+            border-radius: 8px;
+            padding: 11px;
+            background: #f7f9fc;
+        }
+
+        .order-item.dragging {
+            opacity: 0.5;
+        }
+
+        .order-handle {
+            display: grid;
+            place-items: center;
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+            color: #2858ff;
+            background: rgba(40, 88, 255, 0.1);
+            cursor: grab;
+            font-weight: 900;
+        }
+
+        .order-title {
+            font-weight: 900;
+            color: #121218;
+        }
+
+        .order-date {
+            margin-top: 3px;
+            color: rgba(18, 18, 24, 0.54);
+            font-size: 0.86rem;
+        }
+
+        .order-dialog-actions {
+            display: flex;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
         .article-grid {
             display: grid;
             grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -340,6 +542,7 @@
         }
 
         .article-card {
+            position: relative;
             min-height: 230px;
             display: flex;
             flex-direction: column;
@@ -347,11 +550,23 @@
             padding: 22px;
             border-radius: 8px;
             border: 1px solid rgba(20, 20, 28, 0.08);
-            background: rgba(255, 255, 255, 0.86);
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.86)),
+                radial-gradient(circle at 88% 0, rgba(40, 88, 255, 0.12), transparent 42%);
             text-decoration: none;
             color: #121218;
             box-shadow: 0 18px 44px rgba(25, 35, 70, 0.07);
-            transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+            overflow: hidden;
+            transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .article-card::before {
+            content: "";
+            position: absolute;
+            inset: 0 0 auto;
+            height: 4px;
+            background: linear-gradient(90deg, #2858ff, #720eec, #5ab8ff);
+            opacity: 0.82;
         }
 
         .article-card:hover {
@@ -373,10 +588,17 @@
             letter-spacing: 0.08rem;
         }
 
+        .article-date {
+            color: #2858ff;
+            font-size: 0.86rem;
+            font-weight: 900;
+            letter-spacing: 0.04rem;
+        }
+
         .article-card h3 {
             font-size: 1.42rem;
             line-height: 1.35;
-            margin: 28px 0 14px;
+            margin: 14px 0 14px;
         }
 
         .article-card p,
@@ -395,7 +617,7 @@
         .article-actions {
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            justify-content: flex-end;
             gap: 14px;
             margin-top: 28px;
         }
@@ -498,6 +720,14 @@
                             <input id="articleSlug" name="slug" type="text" placeholder="英文 slug，可留空自动生成">
                         </label>
                         <label class="form-row">
+                            <span>日期</span>
+                            <div class="date-inputs">
+                                <input id="articleYear" name="year" type="text" value="2026" inputmode="numeric" maxlength="4" aria-label="年份" required>
+                                <input id="articleMonth" name="month" type="text" inputmode="numeric" maxlength="2" placeholder="月" aria-label="月份" required>
+                                <input id="articleDay" name="day" type="text" inputmode="numeric" maxlength="2" placeholder="日" aria-label="日期" required>
+                            </div>
+                        </label>
+                        <label class="form-row">
                             <span>摘要</span>
                             <textarea id="articleSummary" name="summary" placeholder="可留空，后端会从正文生成"></textarea>
                         </label>
@@ -509,18 +739,40 @@
                         <div class="upload-status" id="uploadStatus"></div>
                     </form>
                 </aside>
+                <aside class="admin-panel" id="adminCommentsPanel" hidden>
+                    <p class="panel-label">Comments</p>
+                    <h2>评论管理</h2>
+                    <p class="admin-comment-status" id="adminCommentStatus">正在加载评论...</p>
+                    <div class="admin-comment-list" id="adminCommentList"></div>
+                </aside>
             </aside>
         </section>
 
         <section class="article-section">
             <div class="section-heading">
                 <h2>已发表文章</h2>
-                <span>Published</span>
+                <div class="section-actions">
+                    <button class="order-open-btn" id="orderOpenBtn" type="button" hidden>调整顺序</button>
+                    <span>Published</span>
+                </div>
             </div>
             <div class="article-grid" id="articleGrid"></div>
             <p class="empty-state" id="emptyState" hidden>还没有文章。先在上方上传一篇 HTML 试试。</p>
         </section>
     </main>
+
+    <div class="order-modal" id="orderModal" hidden>
+        <div class="order-dialog" role="dialog" aria-modal="true" aria-labelledby="orderDialogTitle">
+            <h2 id="orderDialogTitle">调整文章顺序</h2>
+            <p class="order-hint">拖动每篇文章左侧的手柄，调整它们在“已发表文章”里的陈列顺序。</p>
+            <div class="order-list" id="orderList"></div>
+            <p class="order-status" id="orderStatus"></p>
+            <div class="order-dialog-actions">
+                <button class="order-cancel-btn" id="orderCancelBtn" type="button">取消</button>
+                <button class="order-save-btn" id="orderSaveBtn" type="button">保存顺序</button>
+            </div>
+        </div>
+    </div>
 
     <script src="../script.js"></script>
     <script>
@@ -528,11 +780,22 @@
         const emptyState = document.getElementById('emptyState');
         const statusEl = document.getElementById('uploadStatus');
         const form = document.getElementById('uploadForm');
+        const orderOpenBtn = document.getElementById('orderOpenBtn');
+        const orderModal = document.getElementById('orderModal');
+        const orderList = document.getElementById('orderList');
+        const orderStatus = document.getElementById('orderStatus');
+        const orderCancelBtn = document.getElementById('orderCancelBtn');
+        const orderSaveBtn = document.getElementById('orderSaveBtn');
         const adminPanel = document.getElementById('adminPanel');
+        const adminCommentsPanel = document.getElementById('adminCommentsPanel');
+        const adminCommentStatus = document.getElementById('adminCommentStatus');
+        const adminCommentList = document.getElementById('adminCommentList');
         const accountStatus = document.getElementById('accountStatus');
         const accountActions = document.getElementById('accountActions');
         let currentUser = null;
         let isAdmin = false;
+        let latestArticles = [];
+        let draggedOrderItem = null;
 
         function escapeHtml(value) {
             return String(value || '')
@@ -552,7 +815,46 @@
             });
         }
 
+        function formatArticleDate(article) {
+            const value = article.publishDate || article.createdAt;
+            if (!value) return '未注明日期';
+            if (/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+                const [year, month, day] = value.split('-');
+                return `${year}年${month}月${day}日`;
+            }
+            return formatDate(value).replaceAll('/', '年').replace(/年(\d{2})$/, '月$1日');
+        }
+
+        function buildPublishDate() {
+            const year = document.getElementById('articleYear').value.trim();
+            const month = document.getElementById('articleMonth').value.trim().padStart(2, '0');
+            const day = document.getElementById('articleDay').value.trim().padStart(2, '0');
+            const value = `${year}-${month}-${day}`;
+            const date = new Date(`${value}T00:00:00Z`);
+            if (
+                !/^\d{4}-\d{2}-\d{2}$/.test(value) ||
+                date.getUTCFullYear() !== Number(year) ||
+                date.getUTCMonth() + 1 !== Number(month) ||
+                date.getUTCDate() !== Number(day)
+            ) {
+                throw new Error('请填写有效日期，格式为 2026 年 MM 月 DD 日。');
+            }
+            return value;
+        }
+
+        function formatDateTime(value) {
+            if (!value) return '未注明时间';
+            return new Date(value).toLocaleString('zh-CN', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
         function renderArticles(articles) {
+            latestArticles = articles;
             grid.innerHTML = '';
             emptyState.hidden = articles.length > 0;
 
@@ -562,28 +864,102 @@
                 const articleUrl = `../article/?slug=${encodeURIComponent(article.slug)}`;
                 const safeTitle = escapeHtml(article.title);
                 const safeSummary = escapeHtml(article.summary || '暂无摘要');
-                const deleteButton = isAdmin
-                    ? `<button class="delete-article-btn" type="button" data-slug="${escapeHtml(article.slug)}" data-title="${safeTitle}">删除</button>`
+                const safeDate = escapeHtml(formatArticleDate(article));
+                const actions = isAdmin
+                    ? `<div class="article-actions"><button class="delete-article-btn" type="button" data-slug="${escapeHtml(article.slug)}" data-title="${safeTitle}">删除</button></div>`
                     : '';
                 card.innerHTML = `
                     <a class="article-card-link" href="${articleUrl}">
                         <div>
-                            <div class="article-meta">${formatDate(article.createdAt)} · ${article.localImageCount || 0} 张本地图片</div>
+                            <div class="article-date">${safeDate}</div>
                             <h3>${safeTitle}</h3>
                             <p>${safeSummary}</p>
                         </div>
                     </a>
-                    <div class="article-actions">
-                        <a class="article-arrow" href="${articleUrl}">阅读 →</a>
-                        ${deleteButton}
-                    </div>
+                    ${actions}
                 `;
                 grid.appendChild(card);
             });
         }
 
+        function renderAdminComments(comments) {
+            adminCommentList.innerHTML = '';
+            if (!comments.length) {
+                adminCommentStatus.textContent = '暂时没有评论。';
+                return;
+            }
+
+            adminCommentStatus.textContent = `最近 ${comments.length} 条评论`;
+            comments.forEach(comment => {
+                const login = escapeHtml(comment.author && comment.author.login);
+                const articleTitle = escapeHtml(comment.articleTitle || comment.articleSlug);
+                const avatar = comment.author && comment.author.avatarUrl
+                    ? `<img class="admin-comment-avatar" src="${escapeHtml(comment.author.avatarUrl)}" alt="${login} 的 GitHub 头像">`
+                    : `<span class="admin-comment-avatar-fallback">${login.slice(0, 2).toUpperCase() || 'GH'}</span>`;
+                const item = document.createElement('article');
+                item.className = 'admin-comment-item';
+                item.innerHTML = `
+                    ${avatar}
+                    <div>
+                        <div class="admin-comment-meta">
+                            <span class="admin-comment-author">${login}</span>
+                            <span>${formatDateTime(comment.createdAt)}</span>
+                            <span>${articleTitle}</span>
+                            <span>${comment.likeCount || 0} 赞</span>
+                        </div>
+                        <div class="admin-comment-body">${escapeHtml(comment.body)}</div>
+                        <button class="admin-comment-delete" type="button" data-comment-id="${escapeHtml(comment.id)}">删除评论</button>
+                    </div>
+                `;
+                adminCommentList.appendChild(item);
+            });
+        }
+
+        function renderOrderList() {
+            orderList.innerHTML = '';
+            latestArticles.forEach(article => {
+                const item = document.createElement('div');
+                item.className = 'order-item';
+                item.draggable = true;
+                item.dataset.slug = article.slug;
+                item.innerHTML = `
+                    <div class="order-handle" aria-hidden="true">⋮⋮</div>
+                    <div>
+                        <div class="order-title">${escapeHtml(article.title)}</div>
+                        <div class="order-date">${escapeHtml(formatArticleDate(article))}</div>
+                    </div>
+                `;
+                orderList.appendChild(item);
+            });
+        }
+
+        function getDragAfterElement(container, y) {
+            const elements = [...container.querySelectorAll('.order-item:not(.dragging)')];
+            return elements.reduce((closest, child) => {
+                const box = child.getBoundingClientRect();
+                const offset = y - box.top - box.height / 2;
+                if (offset < 0 && offset > closest.offset) {
+                    return { offset, element: child };
+                }
+                return closest;
+            }, { offset: Number.NEGATIVE_INFINITY, element: null }).element;
+        }
+
+        function openOrderModal() {
+            renderOrderList();
+            orderStatus.textContent = '';
+            orderModal.hidden = false;
+        }
+
+        function closeOrderModal() {
+            orderModal.hidden = true;
+            draggedOrderItem = null;
+        }
+
         function renderAccount(adminLogin) {
             adminPanel.hidden = !isAdmin;
+            adminCommentsPanel.hidden = !isAdmin;
+            orderOpenBtn.hidden = !isAdmin;
 
             if (!currentUser) {
                 accountStatus.innerHTML = `
@@ -624,6 +1000,9 @@
                 isAdmin = false;
                 renderAccount(adminLogin);
                 await loadArticles();
+                adminCommentList.innerHTML = '';
+                adminCommentStatus.textContent = '管理员登录后可管理评论。';
+                closeOrderModal();
             });
         }
 
@@ -673,6 +1052,7 @@
 
                 statusEl.textContent = `已删除：${title}`;
                 await loadArticles();
+                await loadAdminComments();
             } catch (error) {
                 statusEl.textContent = `删除失败：${error.message}`;
             }
@@ -687,6 +1067,91 @@
                 statusEl.textContent = `加载文章失败：${error.message}`;
             }
         }
+
+        async function loadAdminComments() {
+            if (!isAdmin) return;
+
+            adminCommentStatus.textContent = '正在加载评论...';
+            try {
+                const response = await fetch('/api/admin/comments');
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.error || '评论加载失败');
+                renderAdminComments(data.comments || []);
+            } catch (error) {
+                adminCommentStatus.textContent = `评论加载失败：${error.message}`;
+            }
+        }
+
+        adminCommentList.addEventListener('click', async event => {
+            const button = event.target.closest('.admin-comment-delete');
+            if (!button) return;
+
+            const commentId = button.dataset.commentId;
+            if (!window.confirm('确定删除这条评论吗？这个操作不能撤销。')) return;
+
+            adminCommentStatus.textContent = '正在删除评论...';
+            try {
+                const response = await fetch(`/api/admin/comments/${encodeURIComponent(commentId)}`, {
+                    method: 'DELETE'
+                });
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.error || '删除失败');
+                await loadAdminComments();
+            } catch (error) {
+                adminCommentStatus.textContent = `删除失败：${error.message}`;
+            }
+        });
+
+        orderOpenBtn.addEventListener('click', openOrderModal);
+        orderCancelBtn.addEventListener('click', closeOrderModal);
+        orderModal.addEventListener('click', event => {
+            if (event.target === orderModal) closeOrderModal();
+        });
+
+        orderList.addEventListener('dragstart', event => {
+            const item = event.target.closest('.order-item');
+            if (!item) return;
+            draggedOrderItem = item;
+            item.classList.add('dragging');
+            event.dataTransfer.effectAllowed = 'move';
+        });
+
+        orderList.addEventListener('dragend', () => {
+            if (draggedOrderItem) draggedOrderItem.classList.remove('dragging');
+            draggedOrderItem = null;
+        });
+
+        orderList.addEventListener('dragover', event => {
+            event.preventDefault();
+            if (!draggedOrderItem) return;
+            const afterElement = getDragAfterElement(orderList, event.clientY);
+            if (afterElement) {
+                orderList.insertBefore(draggedOrderItem, afterElement);
+            } else {
+                orderList.appendChild(draggedOrderItem);
+            }
+        });
+
+        orderSaveBtn.addEventListener('click', async () => {
+            const slugs = [...orderList.querySelectorAll('.order-item')].map(item => item.dataset.slug);
+            orderSaveBtn.disabled = true;
+            orderStatus.textContent = '正在保存顺序...';
+            try {
+                const response = await fetch('/api/admin/articles/order', {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ slugs })
+                });
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.error || '保存失败');
+                renderArticles(data.articles || []);
+                closeOrderModal();
+            } catch (error) {
+                orderStatus.textContent = `保存失败：${error.message}`;
+            } finally {
+                orderSaveBtn.disabled = false;
+            }
+        });
 
         function readFileAsText(file) {
             return new Promise((resolve, reject) => {
@@ -709,10 +1174,12 @@
             statusEl.textContent = '正在上传...';
             try {
                 const html = await readFileAsText(file);
+                const publishDate = buildPublishDate();
                 const payload = {
                     title: document.getElementById('articleTitle').value,
                     slug: document.getElementById('articleSlug').value,
                     summary: document.getElementById('articleSummary').value,
+                    publishDate,
                     html
                 };
 
@@ -729,6 +1196,7 @@
                     ? `已发布：${data.article.title}，本地化 ${data.article.localImageCount || 0} 张图片；${failures.length} 张图片下载失败。`
                     : `已发布：${data.article.title}，本地化 ${data.article.localImageCount || 0} 张图片。`;
                 form.reset();
+                document.getElementById('articleYear').value = '2026';
                 await loadArticles();
             } catch (error) {
                 statusEl.textContent = `上传失败：${error.message}`;
@@ -738,6 +1206,7 @@
         async function initPage() {
             await loadMe();
             await loadArticles();
+            await loadAdminComments();
         }
 
         initPage();

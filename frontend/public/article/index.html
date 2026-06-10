@@ -64,12 +64,56 @@
             margin-bottom: 22px;
         }
 
+        .reader-author {
+            display: inline-flex;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .reader-author-avatar {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #fff;
+            box-shadow: 0 10px 24px rgba(24, 18, 48, 0.14);
+        }
+
+        .reader-author-line {
+            display: flex;
+            align-items: baseline;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .reader-author-name {
+            color: #121218;
+            font-size: 1.08rem;
+            font-weight: 900;
+            line-height: 1.35;
+        }
+
         .reader-back {
             display: inline-flex;
+            align-items: center;
+            justify-content: center;
             margin-bottom: 14px;
-            color: #720eec;
+            border-radius: 999px;
+            padding: 10px 15px;
+            color: #fff;
+            background: #720eec;
             text-decoration: none;
+            font-size: 0.95rem;
             font-weight: 800;
+            box-shadow: 0 12px 28px rgba(114, 14, 236, 0.18);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .reader-back:hover {
+            color: #fff;
+            transform: translateY(-1px);
+            box-shadow: 0 16px 34px rgba(114, 14, 236, 0.22);
         }
 
         .reader-title {
@@ -82,14 +126,39 @@
 
         .reader-meta,
         .reader-summary,
-        .reader-status,
-        .interaction-placeholder {
+        .reader-status {
             color: rgba(18, 18, 24, 0.62);
             line-height: 1.8;
         }
 
+        .reader-date {
+            color: #2858ff;
+            font-weight: 900;
+            letter-spacing: 0.04rem;
+            line-height: 1.35;
+        }
+
+        .reader-date:not(:empty)::before {
+            content: "";
+            display: inline-block;
+            width: 4px;
+            height: 4px;
+            margin: 0 10px 2px 0;
+            border-radius: 50%;
+            background: rgba(40, 88, 255, 0.45);
+        }
+
+        .reader-status:empty {
+            display: none;
+        }
+
+        .reader-meta,
         .reader-summary {
-            display: -webkit-box;
+            display: none;
+        }
+
+        .reader-summary {
+            display: none;
             margin: 6px 0 0;
             overflow: hidden;
             -webkit-box-orient: vertical;
@@ -114,15 +183,167 @@
             background: #fff;
         }
 
-        .interaction-placeholder {
+        .interaction-panel {
             margin-top: 16px;
             padding: 22px;
             border: 1px solid rgba(20, 20, 28, 0.08);
-            border-radius: 18px;
-            background:
-                linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(255, 255, 255, 0.76)),
-                radial-gradient(circle at 90% 0, rgba(79, 141, 255, 0.12), transparent 54%);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.88);
             box-shadow: 0 20px 60px rgba(24, 18, 48, 0.06);
+        }
+
+        .reaction-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            padding-bottom: 18px;
+            border-bottom: 1px solid rgba(20, 20, 28, 0.08);
+        }
+
+        .reaction-copy {
+            color: rgba(18, 18, 24, 0.62);
+            line-height: 1.7;
+        }
+
+        .like-btn,
+        .comment-submit,
+        .comment-like-btn {
+            border: 0;
+            border-radius: 999px;
+            padding: 10px 15px;
+            color: #fff;
+            background: #2858ff;
+            font: inherit;
+            font-weight: 900;
+            cursor: pointer;
+            transition: transform 0.2s ease, background 0.2s ease;
+        }
+
+        .like-btn:hover,
+        .comment-submit:hover,
+        .comment-like-btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .like-btn.liked,
+        .comment-like-btn.liked {
+            background: #121218;
+        }
+
+        .comment-composer {
+            display: grid;
+            grid-template-columns: 44px minmax(0, 1fr);
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .comment-avatar,
+        .comment-avatar-fallback {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            background: #121218;
+            color: #fff;
+            object-fit: cover;
+            font-weight: 900;
+        }
+
+        .comment-input {
+            width: 100%;
+            min-height: 86px;
+            box-sizing: border-box;
+            border: 1px solid rgba(20, 20, 28, 0.1);
+            border-radius: 8px;
+            padding: 12px;
+            color: #121218;
+            background: #fbfcff;
+            font: inherit;
+            line-height: 1.7;
+            resize: vertical;
+            outline: none;
+        }
+
+        .comment-input:focus {
+            border-color: rgba(40, 88, 255, 0.42);
+            box-shadow: 0 0 0 3px rgba(40, 88, 255, 0.12);
+        }
+
+        .comment-actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .comment-status,
+        .comment-empty,
+        .comment-time {
+            color: rgba(18, 18, 24, 0.56);
+            font-size: 0.9rem;
+            line-height: 1.7;
+        }
+
+        .comment-heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin: 26px 0 14px;
+        }
+
+        .comment-heading h2 {
+            margin: 0;
+            font-size: 1.25rem;
+        }
+
+        .comment-list {
+            display: grid;
+            gap: 12px;
+        }
+
+        .comment-item {
+            display: grid;
+            grid-template-columns: 44px minmax(0, 1fr);
+            gap: 12px;
+            border: 1px solid rgba(20, 20, 28, 0.08);
+            border-radius: 8px;
+            padding: 14px;
+            background: #fff;
+        }
+
+        .comment-author-line {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 6px;
+            font-weight: 900;
+        }
+
+        .comment-body {
+            color: rgba(18, 18, 24, 0.74);
+            line-height: 1.8;
+            white-space: pre-wrap;
+        }
+
+        .comment-footer {
+            margin-top: 10px;
+        }
+
+        .comment-like-btn {
+            padding: 7px 11px;
+            color: #2858ff;
+            background: rgba(40, 88, 255, 0.1);
+            font-size: 0.86rem;
+        }
+
+        .comment-like-btn.liked {
+            color: #fff;
+            background: #2858ff;
         }
 
         @media (max-width: 700px) {
@@ -138,13 +359,26 @@
                 -webkit-line-clamp: 1;
             }
 
-            .interaction-placeholder {
-                display: none;
+            .reaction-row,
+            .comment-actions {
+                align-items: flex-start;
+                flex-direction: column;
             }
 
             .article-frame-shell {
                 height: 82vh;
                 min-height: 620px;
+            }
+
+            .comment-composer,
+            .comment-item {
+                grid-template-columns: 36px minmax(0, 1fr);
+            }
+
+            .comment-avatar,
+            .comment-avatar-fallback {
+                width: 36px;
+                height: 36px;
             }
         }
     </style>
@@ -181,9 +415,18 @@
     </nav>
 
     <main class="reader-page">
-        <a class="reader-back" href="../wechat/">← 返回文章列表</a>
+        <a class="reader-back" href="../wechat/">返回文章列表</a>
         <header class="reader-header">
-            <p class="reader-status" id="readerStatus">正在加载文章...</p>
+            <div class="reader-author">
+                <img class="reader-author-avatar" src="../tx.png" alt="扬柿长头像">
+                <div>
+                    <div class="reader-author-line">
+                        <span class="reader-author-name">扬柿长</span>
+                        <span class="reader-date" id="readerDate"></span>
+                    </div>
+                    <div class="reader-status" id="readerStatus">正在加载文章...</div>
+                </div>
+            </div>
             <h1 class="reader-title" id="readerTitle"></h1>
             <div class="reader-meta" id="readerMeta"></div>
             <p class="reader-summary" id="readerSummary"></p>
@@ -197,8 +440,29 @@
                 title="文章正文"
             ></iframe>
         </section>
-        <section class="interaction-placeholder">
-            评论、点赞和 GitHub 登录会在下一阶段接入。当前 MVP 先验证文章上传、保存、列表和阅读。
+        <section class="interaction-panel" id="interactionPanel" hidden>
+            <div class="reaction-row">
+                <div class="reaction-copy">
+                    觉得这篇有收获，可以点个赞。评论会显示你的 GitHub 头像和用户名。
+                </div>
+                <button class="like-btn" id="articleLikeBtn" type="button">赞 0</button>
+            </div>
+            <div class="comment-composer">
+                <div id="composerAvatar" class="comment-avatar-fallback">GH</div>
+                <div>
+                    <textarea class="comment-input" id="commentInput" maxlength="1000" placeholder="登录 GitHub 后发表评论"></textarea>
+                    <div class="comment-actions">
+                        <span class="comment-status" id="commentStatus">正在检查登录状态...</span>
+                        <button class="comment-submit" id="commentSubmit" type="button">发布评论</button>
+                    </div>
+                </div>
+            </div>
+            <div class="comment-heading">
+                <h2>评论</h2>
+                <span class="comment-status" id="commentCount">0 条</span>
+            </div>
+            <div class="comment-list" id="commentList"></div>
+            <p class="comment-empty" id="commentEmpty" hidden>还没有评论，来写下第一句吧。</p>
         </section>
     </main>
 
@@ -208,10 +472,26 @@
         const slug = params.get('slug');
         const statusEl = document.getElementById('readerStatus');
         const titleEl = document.getElementById('readerTitle');
+        const readerDateEl = document.getElementById('readerDate');
         const metaEl = document.getElementById('readerMeta');
         const summaryEl = document.getElementById('readerSummary');
         const frameShell = document.getElementById('frameShell');
         const frame = document.getElementById('articleFrame');
+        const interactionPanel = document.getElementById('interactionPanel');
+        const articleLikeBtn = document.getElementById('articleLikeBtn');
+        const composerAvatar = document.getElementById('composerAvatar');
+        const commentInput = document.getElementById('commentInput');
+        const commentStatus = document.getElementById('commentStatus');
+        const commentSubmit = document.getElementById('commentSubmit');
+        const commentList = document.getElementById('commentList');
+        const commentCount = document.getElementById('commentCount');
+        const commentEmpty = document.getElementById('commentEmpty');
+        let currentUser = null;
+        let articleReaction = { likeCount: 0, likedByMe: false };
+
+        function loginWithGithub() {
+            window.location.href = '/auth/github';
+        }
 
         function formatDate(value) {
             if (!value) return '';
@@ -224,6 +504,138 @@
             });
         }
 
+        function formatArticleDate(article) {
+            const value = article.publishDate || article.createdAt;
+            if (!value) return '';
+            if (/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+                const [year, month, day] = value.split('-');
+                return `${year}年${month}月${day}日`;
+            }
+            return new Date(value).toLocaleDateString('zh-CN', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit'
+            }).replaceAll('/', '年').replace(/年(\d{2})$/, '月$1日');
+        }
+
+        function renderAvatar(container, user) {
+            container.innerHTML = '';
+            if (user && user.avatarUrl) {
+                const image = document.createElement('img');
+                image.className = 'comment-avatar';
+                image.src = user.avatarUrl;
+                image.alt = `${user.login} 的 GitHub 头像`;
+                container.className = 'comment-avatar-fallback';
+                container.appendChild(image);
+                return;
+            }
+
+            container.className = 'comment-avatar-fallback';
+            container.textContent = user && user.login ? user.login.slice(0, 2).toUpperCase() : 'GH';
+        }
+
+        function updateComposer() {
+            renderAvatar(composerAvatar, currentUser);
+
+            if (currentUser) {
+                commentInput.placeholder = `以 ${currentUser.login} 身份评论`;
+                commentStatus.textContent = `已登录 GitHub：${currentUser.login}`;
+            } else {
+                commentInput.placeholder = '登录 GitHub 后发表评论';
+                commentStatus.textContent = '未登录也可以阅读；评论和点赞需要 GitHub 登录。';
+            }
+        }
+
+        function updateArticleLikeButton() {
+            articleLikeBtn.textContent = `${articleReaction.likedByMe ? '已赞' : '赞'} ${articleReaction.likeCount}`;
+            articleLikeBtn.classList.toggle('liked', articleReaction.likedByMe);
+        }
+
+        function makeCommentAvatar(author) {
+            if (author.avatarUrl) {
+                const image = document.createElement('img');
+                image.className = 'comment-avatar';
+                image.src = author.avatarUrl;
+                image.alt = `${author.login} 的 GitHub 头像`;
+                return image;
+            }
+
+            const fallback = document.createElement('div');
+            fallback.className = 'comment-avatar-fallback';
+            fallback.textContent = author.login ? author.login.slice(0, 2).toUpperCase() : 'GH';
+            return fallback;
+        }
+
+        function renderComments(comments) {
+            commentList.innerHTML = '';
+            commentEmpty.hidden = comments.length > 0;
+            commentCount.textContent = `${comments.length} 条`;
+
+            comments.forEach(comment => {
+                const item = document.createElement('article');
+                item.className = 'comment-item';
+
+                const avatar = makeCommentAvatar(comment.author || {});
+                const body = document.createElement('div');
+
+                const authorLine = document.createElement('div');
+                authorLine.className = 'comment-author-line';
+
+                const author = document.createElement('span');
+                author.textContent = comment.author.login;
+                const time = document.createElement('span');
+                time.className = 'comment-time';
+                time.textContent = formatDate(comment.createdAt);
+                authorLine.append(author, time);
+
+                const content = document.createElement('div');
+                content.className = 'comment-body';
+                content.textContent = comment.body;
+
+                const footer = document.createElement('div');
+                footer.className = 'comment-footer';
+                const likeButton = document.createElement('button');
+                likeButton.className = `comment-like-btn${comment.likedByMe ? ' liked' : ''}`;
+                likeButton.type = 'button';
+                likeButton.dataset.commentId = comment.id;
+                likeButton.dataset.liked = String(Boolean(comment.likedByMe));
+                likeButton.textContent = `${comment.likedByMe ? '已赞' : '赞'} ${comment.likeCount || 0}`;
+                footer.appendChild(likeButton);
+
+                body.append(authorLine, content, footer);
+                item.append(avatar, body);
+                commentList.appendChild(item);
+            });
+        }
+
+        async function fetchJson(url, options) {
+            const response = await fetch(url, options);
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.error || '请求失败');
+            return data;
+        }
+
+        async function loadMe() {
+            try {
+                const data = await fetchJson('/api/me');
+                currentUser = data.user || null;
+            } catch {
+                currentUser = null;
+            }
+            updateComposer();
+        }
+
+        async function loadReactions() {
+            const data = await fetchJson(`/api/articles/${encodeURIComponent(slug)}/reactions`);
+            articleReaction = data.reactions || { likeCount: 0, likedByMe: false };
+            updateArticleLikeButton();
+        }
+
+        async function loadComments() {
+            const data = await fetchJson(`/api/articles/${encodeURIComponent(slug)}/comments`);
+            renderComments(data.comments || []);
+        }
+
         async function loadArticle() {
             if (!slug) {
                 statusEl.textContent = '缺少文章 slug。';
@@ -231,22 +643,94 @@
             }
 
             try {
+                await loadMe();
                 const response = await fetch(`/api/articles/${encodeURIComponent(slug)}`);
                 const data = await response.json();
                 if (!response.ok) throw new Error(data.error || '文章加载失败');
 
                 const article = data.article;
                 document.title = `${article.title} - Conscient`;
-                statusEl.textContent = 'Conscient Article';
+                statusEl.textContent = '';
                 titleEl.textContent = article.title;
-                metaEl.textContent = `发布：${formatDate(article.createdAt)} · 更新：${formatDate(article.updatedAt)}`;
-                summaryEl.textContent = article.summary || '';
+                readerDateEl.textContent = formatArticleDate(article);
+                metaEl.textContent = '';
+                summaryEl.textContent = '';
                 frame.src = article.htmlPath;
                 frameShell.hidden = false;
+                interactionPanel.hidden = false;
+                await Promise.all([loadReactions(), loadComments()]);
             } catch (error) {
                 statusEl.textContent = `加载失败：${error.message}`;
             }
         }
+
+        articleLikeBtn.addEventListener('click', async () => {
+            if (!currentUser) {
+                loginWithGithub();
+                return;
+            }
+
+            try {
+                const method = articleReaction.likedByMe ? 'DELETE' : 'POST';
+                const data = await fetchJson(`/api/articles/${encodeURIComponent(slug)}/like`, { method });
+                articleReaction = data.reactions || articleReaction;
+                updateArticleLikeButton();
+            } catch (error) {
+                commentStatus.textContent = `点赞失败：${error.message}`;
+            }
+        });
+
+        commentSubmit.addEventListener('click', async () => {
+            if (!currentUser) {
+                loginWithGithub();
+                return;
+            }
+
+            const body = commentInput.value.trim();
+            if (!body) {
+                commentStatus.textContent = '先写一点评论内容吧。';
+                return;
+            }
+
+            commentSubmit.disabled = true;
+            commentStatus.textContent = '正在发布评论...';
+            try {
+                await fetchJson(`/api/articles/${encodeURIComponent(slug)}/comments`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ body })
+                });
+                commentInput.value = '';
+                commentStatus.textContent = '评论已发布。';
+                await loadComments();
+            } catch (error) {
+                commentStatus.textContent = `发布失败：${error.message}`;
+            } finally {
+                commentSubmit.disabled = false;
+            }
+        });
+
+        commentList.addEventListener('click', async event => {
+            const button = event.target.closest('.comment-like-btn');
+            if (!button) return;
+            if (!currentUser) {
+                loginWithGithub();
+                return;
+            }
+
+            const commentId = button.dataset.commentId;
+            const liked = button.dataset.liked === 'true';
+            try {
+                const data = await fetchJson(`/api/comments/${encodeURIComponent(commentId)}/like`, {
+                    method: liked ? 'DELETE' : 'POST'
+                });
+                button.dataset.liked = String(Boolean(data.likedByMe));
+                button.classList.toggle('liked', Boolean(data.likedByMe));
+                button.textContent = `${data.likedByMe ? '已赞' : '赞'} ${data.likeCount || 0}`;
+            } catch (error) {
+                commentStatus.textContent = `评论点赞失败：${error.message}`;
+            }
+        });
 
         loadArticle();
     </script>

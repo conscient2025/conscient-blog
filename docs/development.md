@@ -6,6 +6,7 @@
 frontend/public/          Static pages and assets
 backend/server.js         Local API and static server
 backend/data/articles.json
+backend/data/blog.sqlite  Comments and likes database
 backend/uploads/articles/ Uploaded article HTML files
 ```
 
@@ -53,11 +54,13 @@ The default admin login is `conscient2025`. Override `ADMIN_GITHUB_LOGIN` if the
 ## MVP article flow
 
 1. Open the WeChat page.
-2. Fill in title, optional slug, and optional summary.
+2. Fill in title, article date, optional slug, and optional summary.
 3. Choose an `.html` file.
 4. Submit the form.
 5. The backend downloads WeChat CDN images, saves them locally, rewrites image URLs, and saves the HTML file plus article metadata.
 6. Readers open the article page, which renders the uploaded HTML in a sandboxed iframe.
+
+Article dates are stored as `YYYY-MM-DD` and displayed on the article cards and reader page.
 
 ## Image localization
 
@@ -86,9 +89,26 @@ If an image fails to download, the article is still published and the failure is
 
 The WeChat page shows upload and delete controls only when the signed-in GitHub user matches `ADMIN_GITHUB_LOGIN`. The backend also enforces this on `/api/admin/articles`.
 
+Admins can use the WeChat page's order dialog to drag articles into a custom display order. The backend stores that order in each article's `sortOrder` field.
+
 Deleting removes:
 
 ```txt
 backend/data/articles.json metadata entry
 backend/uploads/articles/{slug}/
+SQLite comments and likes for that article
 ```
+
+## Comments and likes
+
+Comments and likes are stored in SQLite through `better-sqlite3`:
+
+```txt
+backend/data/blog.sqlite
+backend/data/blog.sqlite-wal
+backend/data/blog.sqlite-shm
+```
+
+Readers can view comments and like counts without signing in. Posting comments, liking articles, and liking comments require GitHub login. The comment list displays the GitHub avatar and username from the signed session; the backend does not trust author data from the browser.
+
+Admins can delete comments from the WeChat management page. There is no hide or restore workflow.

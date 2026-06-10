@@ -48,3 +48,13 @@ npm start
 ```
 
 `ADMIN_GITHUB_LOGIN` is the only GitHub account that can upload or delete articles in `wechat/`. Everyone else can read articles only.
+
+Admins can also set article dates during upload and adjust the published article order from the WeChat management page.
+
+Comments and likes are stored in SQLite at:
+
+```txt
+backend/data/blog.sqlite
+```
+
+Persist and back up `backend/data/` when deploying to a server.
