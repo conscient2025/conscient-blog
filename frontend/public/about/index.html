@@ -19,7 +19,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: flex-start;
-            padding: 118px 20px 40px;
+            padding: 42px 20px 40px;
             position: relative;
         }
         
@@ -168,38 +168,23 @@
             font-size: 2rem;
         }
     </style>
+    <link rel="stylesheet" href="../nav.css">
+    <link rel="stylesheet" href="../particles.css">
 </head>
-<body>
-    <!-- 全局导航栏 -->
-    <div class="nav-hover-zone" id="navHoverZone"></div>
-    <nav class="top-nav collapsed" id="globalNav">
-        <div class="nav-left">
-            <span class="nav-logo">
-                <span class="letter-red">C</span><span class="letter-yellow">o</span><span class="letter-blue">n</span><span class="letter-black">s</span><span class="letter-red">c</span><span class="letter-yellow">i</span><span class="letter-blue">e</span><span class="letter-black">n</span><span class="letter-red">t</span>
-            </span>
-        </div>
-        <div class="nav-center">
-            <div class="nav-item" onclick="window.location.href='../index.html#section2'">
-                <span class="nav-icon">
-                    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-                </span>
-                <span class="nav-text">主页</span>
-            </div>
-            <div class="nav-item" onclick="window.location.href='../friends/'">
-                <span class="nav-icon">
-                    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
-                </span>
-                <span class="nav-text">友链</span>
-            </div>
-            <div class="nav-item active" onclick="window.location.href='../about/'">
-                <span class="nav-icon">
-                    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                </span>
-                <span class="nav-text">关于</span>
-            </div>
-        </div>
-        <button class="nav-toggle" id="navToggle" aria-label="折叠导航" style="display: none;">﹀</button>
-    </nav>
+<body class="has-global-header">
+    <header class="global-header" data-global-header>
+        <a class="global-wordmark" href="../" aria-label="Conscient 主页">CONSCIENT</a>
+        <nav class="global-links" id="globalLinks" aria-label="主要导航">
+            <a href="../">主页</a>
+            <a href="../friends/">友链</a>
+            <a href="../about/" aria-current="page">关于</a>
+        </nav>
+        <div class="global-context" aria-hidden="true"><span>PERSONAL ARCHIVE</span><span>ABOUT</span></div>
+        <button class="global-menu" type="button" data-global-menu aria-expanded="false" aria-controls="globalLinks">
+            <span>MENU</span>
+            <span class="global-menu-lines" aria-hidden="true"><i></i><i></i></span>
+        </button>
+    </header>
 
     <div class="about-page">
         <div class="about-background"></div>
@@ -263,6 +248,8 @@
         </div>
     </div>
 
+    <script src="../nav.js"></script>
+    <script src="../particles.js"></script>
     <script src="../script.js"></script>
 </body>
 </html>

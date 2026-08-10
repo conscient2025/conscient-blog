@@ -1051,23 +1051,6 @@ body {
     animation: gemFall 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
-/* 鼠标点击特效宝石 */
-.click-particle {
-    position: fixed;
-    pointer-events: none;
-    z-index: 10000;
-    width: 11px;
-    height: 11px;
-    clip-path: polygon(50% 0, 88% 22%, 100% 58%, 50% 100%, 0 58%, 12% 22%);
-    box-shadow: 0 0 14px rgba(196, 181, 253, 0.52);
-    animation: particle-fade 0.8s forwards ease-out;
-}
-
-@keyframes particle-fade {
-    0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
-    100% { transform: translate(var(--dx), var(--dy)) rotate(150deg) scale(0); opacity: 0; }
-}
-
 /* ========== 响应式设计 ========== */
 @media (max-width: 1024px) {
     .main-title {

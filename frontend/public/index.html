@@ -3,115 +3,152 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Conscient-主页</title>
+    <meta name="description" content="Conscient 的个人内容空间：文字、视频、项目与灵感档案。">
+    <meta name="theme-color" content="#06080b">
+    <title>Conscient — 新的心跳</title>
     <link rel="icon" type="image/png" href="tx.png">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="preload" href="bg1-web.jpg" as="image">
+    <link rel="stylesheet" href="home.css">
+    <link rel="stylesheet" href="particles.css">
 </head>
-<body class="home-body">
-    <!-- 全局导航栏 -->
-    <div class="nav-hover-zone" id="navHoverZone"></div>
-    <nav class="top-nav collapsed" id="globalNav">
-        <div class="nav-left">
-            <span class="nav-logo">
-                <span class="letter-red">C</span><span class="letter-yellow">o</span><span class="letter-blue">n</span><span class="letter-black">s</span><span class="letter-red">c</span><span class="letter-yellow">i</span><span class="letter-blue">e</span><span class="letter-black">n</span><span class="letter-red">t</span>
-            </span>
+<body id="top">
+    <a class="skip-link" href="#content">跳到主要内容</a>
+
+    <header class="site-header" id="siteHeader">
+        <a class="wordmark" href="#top" aria-label="Conscient 主页">
+            <span>CONSCIENT</span>
+        </a>
+
+        <nav class="desktop-nav" aria-label="主要导航">
+            <a class="is-active" href="#top">主页</a>
+            <a href="friends/">友链</a>
+            <a href="about/">关于</a>
+        </nav>
+
+        <div class="header-meta" aria-hidden="true">
+            <span>PERSONAL ARCHIVE</span>
+            <span>2026</span>
         </div>
-        <div class="nav-center">
-            <div class="nav-item" onclick="scrollToSection(2)">
-                <span class="nav-icon">
-                    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-                </span>
-                <span class="nav-text">主页</span>
-            </div>
-            <div class="nav-item" onclick="window.location.href='friends/'">
-                <span class="nav-icon">
-                    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
-                </span>
-                <span class="nav-text">友链</span>
-            </div>
-            <div class="nav-item" onclick="window.location.href='about/'">
-                <span class="nav-icon">
-                    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                </span>
-                <span class="nav-text">关于</span>
-            </div>
-        </div>
-        <button class="nav-toggle" id="navToggle" aria-label="折叠导航" style="display: none;">﹀</button>
+
+        <button class="menu-toggle" id="menuToggle" type="button" aria-expanded="false" aria-controls="mobileNav">
+            <span class="menu-toggle-label">MENU</span>
+            <span class="menu-toggle-lines" aria-hidden="true"><i></i><i></i></span>
+        </button>
+    </header>
+
+    <nav class="mobile-nav" id="mobileNav" aria-label="移动端导航" aria-hidden="true">
+        <a href="#top"><span>01</span>主页</a>
+        <a href="friends/"><span>02</span>友链</a>
+        <a href="about/"><span>03</span>关于</a>
     </nav>
 
-    <!-- 第一部分：首页 -->
-    <section class="section section-1" id="section1">
-        <div class="hero-background"></div>
-        <div class="hero-content">
-            <h1 class="main-title">新的心跳</h1>
-            <div class="typing-text" id="typingText"></div>
-        </div>
-        <div class="scroll-indicator">
-            <div class="arrow-down"></div>
-        </div>
-    </section>
+    <main id="content">
+        <section class="hero">
+            <div class="hero-visual" aria-hidden="true"></div>
+            <div class="hero-grain" aria-hidden="true"></div>
 
-    <!-- 第二部分：极简紫色导航 -->
-    <section class="section section-2" id="section2">
-        <div class="feature-shell">
-            <div class="section-kicker">Conscient Space</div>
-            <h2 class="section-title">博客里有啥</h2>
-            <div class="feature-grid">
-                <button class="feature-card" data-block="wechat" type="button">
-                    <span class="feature-index">01</span>
-                    <span class="feature-name">公众号</span>
-                    <span class="feature-note">文字、观察与长期表达</span>
-                </button>
-                <button class="feature-card" data-block="bilibili" type="button">
-                    <span class="feature-index">02</span>
-                    <span class="feature-name">B站</span>
-                    <span class="feature-note">视频、记录与灵感切片</span>
-                </button>
-                <button class="feature-card" data-block="projects" type="button">
-                    <span class="feature-index">03</span>
-                    <span class="feature-name">项目</span>
-                    <span class="feature-note">作品、实验与阶段成果</span>
-                </button>
-                <button class="feature-card" data-block="gem" type="button">
-                    <span class="feature-index">04</span>
-                    <span class="feature-name">G.E.M.</span>
-                    <span class="feature-note">旋律、能量与精神坐标</span>
-                </button>
-            </div>
-        </div>
-
-        <!-- 卡片翻转效果容器 -->
-        <div class="card-flip-container" id="cardFlipContainer">
-            <div class="flip-card" id="flipCard">
-                <div class="flip-card-inner">
-                    <div class="flip-card-front"></div>
-                    <div class="flip-card-back">
-                        <button class="close-btn" id="closeCardBtn">&times;</button>
-                        <div class="card-detail-text" id="cardDetailText"></div>
-                        <a href="#" class="card-detail-link" id="cardDetailLink">
-                            <span>进入</span>
-                            <span class="arrow">→</span>
-                        </a>
-                    </div>
+            <div class="hero-content">
+                <p class="hero-kicker reveal">A PERSONAL ARCHIVE / 2025—NOW</p>
+                <h1 class="hero-title reveal">
+                    <span>新的</span>
+                    <span>心跳</span>
+                </h1>
+                <div class="hero-bottom reveal">
+                    <p>把一闪而过的念头写下来，<br>听它们在时间里，慢慢长出回声。</p>
+                    <a class="explore-link" href="#entrances">
+                        <span>EXPLORE THE ARCHIVE</span>
+                        <i aria-hidden="true">↓</i>
+                    </a>
                 </div>
             </div>
+
+            <div class="hero-index" aria-hidden="true">
+                <span>CS / 01</span>
+                <strong>NEW<br>PULSE</strong>
+            </div>
+        </section>
+
+        <section class="entrances" id="entrances" aria-labelledby="entrancesTitle">
+            <header class="section-heading reveal">
+                <div>
+                    <p>CONSCIENT / INDEX</p>
+                    <h2 id="entrancesTitle">四种方式进入</h2>
+                </div>
+                <p class="section-intro">以文字收拢思绪，用影像留住瞬间；<br>作品与旋律，标记我来时的路。</p>
+            </header>
+
+            <div class="poster-wall">
+                <a class="poster poster-wechat reveal" href="wechat/">
+                    <div class="poster-bg" aria-hidden="true"></div>
+                    <div class="poster-top">
+                        <span>01 / LONGFORM</span>
+                        <span>READ</span>
+                    </div>
+                    <div class="poster-copy">
+                        <p>公众号</p>
+                        <h3>NOTES<br>&amp; ESSAYS</h3>
+                        <span>文字、观察与长期表达</span>
+                    </div>
+                    <span class="poster-arrow" aria-hidden="true">↗</span>
+                </a>
+
+                <a class="poster poster-bilibili reveal" href="https://space.bilibili.com/1334620851">
+                    <div class="poster-bg" aria-hidden="true"></div>
+                    <div class="poster-top">
+                        <span>02 / MOTION</span>
+                        <span>WATCH</span>
+                    </div>
+                    <div class="poster-copy">
+                        <p>B站</p>
+                        <h3>VIDEO<br>SPACE</h3>
+                        <span>视频、记录与灵感切片</span>
+                    </div>
+                    <span class="poster-arrow" aria-hidden="true">↗</span>
+                </a>
+
+                <a class="poster poster-projects reveal" href="portfolio/">
+                    <div class="poster-bg" aria-hidden="true">
+                        <i></i><i></i><i></i>
+                    </div>
+                    <div class="poster-top">
+                        <span>03 / SELECTED WORK</span>
+                        <span>VIEW</span>
+                    </div>
+                    <div class="poster-copy">
+                        <p>项目</p>
+                        <h3>MADE<br>HERE</h3>
+                        <span>作品、实验与阶段成果</span>
+                    </div>
+                    <span class="poster-arrow" aria-hidden="true">↗</span>
+                </a>
+
+                <a class="poster poster-gem reveal" href="gem/">
+                    <div class="poster-bg" aria-hidden="true"></div>
+                    <div class="poster-top">
+                        <span>04 / SPECIAL ARCHIVE</span>
+                        <span>ENTER</span>
+                    </div>
+                    <div class="poster-copy">
+                        <p>精神坐标</p>
+                        <h3>G.E.M.</h3>
+                        <span>旋律、能量与持续发光的瞬间</span>
+                    </div>
+                    <span class="poster-arrow" aria-hidden="true">↗</span>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <a class="footer-mark" href="#top">CONSCIENT</a>
+        <p>Keep the signal.<br>Follow the next pulse.</p>
+        <div>
+            <span>PERSONAL BLOG</span>
+            <span>© 2026</span>
         </div>
-    </section>
+    </footer>
 
-
-    <!-- 宝石风格页面切换动画 -->
-    <div class="page-transition" id="pageTransition"></div>
-
-    <!-- 页面切换加载动画 -->
-    <div class="page-loader" id="pageLoader">
-        <div class="loader-square">
-            <div class="loader-inner-square red"></div>
-            <div class="loader-inner-square yellow"></div>
-            <div class="loader-inner-square blue"></div>
-            <div class="loader-inner-square white"></div>
-        </div>
-    </div>
-
-    <script src="script.js"></script>
+    <script src="particles.js"></script>
+    <script src="home.js"></script>
 </body>
 </html>
