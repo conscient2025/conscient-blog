@@ -80,112 +80,32 @@
             animation: float 6s ease-in-out infinite;
         }
 
-        .conscient-hover-zone {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 15px;
-            z-index: 60;
-        }
-
-        .conscient-nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 64px;
-            z-index: 59;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 40px;
-            background: rgba(10, 18, 43, 0.74);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-            backdrop-filter: blur(12px);
-            transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), opacity 0.4s ease;
-        }
-
-        .conscient-nav.collapsed {
-            transform: translateY(-100%);
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .conscient-hover-zone:hover + .conscient-nav,
-        .conscient-nav:hover {
-            transform: translateY(0);
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .conscient-logo {
-            font-size: 1.3rem;
-            font-weight: 900;
-            letter-spacing: 3px;
-            display: flex;
-            gap: 2px;
-        }
-
-        .conscient-logo span:nth-child(4n + 1) { color: #f5d0fe; }
-        .conscient-logo span:nth-child(4n + 2) { color: #93c5fd; }
-        .conscient-logo span:nth-child(4n + 3) { color: #67e8f9; }
-        .conscient-logo span:nth-child(4n) { color: #fff; }
-
-        .conscient-nav-links {
-            display: flex;
-            align-items: center;
-            gap: 30px;
-        }
-
-        .conscient-nav-link {
-            color: rgba(255, 255, 255, 0.66);
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 900;
-            padding: 8px 12px;
-            border-radius: 6px;
-            transition: color 0.25s ease, background 0.25s ease;
-        }
-
-        .conscient-nav-link:hover {
-            color: #fff;
-            background: rgba(255, 255, 255, 0.12);
-        }
-
-        @media (max-width: 768px) {
-            .conscient-nav {
-                height: 52px;
-                padding: 0 12px;
-            }
-
-            .conscient-logo {
-                font-size: 1.05rem;
-            }
-
-            .conscient-nav-links {
-                gap: 10px;
-            }
-        }
     </style>
+    <link rel="stylesheet" href="../nav.css">
+    <link rel="stylesheet" href="../particles.css">
 </head>
-<body class="antialiased selection:bg-gem-pink selection:text-white overflow-x-hidden">
+<body class="has-global-header antialiased selection:bg-gem-pink selection:text-white overflow-x-hidden">
 
-    <!-- Conscient 风格顶部导航 -->
-    <div class="conscient-hover-zone"></div>
-    <nav class="conscient-nav collapsed">
-        <a href="../index.html#section2" class="conscient-logo" aria-label="Conscient Home">
-            <span>C</span><span>o</span><span>n</span><span>s</span><span>c</span><span>i</span><span>e</span><span>n</span><span>t</span>
-        </a>
-        <div class="conscient-nav-links">
-            <a href="../index.html#section2" class="conscient-nav-link">主页</a>
-            <a href="#albums" class="conscient-nav-link">专辑宇宙</a>
-            <a href="#concerts" class="conscient-nav-link">现场直击</a>
+    <header class="global-header" data-global-header>
+        <a class="global-wordmark" href="../" aria-label="返回 Conscient 主页">CONSCIENT</a>
+        <nav class="global-links" id="globalLinks" aria-label="主要导航">
+            <a href="../">主页</a>
+            <a href="#albums">专辑宇宙</a>
+            <a href="#concerts">现场直击</a>
+            <a href="../about/">关于</a>
+        </nav>
+        <div class="global-context" aria-hidden="true">
+            <span>PERSONAL ARCHIVE</span>
+            <span>G.E.M.</span>
         </div>
-    </nav>
+        <button class="global-menu" type="button" aria-expanded="false" aria-controls="globalLinks" data-global-menu>
+            <span>MENU</span>
+            <span class="global-menu-lines" aria-hidden="true"><i></i><i></i></span>
+        </button>
+    </header>
 
     <!-- 首屏 Hero 区域 -->
-    <header class="relative h-screen flex items-center justify-center overflow-hidden">
+    <header class="gem-hero relative flex items-center justify-center overflow-hidden">
         <!-- 背景图片 -->
         <div class="absolute inset-0 z-0">
             <!-- ⬇️ 替换图片：这里是网页最上方的大背景图，建议用横屏的演唱会高清大图 ⬇️ -->
@@ -546,6 +466,8 @@
         </div>
     </footer>
 
+    <script src="../nav.js"></script>
+    <script src="../particles.js"></script>
     <!-- 初始化图标与脚本 -->
     <script>
         // 初始化 Lucide 图标

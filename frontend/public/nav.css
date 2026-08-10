@@ -1,0 +1,199 @@
+:root {
+    --global-nav-height: 76px;
+    --global-nav-bg: #06080b;
+    --global-nav-fg: #f7f6f2;
+    --global-nav-muted: rgba(247, 246, 242, 0.52);
+    --global-nav-font: "Arial Narrow", "Roboto Condensed", "Bahnschrift Condensed", "Helvetica Neue", sans-serif;
+}
+
+body.has-global-header {
+    padding-top: var(--global-nav-height);
+}
+
+.gem-hero {
+    min-height: calc(100vh - var(--global-nav-height));
+}
+
+.global-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10000;
+    height: var(--global-nav-height);
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 28px;
+    padding: 0 34px;
+    background: rgba(6, 8, 11, 0.96);
+    color: var(--global-nav-fg);
+    backdrop-filter: blur(18px) saturate(120%);
+}
+
+.global-wordmark {
+    justify-self: start;
+    color: var(--global-nav-fg);
+    font-family: var(--global-nav-font);
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    line-height: 1;
+    text-decoration: none;
+}
+
+.global-links {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 34px;
+}
+
+.global-links a {
+    position: relative;
+    padding: 28px 0 24px;
+    color: var(--global-nav-muted);
+    font-family: "Noto Sans SC", "Source Han Sans SC", "Microsoft YaHei", sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    line-height: 1;
+    text-decoration: none;
+    transition: color 180ms ease;
+}
+
+.global-links a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 100%;
+    bottom: 18px;
+    height: 1px;
+    background: currentColor;
+    transition: right 180ms ease;
+}
+
+.global-links a:hover,
+.global-links a:focus-visible,
+.global-links a[aria-current="page"] {
+    color: var(--global-nav-fg);
+}
+
+.global-links a:hover::after,
+.global-links a:focus-visible::after,
+.global-links a[aria-current="page"]::after {
+    right: 0;
+}
+
+.global-context {
+    justify-self: end;
+    display: flex;
+    gap: 18px;
+    color: var(--global-nav-muted);
+    font-family: var(--global-nav-font);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    line-height: 1;
+    white-space: nowrap;
+}
+
+.global-menu {
+    display: none;
+    border: 0;
+    background: transparent;
+    color: var(--global-nav-fg);
+    cursor: pointer;
+}
+
+.global-menu-lines {
+    display: flex;
+    width: 22px;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.global-menu-lines i {
+    display: block;
+    width: 100%;
+    height: 1px;
+    background: currentColor;
+    transition: transform 220ms ease;
+}
+
+@media (max-width: 820px) {
+    :root {
+        --global-nav-height: 66px;
+    }
+
+    .global-header {
+        grid-template-columns: 1fr auto;
+        padding: 0 22px;
+    }
+
+    .global-context {
+        display: none;
+    }
+
+    .global-menu {
+        justify-self: end;
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        font-family: var(--global-nav-font);
+        font-size: 0.68rem;
+        font-weight: 600;
+        letter-spacing: 0.16em;
+    }
+
+    .global-header.is-nav-open .global-menu-lines i:first-child {
+        transform: translateY(3px) rotate(45deg);
+    }
+
+    .global-header.is-nav-open .global-menu-lines i:last-child {
+        transform: translateY(-3px) rotate(-45deg);
+    }
+
+    .global-links {
+        position: fixed;
+        top: var(--global-nav-height);
+        left: 0;
+        right: 0;
+        display: grid;
+        justify-items: start;
+        gap: 0;
+        padding: 18px 22px 26px;
+        background: rgba(6, 8, 11, 0.98);
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(-18px);
+        visibility: hidden;
+        transition: opacity 220ms ease, transform 220ms ease, visibility 220ms;
+    }
+
+    .global-header.is-nav-open .global-links {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateY(0);
+        visibility: visible;
+    }
+
+    .global-links a {
+        width: 100%;
+        padding: 14px 0;
+        font-size: 1.15rem;
+    }
+
+    .global-links a::after {
+        display: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .global-links,
+    .global-links a,
+    .global-links a::after,
+    .global-menu-lines i {
+        transition-duration: 0.01ms;
+    }
+}
