@@ -1,0 +1,479 @@
+:root {
+    --project-paper: #f5f2eb;
+    --project-paper-deep: #ebe7dc;
+    --project-card: #fffdf8;
+    --project-ink: #20231f;
+    --project-muted: #6d7068;
+    --project-line: #d9d6cc;
+    --project-green: #315d49;
+    --project-green-dark: #244637;
+    --project-green-pale: #dfe9e1;
+    --project-amber: #caa968;
+}
+
+body {
+    background: var(--project-paper);
+}
+
+main {
+    padding-top: var(--header-height);
+    background: var(--project-paper);
+    color: var(--project-ink);
+}
+
+.page-title {
+    width: min(100%, 1320px);
+    margin: 0 auto;
+    padding: clamp(56px, 6vw, 82px) clamp(24px, 5vw, 66px) clamp(22px, 2vw, 30px);
+}
+
+.page-title p {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: clamp(20px, 2.4vw, 32px);
+    color: var(--project-green);
+    font-family: var(--font-display);
+    font-size: clamp(0.62rem, 0.75vw, 0.72rem);
+    font-weight: 700;
+    letter-spacing: 0.2em;
+}
+
+.page-title p::before {
+    content: "";
+    width: 42px;
+    height: 1px;
+    background: currentColor;
+}
+
+.page-title h1 {
+    font-family: var(--font-display);
+    font-size: clamp(5rem, 9.6vw, 9rem);
+    font-weight: 600;
+    letter-spacing: -0.075em;
+    line-height: 0.76;
+}
+
+.project-list {
+    width: min(100%, 1320px);
+    margin: 0 auto;
+    padding: clamp(20px, 2vw, 30px) clamp(24px, 5vw, 66px) clamp(82px, 8vw, 120px);
+}
+
+.project-card {
+    position: relative;
+    min-height: 480px;
+    display: grid;
+    grid-template-columns: minmax(300px, 0.64fr) minmax(520px, 1.36fr);
+    overflow: hidden;
+    border: 1px solid var(--project-line);
+    border-radius: 26px;
+    background: rgba(255, 253, 248, 0.9);
+    box-shadow: 0 20px 58px rgba(34, 39, 31, 0.08);
+    color: var(--project-ink);
+    transition: transform 360ms cubic-bezier(0.2, 0.72, 0.2, 1), box-shadow 360ms ease, border-color 240ms ease;
+}
+
+.project-card:hover,
+.project-card:focus-visible {
+    outline: none;
+    border-color: #aab9ae;
+    box-shadow: 0 28px 74px rgba(34, 39, 31, 0.13);
+    transform: translateY(-5px);
+}
+
+.project-card:focus-visible {
+    box-shadow: 0 0 0 4px rgba(49, 93, 73, 0.2), 0 28px 74px rgba(34, 39, 31, 0.13);
+}
+
+.project-copy {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    padding: clamp(32px, 3.5vw, 50px);
+    border-right: 1px solid var(--project-line);
+}
+
+.project-heading h2 {
+    max-width: 450px;
+    font-size: clamp(2.8rem, 3.8vw, 4.1rem);
+    font-weight: 650;
+    letter-spacing: -0.055em;
+    line-height: 0.94;
+}
+
+.project-heading h2 span {
+    color: var(--project-green);
+}
+
+.project-description {
+    max-width: 440px;
+    margin-top: clamp(30px, 3vw, 44px);
+    color: var(--project-muted);
+    font-size: clamp(0.84rem, 1vw, 0.95rem);
+    line-height: 1.85;
+}
+
+.card-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: auto;
+    padding-top: 42px;
+    color: var(--project-green-dark);
+    font-family: var(--font-display);
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+}
+
+.card-action i {
+    font-family: sans-serif;
+    font-size: 0.95rem;
+    font-style: normal;
+    transition: transform 220ms ease;
+}
+
+.project-card:hover .card-action i,
+.project-card:focus-visible .card-action i {
+    transform: translate(4px, -4px);
+}
+
+.review-preview {
+    min-width: 0;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    padding: clamp(22px, 2.6vw, 34px);
+    background: var(--project-paper-deep);
+}
+
+.review-shell-demo {
+    width: min(100%, 650px);
+    overflow: hidden;
+    border: 1px solid var(--project-line);
+    border-radius: 18px;
+    background: var(--project-paper);
+    box-shadow: 0 22px 54px rgba(34, 39, 31, 0.1);
+    transform: rotate(0.6deg);
+    transition: transform 360ms cubic-bezier(0.2, 0.72, 0.2, 1);
+}
+
+.project-card:hover .review-shell-demo,
+.project-card:focus-visible .review-shell-demo {
+    transform: rotate(0deg) scale(1.008);
+}
+
+.review-header-demo {
+    min-height: 52px;
+    display: grid;
+    grid-template-columns: 76px minmax(0, 1fr) 54px;
+    align-items: center;
+    padding: 0 16px;
+    border-bottom: 1px solid var(--project-line);
+    color: var(--project-muted);
+    font-size: 0.57rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+}
+
+.review-header-demo strong {
+    overflow: hidden;
+    color: var(--project-ink);
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 0.88rem;
+    font-weight: 500;
+    letter-spacing: 0;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.review-header-demo span:last-child {
+    text-align: right;
+}
+
+.review-progress-demo {
+    height: 3px;
+    background: #e3e0d7;
+}
+
+.review-progress-demo i {
+    width: 72%;
+    height: 100%;
+    display: block;
+    background: var(--project-amber);
+}
+
+.review-stage-demo {
+    padding: clamp(26px, 2.6vw, 36px) clamp(20px, 3vw, 34px) 24px;
+    text-align: center;
+}
+
+.review-sentence-demo {
+    max-width: 590px;
+    margin: 0 auto;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(1.58rem, 2.1vw, 2.12rem);
+    font-weight: 470;
+    letter-spacing: -0.025em;
+    line-height: 1.22;
+}
+
+.review-sentence-demo mark {
+    background: linear-gradient(transparent 62%, rgba(202, 169, 104, 0.5) 62%);
+    color: inherit;
+}
+
+.reveal-panels-demo {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: clamp(28px, 3vw, 40px);
+    text-align: left;
+}
+
+.reveal-panel-demo {
+    min-width: 0;
+    padding: 13px 15px 14px;
+    border: 1px solid var(--project-line);
+    border-left: 3px solid var(--project-amber);
+    border-radius: 4px 12px 12px 4px;
+    background: rgba(255, 253, 248, 0.78);
+}
+
+.reveal-panel-demo > span {
+    display: block;
+    color: var(--project-muted);
+    font-size: 0.48rem;
+    font-weight: 750;
+    letter-spacing: 0.12em;
+}
+
+.reveal-panel-demo em {
+    display: block;
+    margin-top: 8px;
+    color: var(--project-green-dark);
+    font-size: 0.48rem;
+    font-style: normal;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+}
+
+.reveal-panel-demo p {
+    margin-top: 7px;
+    color: #555951;
+    font-size: 0.67rem;
+    line-height: 1.55;
+}
+
+.review-controls-demo {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 18px 16px;
+    border-top: 1px solid var(--project-line);
+    background: rgba(255, 253, 248, 0.64);
+}
+
+.review-tools-demo {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+}
+
+.review-tools-demo span {
+    min-height: 31px;
+    display: inline-flex;
+    align-items: center;
+    padding: 0 10px;
+    border: 1px solid var(--project-line);
+    border-radius: 10px;
+    background: var(--project-card);
+    color: var(--project-muted);
+    font-size: 0.53rem;
+    font-weight: 650;
+}
+
+.review-tools-demo .is-active {
+    border-color: #bccdc1;
+    background: var(--project-green-pale);
+    color: var(--project-green-dark);
+}
+
+.complete-review-demo {
+    min-height: 38px;
+    display: inline-flex;
+    align-items: center;
+    gap: 18px;
+    padding: 0 16px;
+    border-radius: 999px;
+    background: var(--project-green);
+    color: white;
+    font-size: 0.58rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.complete-review-demo i {
+    font-size: 0.86rem;
+    font-style: normal;
+}
+
+.projects-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+    padding: 30px clamp(24px, 5vw, 76px) 38px;
+    border-top: 1px solid rgba(10, 11, 13, 0.14);
+    background: var(--project-paper);
+    color: var(--project-ink);
+    font-family: var(--font-display);
+}
+
+.projects-footer a {
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+}
+
+.projects-footer span {
+    color: rgba(10, 11, 13, 0.44);
+    font-size: 0.58rem;
+    letter-spacing: 0.14em;
+}
+
+@media (max-width: 1040px) {
+    .project-card {
+        grid-template-columns: minmax(270px, 0.62fr) minmax(470px, 1.38fr);
+    }
+
+    .review-controls-demo {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .complete-review-demo {
+        justify-self: end;
+    }
+}
+
+@media (max-width: 820px) {
+    .project-card {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .project-copy {
+        min-height: 320px;
+        border-right: 0;
+        border-bottom: 1px solid var(--project-line);
+    }
+
+    .review-preview {
+        min-height: 490px;
+    }
+}
+
+@media (max-width: 680px) {
+    .page-title {
+        padding-top: 42px;
+        padding-bottom: 18px;
+    }
+
+    .page-title p {
+        gap: 10px;
+        margin-bottom: 20px;
+        letter-spacing: 0.15em;
+    }
+
+    .page-title p::before {
+        width: 26px;
+    }
+
+    .page-title h1 {
+        font-size: min(17vw, 4.4rem);
+    }
+
+    .project-list {
+        padding-top: 22px;
+        padding-bottom: 80px;
+    }
+
+    .project-card {
+        border-radius: 20px;
+    }
+
+    .project-copy {
+        min-height: 300px;
+        padding: 28px 24px;
+    }
+
+    .project-heading h2 {
+        font-size: clamp(2.55rem, 12vw, 3.4rem);
+    }
+
+    .project-description {
+        margin-top: 32px;
+        font-size: 0.84rem;
+    }
+
+    .card-action {
+        padding-top: 32px;
+    }
+
+    .review-preview {
+        min-height: 490px;
+        padding: 16px;
+    }
+
+    .review-shell-demo {
+        border-radius: 15px;
+        transform: none;
+    }
+
+    .review-stage-demo {
+        padding: 26px 18px 22px;
+    }
+
+    .review-sentence-demo {
+        font-size: 1.58rem;
+    }
+
+    .reveal-panels-demo {
+        grid-template-columns: minmax(0, 1fr);
+        margin-top: 26px;
+    }
+
+    .review-controls-demo {
+        padding: 13px 14px 14px;
+    }
+
+    .review-tools-demo span:last-child {
+        display: none;
+    }
+}
+
+@media (max-width: 420px) {
+    .project-heading h2 {
+        font-size: 2.58rem;
+    }
+
+    .review-preview {
+        min-height: 470px;
+        padding: 12px;
+    }
+
+    .review-header-demo {
+        grid-template-columns: 56px minmax(0, 1fr) 38px;
+        padding: 0 11px;
+    }
+
+    .review-header-demo strong {
+        font-size: 0.78rem;
+    }
+
+    .review-sentence-demo {
+        font-size: 1.42rem;
+    }
+}

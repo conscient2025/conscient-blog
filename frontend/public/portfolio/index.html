@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Conscient 的项目作品。">
+    <meta name="theme-color" content="#06080b">
+    <title>Conscient — Projects</title>
+    <link rel="icon" type="image/png" href="../tx.png">
+    <link rel="stylesheet" href="../home.css">
+    <link rel="stylesheet" href="../particles.css">
+    <link rel="stylesheet" href="portfolio.css">
+</head>
+<body id="top">
+    <a class="skip-link" href="#content">跳到主要内容</a>
+
+    <header class="site-header" id="siteHeader">
+        <a class="wordmark" href="../" aria-label="Conscient 主页">
+            <span>CONSCIENT</span>
+        </a>
+
+        <nav class="desktop-nav" aria-label="主要导航">
+            <a href="../">主页</a>
+            <a href="../friends/">友链</a>
+            <a href="../about/">关于</a>
+        </nav>
+
+        <div class="header-meta" aria-hidden="true">
+            <span>PERSONAL ARCHIVE</span>
+            <span>2026</span>
+        </div>
+
+        <button class="menu-toggle" id="menuToggle" type="button" aria-expanded="false" aria-controls="mobileNav">
+            <span class="menu-toggle-label">MENU</span>
+            <span class="menu-toggle-lines" aria-hidden="true"><i></i><i></i></span>
+        </button>
+    </header>
+
+    <nav class="mobile-nav" id="mobileNav" aria-label="移动端导航" aria-hidden="true">
+        <a href="../"><span>01</span>主页</a>
+        <a href="../friends/"><span>02</span>友链</a>
+        <a href="../about/"><span>03</span>关于</a>
+    </nav>
+
+    <main id="content">
+        <header class="page-title reveal">
+            <p>MADE HERE</p>
+            <h1>PROJECTS</h1>
+        </header>
+
+        <section class="project-list" aria-label="项目列表">
+            <a
+                class="project-card reveal"
+                href="https://github.com/conscient2025/expression-block"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="在 GitHub 打开 Expression Block 项目（新窗口）"
+            >
+                <div class="project-copy">
+                    <div class="project-heading">
+                        <h2>Expression <span>Block</span></h2>
+                    </div>
+
+                    <p class="project-description">
+                        把学习中遇到的 expressions 原样写进 Block。复习时，AI 会逐条生成新的英文语境，
+                        并按需展示中文翻译与语境解释，也可以为同一个 expression 换一条例句。
+                    </p>
+
+                    <span class="card-action">VIEW ON GITHUB <i aria-hidden="true">↗</i></span>
+                </div>
+
+                <div class="review-preview" aria-hidden="true">
+                    <div class="review-shell-demo">
+                        <div class="review-header-demo">
+                            <span>← EXIT</span>
+                            <strong>Reflexive awareness</strong>
+                            <span>1 / 1</span>
+                        </div>
+
+                        <div class="review-progress-demo"><i></i></div>
+
+                        <div class="review-stage-demo">
+                            <p class="review-sentence-demo">
+                                <mark>Reflexive awareness</mark> helps us notice how our perspective shapes what we see.
+                            </p>
+
+                            <div class="reveal-panels-demo">
+                                <div class="reveal-panel-demo">
+                                    <span>TRANSLATION</span>
+                                    <p>反身性意识帮助我们察觉，自己的视角如何塑造所见。</p>
+                                </div>
+                                <div class="reveal-panel-demo">
+                                    <span>IN THIS CONTEXT</span>
+                                    <em>LEARNING FOCUS · REFLEXIVE AWARENESS</em>
+                                    <p>这里指对自身认知过程与观察立场的觉察。</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="review-controls-demo">
+                            <div class="review-tools-demo">
+                                <span class="is-active">T&nbsp;&nbsp;Translation</span>
+                                <span class="is-active">i&nbsp;&nbsp;Explain</span>
+                                <span>↻&nbsp;&nbsp;Another example</span>
+                            </div>
+                            <span class="complete-review-demo">Complete review <i>→</i></span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </section>
+    </main>
+
+    <footer class="projects-footer">
+        <a href="../">CONSCIENT</a>
+        <span>© 2026</span>
+    </footer>
+
+    <script src="../particles.js"></script>
+    <script src="../home.js"></script>
+</body>
+</html>
