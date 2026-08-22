@@ -1,0 +1,230 @@
+body {
+    background: var(--black);
+}
+
+.friends-main {
+    min-height: calc(100svh - var(--header-height) - 84px);
+    padding-top: var(--header-height);
+    background: var(--black);
+}
+
+.page-title,
+.friend-grid {
+    width: min(100%, 1440px);
+    margin: 0 auto;
+    padding-right: clamp(24px, 5vw, 76px);
+    padding-left: clamp(24px, 5vw, 76px);
+}
+
+.page-title {
+    padding-top: clamp(52px, 7vh, 82px);
+    padding-bottom: clamp(32px, 5vh, 54px);
+}
+
+.page-title h1 {
+    font-family: var(--font-display);
+    font-size: clamp(5.4rem, 11vw, 10.5rem);
+    font-weight: 600;
+    letter-spacing: -0.085em;
+    line-height: 0.72;
+}
+
+.friend-grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    grid-template-rows: clamp(360px, 35vw, 460px) clamp(300px, 29vw, 380px);
+    gap: 0;
+    padding-bottom: clamp(60px, 8vh, 92px);
+}
+
+.friend-card {
+    position: relative;
+    overflow: hidden;
+    min-width: 0;
+    border: 0;
+    background: #101216;
+}
+
+.friend-card-gege {
+    grid-column: span 7;
+    isolation: isolate;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 18px;
+    padding: clamp(20px, 2vw, 28px);
+}
+
+.friend-image {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    background-image:
+        linear-gradient(180deg, transparent 46%, rgba(4, 5, 8, 0.76) 100%),
+        url("image1.jpg");
+    background-position: center;
+    background-size: cover;
+    transform: scale(1.01);
+    transition: transform 700ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.friend-card-gege:hover .friend-image,
+.friend-card-gege:focus-visible .friend-image {
+    transform: scale(1.055);
+}
+
+.friend-card-gege::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: rgba(0, 0, 0, 0);
+    transition: background 240ms ease;
+}
+
+.friend-card-gege:hover::before,
+.friend-card-gege:focus-visible::before {
+    background: rgba(0, 0, 0, 0.08);
+}
+
+.friend-card-gege:focus-visible {
+    outline: 2px solid var(--white);
+    outline-offset: 3px;
+}
+
+.friend-name,
+.friend-arrow {
+    position: relative;
+    z-index: 1;
+}
+
+.friend-name {
+    font-family: var(--font-display);
+    font-size: clamp(1.65rem, 2.6vw, 2.75rem);
+    font-weight: 600;
+    letter-spacing: -0.045em;
+}
+
+.friend-arrow {
+    display: grid;
+    flex: 0 0 auto;
+    width: 42px;
+    height: 42px;
+    place-items: center;
+    border: 1px solid rgba(247, 246, 242, 0.68);
+    border-radius: 50%;
+    font-size: 1rem;
+    transition: color 180ms ease, background 180ms ease, transform 180ms ease;
+}
+
+.friend-card-gege:hover .friend-arrow,
+.friend-card-gege:focus-visible .friend-arrow {
+    color: var(--ink);
+    background: var(--white);
+    transform: translate(2px, -2px);
+}
+
+.friend-placeholder {
+    display: grid;
+    place-items: center;
+    background: #24272c;
+    box-shadow: inset 0 0 0 1px rgba(247, 246, 242, 0.1);
+}
+
+.friend-placeholder:nth-child(2) {
+    grid-column: span 5;
+}
+
+.friend-placeholder:nth-child(3) {
+    grid-column: span 5;
+}
+
+.friend-placeholder:nth-child(4) {
+    grid-column: span 7;
+}
+
+.friend-plus {
+    color: rgba(247, 246, 242, 0.2);
+    font-family: Arial, sans-serif;
+    font-size: clamp(3.4rem, 5.5vw, 6rem);
+    font-weight: 200;
+    line-height: 1;
+}
+
+.friends-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+    padding: 30px clamp(24px, 5vw, 76px) 38px;
+    border-top: 1px solid rgba(247, 246, 242, 0.14);
+    background: var(--black);
+    color: var(--white);
+    font-family: var(--font-display);
+}
+
+.friends-footer a {
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+}
+
+.friends-footer span {
+    color: rgba(247, 246, 242, 0.44);
+    font-size: 0.58rem;
+    letter-spacing: 0.14em;
+}
+
+@media (max-width: 900px) {
+    .friend-grid {
+        grid-template-rows: 400px 320px;
+    }
+}
+
+@media (max-width: 680px) {
+    .page-title {
+        padding-top: 46px;
+        padding-bottom: 32px;
+    }
+
+    .page-title h1 {
+        font-size: min(21vw, 5.5rem);
+    }
+
+    .friend-grid {
+        display: flex;
+        flex-direction: column;
+        padding-bottom: 64px;
+    }
+
+    .friend-card {
+        min-height: 300px;
+    }
+
+    .friend-card-gege {
+        min-height: 360px;
+        padding: 18px;
+    }
+
+    .friend-placeholder:nth-child(4) {
+        min-height: 320px;
+    }
+
+    .friend-name {
+        font-size: clamp(1.35rem, 7vw, 1.8rem);
+    }
+
+    .friend-arrow {
+        width: 34px;
+        height: 34px;
+        font-size: 0.88rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .friend-image,
+    .friend-card-gege::before,
+    .friend-arrow {
+        transition: none;
+    }
+}
