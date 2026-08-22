@@ -1,15 +1,7 @@
 (() => {
-    const header = document.getElementById('siteHeader');
     const menuToggle = document.getElementById('menuToggle');
     const mobileNav = document.getElementById('mobileNav');
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-
-    const updateHeader = () => {
-        header?.classList.toggle('is-scrolled', window.scrollY > 24);
-    };
-
-    updateHeader();
-    window.addEventListener('scroll', updateHeader, { passive: true });
 
     if (menuToggle && mobileNav) {
         const closeMenu = () => {

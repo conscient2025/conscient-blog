@@ -29,11 +29,34 @@ body.archive-body {
     min-height: 420px;
 }
 
+.archive-body .wechat-kicker {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: clamp(20px, 2.4vw, 32px);
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    color: var(--archive-green);
+    background: transparent;
+    font-family: var(--global-nav-font);
+    font-size: clamp(0.62rem, 0.75vw, 0.72rem);
+    font-weight: 700;
+    letter-spacing: 0.2em;
+}
+
+.archive-body .wechat-kicker::before {
+    content: "";
+    width: 42px;
+    height: 1px;
+    background: currentColor;
+}
+
 .archive-body .wechat-title {
     margin: 0;
     color: var(--archive-ink);
     font-family: var(--global-nav-font);
-    font-size: clamp(4.2rem, 7.4vw, 6.8rem);
+    font-size: clamp(5rem, 9.6vw, 9rem);
     font-weight: 600;
     letter-spacing: -0.075em;
     line-height: 0.82;
@@ -350,8 +373,18 @@ body.archive-body {
 }
 
 @media (max-width: 700px) {
+    .archive-body .wechat-kicker {
+        gap: 10px;
+        margin-bottom: 20px;
+        letter-spacing: 0.15em;
+    }
+
+    .archive-body .wechat-kicker::before {
+        width: 26px;
+    }
+
     .archive-body .wechat-title {
-        font-size: min(17vw, 4.5rem);
+        font-size: min(17vw, 4.4rem);
     }
 
     .archive-body .wechat-hero {

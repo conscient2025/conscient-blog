@@ -75,13 +75,8 @@ button {
     align-items: center;
     gap: 28px;
     padding: 0 34px;
-    background: rgba(6, 8, 11, 0.76);
-    backdrop-filter: blur(18px) saturate(120%);
-    transition: background 240ms ease;
-}
-
-.site-header.is-scrolled {
     background: rgba(6, 8, 11, 0.94);
+    backdrop-filter: blur(18px) saturate(120%);
 }
 
 .wordmark {
