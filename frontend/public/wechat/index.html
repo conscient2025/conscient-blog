@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Conscient 的文章档案：文字、观察与阶段记录。">
+    <meta name="theme-color" content="#06080b">
     <title>公众号 - Conscient</title>
     <link rel="icon" type="image/png" href="../tx.png">
     <link rel="stylesheet" href="../styles.css">
@@ -656,8 +658,9 @@
     </style>
     <link rel="stylesheet" href="../nav.css">
     <link rel="stylesheet" href="../particles.css">
+    <link rel="stylesheet" href="../archive.css">
 </head>
-<body class="has-global-header">
+<body class="has-global-header archive-body">
     <header class="global-header" data-global-header>
         <a class="global-wordmark" href="../" aria-label="Conscient 主页">CONSCIENT</a>
         <nav class="global-links" id="globalLinks" aria-label="主要导航">
@@ -675,26 +678,15 @@
     <main class="wechat-page">
         <section class="wechat-hero">
             <div class="hero-copy">
-                <div class="wechat-kicker">WeChat Reader MVP</div>
-                <h1 class="wechat-title">公众号</h1>
-                <p class="wechat-intro">
-                    这里现在是一个本地文章阅读器。上传一篇不包含评论点赞区的 HTML，后端会保存正文和文章元数据，读者可以从下方列表进入阅读页。
-                </p>
-                <div class="reader-pills" aria-label="阅读器状态">
-                    <span class="reader-pill">公开阅读</span>
-                    <span class="reader-pill">GitHub 管理员发布</span>
-                    <span class="reader-pill">微信图片本地化</span>
-                </div>
+                <h1 class="wechat-title"><span>NOTES</span><span>&amp; ESSAYS</span></h1>
             </div>
             <aside class="admin-console">
                 <div class="account-panel" id="accountPanel">
-                    <p class="panel-label">Access</p>
                     <h2>GitHub 账号</h2>
                     <div class="account-status" id="accountStatus">正在检查登录状态...</div>
                     <div class="account-actions" id="accountActions"></div>
                 </div>
                 <aside class="admin-panel" id="adminPanel" hidden>
-                    <p class="panel-label">Publish</p>
                     <h2>上传文章 HTML</h2>
                     <form class="upload-form" id="uploadForm">
                         <label class="form-row">
@@ -726,7 +718,6 @@
                     </form>
                 </aside>
                 <aside class="admin-panel" id="adminCommentsPanel" hidden>
-                    <p class="panel-label">Comments</p>
                     <h2>评论管理</h2>
                     <p class="admin-comment-status" id="adminCommentStatus">正在加载评论...</p>
                     <div class="admin-comment-list" id="adminCommentList"></div>
@@ -739,13 +730,17 @@
                 <h2>已发表文章</h2>
                 <div class="section-actions">
                     <button class="order-open-btn" id="orderOpenBtn" type="button" hidden>调整顺序</button>
-                    <span>Published</span>
                 </div>
             </div>
             <div class="article-grid" id="articleGrid"></div>
-            <p class="empty-state" id="emptyState" hidden>还没有文章。先在上方上传一篇 HTML 试试。</p>
+            <p class="empty-state" id="emptyState" hidden>还没有文章。</p>
         </section>
     </main>
+
+    <footer class="archive-footer">
+        <a href="../">CONSCIENT</a>
+        <span>© 2026</span>
+    </footer>
 
     <div class="order-modal" id="orderModal" hidden>
         <div class="order-dialog" role="dialog" aria-modal="true" aria-labelledby="orderDialogTitle">

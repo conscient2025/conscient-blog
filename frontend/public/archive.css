@@ -1,0 +1,380 @@
+:root {
+    --archive-paper: #f5f2eb;
+    --archive-paper-deep: #ebe7dc;
+    --archive-card: #fffdf8;
+    --archive-ink: #20231f;
+    --archive-muted: #6d7068;
+    --archive-line: #d9d6cc;
+    --archive-green: #496657;
+    --archive-green-dark: #354c40;
+    --archive-green-pale: #e3ebe5;
+    --archive-clay: #b66f4b;
+}
+
+body.archive-body {
+    color: var(--archive-ink);
+    background:
+        radial-gradient(circle at 10% 0%, rgba(190, 165, 116, 0.09), transparent 32%),
+        linear-gradient(180deg, #f7f4ed 0%, var(--archive-paper) 58%, #f3efe7 100%);
+}
+
+/* WeChat archive */
+.archive-body .wechat-page {
+    width: min(1180px, calc(100% - 40px));
+    padding-bottom: 84px;
+}
+
+.archive-body .wechat-hero {
+    gap: clamp(34px, 4vw, 52px);
+    min-height: 420px;
+}
+
+.archive-body .wechat-title {
+    margin: 0;
+    color: var(--archive-ink);
+    font-family: var(--global-nav-font);
+    font-size: clamp(4.2rem, 7.4vw, 6.8rem);
+    font-weight: 600;
+    letter-spacing: -0.075em;
+    line-height: 0.82;
+}
+
+.archive-body .wechat-title span {
+    display: block;
+    white-space: nowrap;
+}
+
+.archive-body .wechat-title span:last-child {
+    color: var(--archive-green);
+}
+
+.archive-body .wechat-intro {
+    margin-top: 28px;
+    color: var(--archive-muted);
+    font-size: 1rem;
+}
+
+.archive-body .admin-console {
+    border-color: rgba(73, 102, 87, 0.14);
+    border-radius: 20px;
+    background: rgba(255, 253, 248, 0.74);
+    box-shadow: 0 20px 54px rgba(45, 48, 41, 0.06);
+}
+
+.archive-body .account-panel,
+.archive-body .admin-panel {
+    border-color: var(--archive-line);
+    border-radius: 15px;
+    background: rgba(255, 253, 248, 0.92);
+}
+
+.archive-body .account-panel h2,
+.archive-body .admin-panel h2,
+.archive-body .account-name,
+.archive-body .order-title,
+.archive-body .order-dialog h2 {
+    color: var(--archive-ink);
+}
+
+.archive-body .account-card,
+.archive-body .admin-comment-item,
+.archive-body .order-item {
+    border-color: var(--archive-line);
+    background: var(--archive-paper);
+}
+
+.archive-body .account-status,
+.archive-body .account-note,
+.archive-body .upload-status,
+.archive-body .admin-comment-status,
+.archive-body .admin-comment-meta,
+.archive-body .order-hint,
+.archive-body .order-status,
+.archive-body .order-date {
+    color: var(--archive-muted);
+}
+
+.archive-body .role-badge,
+.archive-body .upload-form button,
+.archive-body .upload-form input::file-selector-button,
+.archive-body .order-open-btn,
+.archive-body .order-save-btn {
+    color: #fff;
+    background: var(--archive-green);
+}
+
+.archive-body .upload-form input,
+.archive-body .upload-form textarea {
+    border-color: var(--archive-line);
+    color: var(--archive-ink);
+    background: var(--archive-card);
+}
+
+.archive-body .upload-form input:focus,
+.archive-body .upload-form textarea:focus {
+    border-color: rgba(73, 102, 87, 0.5);
+    box-shadow: 0 0 0 3px rgba(73, 102, 87, 0.12);
+}
+
+.archive-body .admin-comment-delete,
+.archive-body .delete-article-btn {
+    border-color: rgba(121, 103, 95, 0.2);
+    color: #fff;
+    background: var(--archive-clay);
+    box-shadow: none;
+}
+
+.archive-body .admin-comment-delete:hover,
+.archive-body .delete-article-btn:hover {
+    color: #fff;
+    background: #9f5d3c;
+}
+
+.archive-body .article-section {
+    margin-top: 26px;
+}
+
+.archive-body .section-heading h2 {
+    color: var(--archive-ink);
+    font-family: var(--global-nav-font);
+    font-size: clamp(2.4rem, 4vw, 3.7rem);
+    letter-spacing: -0.055em;
+}
+
+.archive-body .section-actions:empty {
+    display: none;
+}
+
+.archive-body .article-grid {
+    gap: 18px;
+}
+
+.archive-body .article-card {
+    min-height: 226px;
+    border-color: var(--archive-line);
+    border-radius: 18px;
+    color: var(--archive-ink);
+    background: rgba(255, 253, 248, 0.94);
+    box-shadow: 0 14px 38px rgba(45, 48, 41, 0.055);
+}
+
+.archive-body .article-card::before {
+    height: 3px;
+    background: #87968d;
+    opacity: 0.62;
+}
+
+.archive-body .article-card:hover {
+    border-color: #b8c2b9;
+    background: var(--archive-card);
+    box-shadow: 0 20px 48px rgba(45, 48, 41, 0.09);
+}
+
+.archive-body .article-date,
+.archive-body .article-meta,
+.archive-body .article-arrow {
+    color: var(--archive-green);
+}
+
+.archive-body .article-card h3 {
+    color: var(--archive-ink);
+}
+
+.archive-body .article-card p,
+.archive-body .empty-state {
+    color: var(--archive-muted);
+}
+
+.archive-body .order-modal {
+    background: rgba(32, 35, 31, 0.42);
+}
+
+.archive-body .order-dialog {
+    border-color: var(--archive-line);
+    border-radius: 18px;
+    background: var(--archive-card);
+    box-shadow: 0 28px 76px rgba(32, 35, 31, 0.18);
+}
+
+.archive-body .order-item {
+    border-radius: 12px;
+}
+
+.archive-body .order-handle {
+    color: var(--archive-green-dark);
+    background: var(--archive-green-pale);
+}
+
+/* Article reader */
+.archive-body .reader-page {
+    color: var(--archive-ink);
+}
+
+.archive-body .reader-back {
+    color: #fff;
+    background: var(--archive-green);
+    box-shadow: 0 10px 24px rgba(53, 76, 64, 0.14);
+}
+
+.archive-body .reader-back:hover {
+    color: #fff;
+    box-shadow: 0 14px 30px rgba(53, 76, 64, 0.18);
+}
+
+.archive-body .reader-author-avatar {
+    border-color: var(--archive-card);
+    box-shadow: 0 9px 22px rgba(45, 48, 41, 0.12);
+}
+
+.archive-body .reader-author-name,
+.archive-body .reader-title,
+.archive-body .comment-heading h2,
+.archive-body .comment-author-line {
+    color: var(--archive-ink);
+}
+
+.archive-body .reader-title {
+    font-family: var(--global-nav-font);
+    letter-spacing: -0.045em;
+    text-shadow: none;
+}
+
+.archive-body .reader-date {
+    color: var(--archive-green);
+}
+
+.archive-body .reader-date:not(:empty)::before {
+    background: rgba(73, 102, 87, 0.5);
+}
+
+.archive-body .reader-meta,
+.archive-body .reader-summary,
+.archive-body .reader-status,
+.archive-body .reaction-copy,
+.archive-body .comment-status,
+.archive-body .comment-empty,
+.archive-body .comment-time,
+.archive-body .comment-body {
+    color: var(--archive-muted);
+}
+
+.archive-body .article-frame-shell {
+    border-color: var(--archive-line);
+    background: var(--archive-card);
+    box-shadow: 0 22px 62px rgba(45, 48, 41, 0.075);
+}
+
+.archive-body .article-frame {
+    background: var(--archive-card);
+}
+
+.archive-body .interaction-panel {
+    border-color: var(--archive-line);
+    border-radius: 18px;
+    background: rgba(255, 253, 248, 0.9);
+    box-shadow: 0 16px 44px rgba(45, 48, 41, 0.055);
+}
+
+.archive-body .reaction-row {
+    border-color: var(--archive-line);
+}
+
+.archive-body .like-btn,
+.archive-body .comment-submit {
+    background: var(--archive-green);
+}
+
+.archive-body .like-btn.liked,
+.archive-body .comment-like-btn.liked {
+    background: var(--archive-ink);
+}
+
+.archive-body .comment-input {
+    border-color: var(--archive-line);
+    color: var(--archive-ink);
+    background: var(--archive-card);
+}
+
+.archive-body .comment-input:focus {
+    border-color: rgba(73, 102, 87, 0.5);
+    box-shadow: 0 0 0 3px rgba(73, 102, 87, 0.12);
+}
+
+.archive-body .comment-item {
+    border-color: var(--archive-line);
+    border-radius: 14px;
+    background: rgba(255, 253, 248, 0.82);
+}
+
+.archive-body .comment-like-btn {
+    color: var(--archive-green-dark);
+    background: var(--archive-green-pale);
+}
+
+.archive-body .comment-like-btn.liked {
+    color: #fff;
+    background: var(--archive-green);
+}
+
+/* Matches the Portfolio footer. */
+.archive-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+    padding: 30px clamp(24px, 5vw, 76px) 38px;
+    border-top: 1px solid rgba(10, 11, 13, 0.14);
+    background: var(--archive-paper);
+    color: var(--archive-ink);
+    font-family: var(--global-nav-font);
+}
+
+.archive-footer a {
+    color: inherit;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+}
+
+.archive-footer span {
+    color: rgba(10, 11, 13, 0.44);
+    font-size: 0.58rem;
+    letter-spacing: 0.14em;
+}
+
+@media (max-width: 900px) {
+    .archive-body .wechat-page {
+        width: min(100% - 32px, 760px);
+    }
+}
+
+@media (max-width: 700px) {
+    .archive-body .wechat-title {
+        font-size: min(17vw, 4.5rem);
+    }
+
+    .archive-body .wechat-hero {
+        min-height: auto;
+        padding-top: 42px;
+    }
+
+    .archive-body .article-card {
+        min-height: 216px;
+    }
+
+    .archive-body .reader-page {
+        width: min(100% - 32px, 980px);
+    }
+
+    .archive-body .interaction-panel {
+        padding: 18px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .archive-body .article-card,
+    .archive-body .reader-back {
+        transition: none;
+    }
+}

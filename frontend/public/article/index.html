@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Conscient 文章阅读页。">
+    <meta name="theme-color" content="#06080b">
     <title>文章阅读 - Conscient</title>
     <link rel="icon" type="image/png" href="../tx.png">
     <link rel="stylesheet" href="../styles.css">
@@ -384,8 +386,9 @@
     </style>
     <link rel="stylesheet" href="../nav.css">
     <link rel="stylesheet" href="../particles.css">
+    <link rel="stylesheet" href="../archive.css">
 </head>
-<body class="has-global-header">
+<body class="has-global-header archive-body">
     <header class="global-header" data-global-header>
         <a class="global-wordmark" href="../" aria-label="Conscient 主页">CONSCIENT</a>
         <nav class="global-links" id="globalLinks" aria-label="主要导航">
@@ -452,6 +455,11 @@
         </section>
     </main>
 
+    <footer class="archive-footer">
+        <a href="../">CONSCIENT</a>
+        <span>© 2026</span>
+    </footer>
+
     <script src="../nav.js"></script>
     <script src="../particles.js"></script>
     <script src="../script.js"></script>
@@ -476,6 +484,53 @@
         const commentEmpty = document.getElementById('commentEmpty');
         let currentUser = null;
         let articleReaction = { likeCount: 0, likedByMe: false };
+
+        function applyFrameTheme() {
+            try {
+                const frameDocument = frame.contentDocument;
+                if (!frameDocument || frameDocument.getElementById('conscientArchiveTheme')) return;
+
+                const style = frameDocument.createElement('style');
+                style.id = 'conscientArchiveTheme';
+                style.textContent = `
+                    html,
+                    body {
+                        background: #f5f2eb !important;
+                        color: #20231f !important;
+                    }
+
+                    [style*="background-color:#f7fafc"] {
+                        background-color: #f5f2eb !important;
+                    }
+
+                    [style*="background-color:#ffffff"] {
+                        background-color: #fffdf8 !important;
+                    }
+
+                    [style*="color:#2f6585"],
+                    [style*="color:#4f83a6"] {
+                        color: #496657 !important;
+                    }
+
+                    [style*="color:#263241"] {
+                        color: #30342f !important;
+                    }
+
+                    [style*="color:#5e7185"] {
+                        color: #6d7068 !important;
+                    }
+
+                    [style*="rgba(79,131,166"] {
+                        border-color: rgba(73, 102, 87, 0.16) !important;
+                    }
+                `;
+                frameDocument.head.appendChild(style);
+            } catch {
+                // 正文无法读取时保留文章原始样式。
+            }
+        }
+
+        frame.addEventListener('load', applyFrameTheme);
 
         function loginWithGithub() {
             window.location.href = '/auth/github';
