@@ -642,16 +642,37 @@ button {
     gap: 22px;
 }
 
-.footer-meta > a {
+.footer-records {
+    display: grid;
+    justify-items: end;
+    gap: 6px;
+}
+
+.footer-record {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
     color: rgba(247, 246, 242, 0.48);
     font-family: var(--font-cn);
     font-size: 0.7rem;
     letter-spacing: 0.06em;
+    line-height: 1.25;
     transition: color 180ms ease;
 }
 
-.footer-meta > a:hover,
-.footer-meta > a:focus-visible {
+.footer-record-police {
+    gap: 6px;
+}
+
+.footer-record-police img {
+    flex: 0 0 auto;
+    width: 18px;
+    height: 20px;
+    object-fit: contain;
+}
+
+.footer-record:hover,
+.footer-record:focus-visible {
     color: var(--white);
 }
 
@@ -883,6 +904,10 @@ button {
     }
 
     .footer-meta {
+        justify-items: start;
+    }
+
+    .footer-records {
         justify-items: start;
     }
 
