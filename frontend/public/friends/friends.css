@@ -32,7 +32,10 @@ body {
 .friend-grid {
     display: grid;
     grid-template-columns: repeat(12, minmax(0, 1fr));
-    grid-template-rows: clamp(360px, 35vw, 460px) clamp(300px, 29vw, 380px);
+    grid-template-rows:
+        clamp(360px, 35vw, 460px)
+        clamp(300px, 29vw, 380px)
+        clamp(300px, 29vw, 380px);
     gap: 0;
     padding-bottom: clamp(60px, 8vh, 92px);
 }
@@ -45,8 +48,7 @@ body {
     background: #101216;
 }
 
-.friend-card-gege {
-    grid-column: span 7;
+.friend-link {
     isolation: isolate;
     display: flex;
     align-items: flex-end;
@@ -55,25 +57,63 @@ body {
     padding: clamp(20px, 2vw, 28px);
 }
 
+.friend-card-gege {
+    grid-column: span 7;
+}
+
+.friend-card-quinn {
+    grid-column: span 5;
+}
+
+.friend-card-ltto {
+    grid-column: span 5;
+}
+
+.friend-card-alight {
+    grid-column: span 7;
+}
+
 .friend-image {
     position: absolute;
     inset: 0;
     z-index: -2;
-    background-image:
-        linear-gradient(180deg, transparent 46%, rgba(4, 5, 8, 0.76) 100%),
-        url("image1.jpg");
     background-position: center;
     background-size: cover;
     transform: scale(1.01);
     transition: transform 700ms cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
-.friend-card-gege:hover .friend-image,
-.friend-card-gege:focus-visible .friend-image {
+.friend-card-gege .friend-image {
+    background-image:
+        linear-gradient(180deg, transparent 46%, rgba(4, 5, 8, 0.76) 100%),
+        url("gegenook-cover.jpg");
+}
+
+.friend-card-quinn .friend-image {
+    background-image:
+        linear-gradient(180deg, transparent 42%, rgba(4, 5, 8, 0.78) 100%),
+        url("quinn-avatar.jpg");
+}
+
+.friend-card-ltto .friend-image {
+    background-image:
+        linear-gradient(180deg, transparent 44%, rgba(4, 5, 8, 0.74) 100%),
+        url("ltto-cover.png");
+    background-size: auto 140%;
+}
+
+.friend-card-alight .friend-image {
+    background-image:
+        linear-gradient(180deg, transparent 42%, rgba(4, 5, 8, 0.8) 100%),
+        url("alight-cover.png");
+}
+
+.friend-link:hover .friend-image,
+.friend-link:focus-visible .friend-image {
     transform: scale(1.055);
 }
 
-.friend-card-gege::before {
+.friend-link::before {
     content: "";
     position: absolute;
     inset: 0;
@@ -82,12 +122,12 @@ body {
     transition: background 240ms ease;
 }
 
-.friend-card-gege:hover::before,
-.friend-card-gege:focus-visible::before {
+.friend-link:hover::before,
+.friend-link:focus-visible::before {
     background: rgba(0, 0, 0, 0.08);
 }
 
-.friend-card-gege:focus-visible {
+.friend-link:focus-visible {
     outline: 2px solid var(--white);
     outline-offset: 3px;
 }
@@ -117,33 +157,54 @@ body {
     transition: color 180ms ease, background 180ms ease, transform 180ms ease;
 }
 
-.friend-card-gege:hover .friend-arrow,
-.friend-card-gege:focus-visible .friend-arrow {
+.friend-link:hover .friend-arrow,
+.friend-link:focus-visible .friend-arrow {
     color: var(--ink);
     background: var(--white);
     transform: translate(2px, -2px);
 }
 
 .friend-placeholder {
+    isolation: isolate;
     display: grid;
     place-items: center;
-    background: #24272c;
-    box-shadow: inset 0 0 0 1px rgba(247, 246, 242, 0.1);
+    background: #202329;
 }
 
-.friend-placeholder:nth-child(2) {
-    grid-column: span 5;
-}
-
-.friend-placeholder:nth-child(3) {
-    grid-column: span 5;
-}
-
-.friend-placeholder:nth-child(4) {
+.friend-placeholder:nth-child(5) {
     grid-column: span 7;
 }
 
+.friend-placeholder:nth-child(6) {
+    grid-column: span 5;
+}
+
+.friend-placeholder::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: #24272d;
+    transform: scale(1.01);
+    transition: transform 700ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.friend-placeholder:hover::before {
+    transform: scale(1.045);
+}
+
+.friend-placeholder::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    box-shadow: inset 0 0 0 1px rgba(247, 246, 242, 0.1);
+    pointer-events: none;
+}
+
 .friend-plus {
+    position: relative;
+    z-index: 3;
     color: rgba(247, 246, 242, 0.2);
     font-family: Arial, sans-serif;
     font-size: clamp(3.4rem, 5.5vw, 6rem);
@@ -177,7 +238,7 @@ body {
 
 @media (max-width: 900px) {
     .friend-grid {
-        grid-template-rows: 400px 320px;
+        grid-template-rows: 400px 320px 320px;
     }
 }
 
@@ -201,12 +262,12 @@ body {
         min-height: 300px;
     }
 
-    .friend-card-gege {
+    .friend-link {
         min-height: 360px;
         padding: 18px;
     }
 
-    .friend-placeholder:nth-child(4) {
+    .friend-placeholder:nth-child(5) {
         min-height: 320px;
     }
 
@@ -223,7 +284,8 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
     .friend-image,
-    .friend-card-gege::before,
+    .friend-link::before,
+    .friend-placeholder::before,
     .friend-arrow {
         transition: none;
     }
