@@ -73,6 +73,10 @@ body {
     grid-column: span 7;
 }
 
+.friend-card-yanxuan {
+    grid-column: span 7;
+}
+
 .friend-image {
     position: absolute;
     inset: 0;
@@ -106,6 +110,12 @@ body {
     background-image:
         linear-gradient(180deg, transparent 42%, rgba(4, 5, 8, 0.8) 100%),
         url("alight-cover.png");
+}
+
+.friend-card-yanxuan .friend-image {
+    background-image:
+        linear-gradient(180deg, transparent 42%, rgba(4, 5, 8, 0.8) 100%),
+        url("yanxuan-cover.png");
 }
 
 .friend-link:hover .friend-image,
@@ -169,10 +179,6 @@ body {
     display: grid;
     place-items: center;
     background: #202329;
-}
-
-.friend-placeholder:nth-child(5) {
-    grid-column: span 7;
 }
 
 .friend-placeholder:nth-child(6) {
@@ -265,10 +271,6 @@ body {
     .friend-link {
         min-height: 360px;
         padding: 18px;
-    }
-
-    .friend-placeholder:nth-child(5) {
-        min-height: 320px;
     }
 
     .friend-name {
